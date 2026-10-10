@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: Forever Inventory
+## Notes: Read-only bag totals and slot snapshot; optional ForeverCore pack
+## Author: code4Kush
+## Version: 0.1.0
+## Dependencies: ForeverCore
+
+Bootstrap.lua
+Module.lua
+Read.lua
+Commands.lua

@@ -94,3 +94,11 @@ The recorded beta interface number is 16001; verify it on your own client after 
 - CONTRIBUTING.md: change and review workflow.
 
 No license has been selected. Do not assume permission to redistribute this repository or third-party code.
+
+## Modular suite candidate (PR #24; NOT GAME-VERIFIED)
+
+A new stacked development branch provides Core 0.2 experimental per-character preferences plus individually installable Dashboard, Inventory, Gold, Professions, Fishing, Cooking, Explorer and Guild packs. They do not replace ForeverJournal v0.4 (separate PR #4) or ForeverWarrior (PR #22).
+
+Every pack has its own `_Camelot.toc` and `## Dependencies: ForeverCore`. You may install **only the optional packs you want**. The session-only Guild module does not transmit anything unless the player explicitly opts in and manually announces the minimal version handshake. No quest, inventory or combat information is shared.
+
+See [SUITE_TESTING.md](docs/SUITE_TESTING.md) for separate copyable WoW commands and exact expected output. The API contracts are experimental and do NOT imply a public supported release. Complete licensing, security, full-build client tests and data privacy checks before distribution.

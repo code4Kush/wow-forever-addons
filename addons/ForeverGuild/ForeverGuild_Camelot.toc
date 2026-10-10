@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: Forever Guild
+## Notes: Manual opt-in, version-only guild addon discovery
+## Author: code4Kush
+## Version: 0.1.0
+## Dependencies: ForeverCore
+
+Bootstrap.lua
+Protocol.lua
+Module.lua
+Commands.lua

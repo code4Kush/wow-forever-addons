@@ -11,7 +11,8 @@ local _, core = ...
 local function PrintHelp()
     core.Print("Commands: /forever version | modules | status <id> | character")
     core.Print("/forever enable <id> | disable <id> | listeners <EVENT>")
-    core.Print("Module toggles are SESSION ONLY and do not unload addon Lua.")
+    core.Print("/forever pref <id> on|off | profile | marker [test-id]")
+    core.Print("Enable/disable is SESSION ONLY; pref/marker persistence is UNVERIFIED.")
 end
 
 local function PrintStatus(record)
@@ -62,6 +63,51 @@ local function HandleSlashCommand(message)
             character.className,
             character.level and tostring(character.level) or "?"
         ))
+        return
+    end
+
+    if command == "profile" and argument == "" then
+        local info = core.GetProfileInfo()
+        local status = info.writable and "writable (restart unverified)"
+            or ("unavailable: " .. tostring(info.reason))
+        core.Print("Profile schema " .. info.schemaVersion .. ": " .. status
+            .. "; " .. info.preferenceCount .. " preference(s).")
+        return
+    end
+
+    if command == "marker" then
+        if argument == "" then
+            local info = core.GetProfileInfo()
+            core.Print("Profile marker: "
+                .. (type(info.marker) == "string" and info.marker or "<unset>")
+                .. " (restart unverified).")
+            return
+        end
+
+        local saved, reason = core.SetProfileMarker(argument)
+        if not saved then
+            core.Print("Marker not saved: " .. tostring(reason))
+        else
+            core.Print("Profile marker set: " .. argument
+                .. " (verify after full restart).")
+        end
+        return
+    end
+
+    if command == "pref" then
+        local id, choice = argument:match("^([a-z][a-z0-9%-]*)%s+([a-z]+)$")
+        if not id or (choice ~= "on" and choice ~= "off") then
+            core.Print("Usage: /forever pref <module-id> on|off")
+            return
+        end
+
+        local saved, reason = core.SetPreferredModuleEnabled(id, choice == "on")
+        if not saved then
+            core.Print("Preference not saved: " .. tostring(reason))
+        else
+            core.Print(id .. ": preference " .. choice
+                .. " (restart unverified).")
+        end
         return
     end
 

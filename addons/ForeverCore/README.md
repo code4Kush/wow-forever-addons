@@ -36,3 +36,9 @@ Read `docs/CORE_CONTRACT.md`. This release exposes `_G.ForeverCore` as the singl
 ## Testing
 
 Run `lua5.1 tests/test_core.lua` and all pre-existing tests. GitHub Actions verifies mocked Lua behavior, **not actual game loading**.
+
+## Core 0.2.0 experimental profile extension (PR #24, NOT IN-GAME VERIFIED)
+
+Adds `## SavedVariablesPerCharacter: ForeverCharacterDB` and a schema-versioned profile module. `/forever profile` reports schema and preference count; `/forever pref <module-id> on|off` requests the current character's default on next login; existing `/forever enable|disable` still controls only the current session. `/forever marker test-ud-01` writes a harmless marker to verify after a FULL game quit/restart.
+
+**Important:** The Forever beta may fail to restore saved variables. A writable in-memory Lua table is not evidence of persistence. `docs/SUITE_TESTING.md` provides separately submitted commands and expected outputs; do not ship a claim of durable profiles until the test succeeds on the actual client. Unknown or malformed schemas are kept read-only rather than silently overwritten.
