@@ -1,8 +1,8 @@
 ## Interface: 16001
 ## Title: Forever Fishing
-## Notes: On-demand skill and manual session-only fish catch notes
+## Notes: On-demand Fishing skill from profession list/UI; manual catch notes
 ## Author: code4Kush
-## Version: 0.2.0
+## Version: 0.3.0
 ## Dependencies: ForeverCore
 
 Bootstrap.lua
