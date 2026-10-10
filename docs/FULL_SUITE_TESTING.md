@@ -444,3 +444,7 @@ bundle packaging. **None of these tests establish live FPS, live heap
 memory, client API compatibility, actual cold restart profile persistence
 or a safe public release.**
 
+
+## Separate Cooking/Fishing candidate after this test session
+
+This integrated guide tests the current PR #37 versions (Fishing 0.2, Cooking 0.1). A later separate draft PR #39 introduces candidate Fishing 0.3 and Cooking 0.2. These try a profession-list skill read when windows are closed and add a manual Cooking ingredient list. The user should finish the current performance memory test before installing new development modules; mixing revisions invalidates direct comparisons. The new client compatibility test is [FISHING_COOKING_TESTING.md](FISHING_COOKING_TESTING.md), and has NOT YET PASSED live.

@@ -4,6 +4,13 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### Fishing 0.3 / Cooking 0.2 — optional windowless skill candidate (unverified in game)
+
+- Standalone on-demand skill readers try up to five sparse GetProfessions/GetProfessionInfo positions with strict rank validation, then the previous open-profession-window fallback. They do not depend on the optional Professions pack.
+- Cooking adds manual ingredient needs, listing, one-entry removal and clear; capped at ten labels/9999 per label; state clears on Core disable or UI reload. No recipe scanning, bag claims or item operations.
+- Fishing manual tally unchanged. No events, timers, background reading, SavedVariables or transmitted data; mock Lua 5.1 and all-pack CI tests. New window-closed game behavior still UNVERIFIED.
+
+
 ### Integrated full-load validation and single-subscriber efficiency
 
 - New `tests/test_full_integration.lua` loads **all twelve actual addon TOCs** together with separate per-addon namespaces, mocks PLAYER_LOGIN, verifies all eleven optional Core registrations, local commands, paginated Dashboard, on-demand full-pack memory, module disable isolation and Guild consent OFF/no sending. Distinct from in-game testing on Forever build 70338.
