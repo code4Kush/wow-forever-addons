@@ -138,19 +138,19 @@ class UnsafeSourceTests(unittest.TestCase):
     def test_unreadable_lua_bytecode_is_refused(self):
         # Lua 5.1 bytecode begins with ESC Lua; player-readable public
         # sources must never silently accept compiled chunks.
-        (self.folder / "Bootstrap.lua").write_bytes(b"\\x1bLua\\x51\\x00")
+        (self.folder / "Bootstrap.lua").write_bytes(bytes([27, 76, 117, 97, 81, 0]))
         with self.assertRaises(bundle.BundleError):
             bundle.read_module_files("ForeverCore", self.addons)
 
     def test_nul_and_terminal_control_bytes_are_refused(self):
-        for contents in (b"print(1)\\x00", b"print(1)\\x1b[0m"):
+        for contents in (b"print(1)" + bytes([0]), b"print(1)" + bytes([27]) + b"[0m"):
             (self.folder / "Bootstrap.lua").write_bytes(contents)
             with self.assertRaises(bundle.BundleError):
                 bundle.read_module_files("ForeverCore", self.addons)
 
     def test_legal_utf8_comments_are_accepted(self):
         (self.folder / "Bootstrap.lua").write_text(
-            "-- exposed source: caf\\u00e9\\n", encoding="utf-8"
+            "-- exposed source: " + chr(233) + chr(10), encoding="utf-8"
         )
         files = bundle.read_module_files("ForeverCore", self.addons)
         self.assertIn("ForeverCore/Bootstrap.lua", files)
