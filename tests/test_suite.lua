@@ -98,6 +98,8 @@ for _, name in ipairs(packs) do
         files = {"Bootstrap.lua","Module.lua","Read.lua","Catches.lua","Commands.lua"}
     elseif name == "ForeverProfessions" then
         files = {"Bootstrap.lua","Module.lua","Read.lua","Tracker.lua","Goals.lua","Commands.lua"}
+    elseif name == "ForeverCooking" then
+        files = {"Bootstrap.lua","Module.lua","Read.lua","Ingredients.lua","Commands.lua"}
     end
     local ns = {}
     for _, file in ipairs(files) do
@@ -143,12 +145,13 @@ GetProfessions = function() return 1,2,3,4 end
 reset(); SlashCmdList.FOREVERFISHING("")
 expect(has("Fishing: 40/75"), "fishing skill from profession window")
 reset(); SlashCmdList.FOREVERCOOKING("")
-expect(has("Cooking skill not readable"), "no false cooking from fishing window")
+expect(has("Cooking: 22/75 (profession list)."),
+    "Cooking reads profession list while Fishing UI is open")
 C_TradeSkillUI.GetBaseProfessionInfo = function()
     return {professionName="Cooking",skillLevel=22,maxSkillLevel=75}
 end
 reset(); SlashCmdList.FOREVERCOOKING("")
-expect(has("Cooking: 22/75"), "cooking skill from profession window")
+expect(has("Cooking: 22/75"), "cooking skill remains available with its own window")
 reset(); SlashCmdList.FOREVEREXPLORER("")
 expect(has("Mulgore (ID 1412); NOT exploration credit."), "no fake map completion")
 reset(); SlashCmdList.FOREVERDASHBOARD("")

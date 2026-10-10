@@ -1,5 +1,5 @@
 --[[
-    ForeverFishing v0.2 Lua 5.1 mock tests for manually entered catch tally.
+    ForeverFishing v0.3 Lua 5.1 mock tests for manually entered catch tally.
     Mocks do not prove client support or real fish caught.
 ]]
 local savedPrint = print
@@ -41,14 +41,14 @@ for _, file in ipairs({
 }) do
     assert(loadfile("addons/ForeverFishing/"..file))("ForeverFishing",ns)
 end
-expect(ns.version == "0.2.0", "Version bump")
+expect(ns.version == "0.3.0", "Version bump")
 expect(descriptor.id == "fishing"
     and #descriptor.capabilities == 2 and #descriptor.events == 0,
     "Independent event-free Core registration")
 expect(fishingAPICalls == 0, "No profession API reads at load")
 
 reset(); SlashCmdList.FOREVERFISHING("version")
-expect(has("Version 0.2.0"), "Version command")
+expect(has("Version 0.3.0"), "Version command")
 reset(); SlashCmdList.FOREVERFISHING("help")
 expect(has("log <count> <fish name>") and has("NOT verified loot"),
     "Help explicitly disclaims verification")
@@ -155,5 +155,41 @@ expect(has("Raw Fish: 4 manually entered."),
 reset(); SlashCmdList.FOREVERFISHING("")
 expect(has("Fishing skill not readable; open Fishing UI and retry."),
     "Missing profession API fails safely")
+-- Prefer independent GetProfessions read when the Fishing UI is CLOSED.
+local listCalls = 0
+GetProfessions = function()
+    listCalls = listCalls + 1
+    return nil, nil, nil, 4, 5
+end
+GetProfessionInfo = function(slot)
+    if slot == 4 then return "Fishing", nil, 8, 75 end
+    if slot == 5 then return "Cooking", nil, 10, 75 end
+end
+reset(); SlashCmdList.FOREVERFISHING("skill")
+expect(has("Fishing: 8/75 (profession list)."),
+    "Closed-window profession list rank without independent Professions addon")
+expect(listCalls == 1, "One bounded list read per requested skill query")
+reset(); SlashCmdList.FOREVERFISHING("catches")
+expect(listCalls == 1, "Manual tally never reads profession list")
+
+GetProfessionInfo = function()
+    return "Fishing", nil, 900, 75
+end
+reset(); SlashCmdList.FOREVERFISHING("")
+expect(has("Fishing skill not readable; open Fishing UI and retry."),
+    "Reject impossible profession skill ranks without any UI fallback")
+
+GetProfessions = function() error("missing profession list implementation") end
+reset(); SlashCmdList.FOREVERFISHING("")
+expect(has("Fishing skill not readable; open Fishing UI and retry."),
+    "Fail closed on client profession list errors")
+
+InCombatLockdown = function() return true end
+local beforeCombat = listCalls
+reset(); SlashCmdList.FOREVERFISHING("")
+expect(has("Fishing skill unavailable during combat."),
+    "No skill read while in combat")
+expect(listCalls == beforeCombat, "Combat gate avoids profession API call")
+
 print = savedPrint
-print("ForeverFishing manual catch tally mock tests passed.")
+print("ForeverFishing manual notes and no-window skill mock tests passed.")

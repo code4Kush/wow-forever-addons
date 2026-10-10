@@ -235,8 +235,20 @@ expect(has("Herbalism 2/75") and has("Fishing 2/75")
     and has("Cooking 1/75"), "Five bounded professions displayed")
 clear(); SlashCmdList.FOREVERFISHING("catches")
 expect(has("No manual catches logged."), "Fishing manual log starts empty")
+clear(); SlashCmdList.FOREVERFISHING("")
+expect(has("Fishing: 2/75 (profession list)."),
+    "Fishing reads profession list without profession UI dependency")
 clear(); SlashCmdList.FOREVERCOOKING("version")
-expect(has("Version 0.1.0"), "Cooking works independently")
+expect(has("Version 0.2.0"), "Cooking works independently")
+clear(); SlashCmdList.FOREVERCOOKING("")
+expect(has("Cooking: 1/75 (profession list)."),
+    "Cooking reads profession list independent of other optional packs")
+clear(); SlashCmdList.FOREVERCOOKING("need 2 Raw Brilliant Smallfish")
+expect(has("Planned manually: Raw Brilliant Smallfish +2"),
+    "Cooking accepts human-entered ingredient note")
+clear(); SlashCmdList.FOREVERCOOKING("needs")
+expect(has("Raw Brilliant Smallfish: need 2 (player-entered)."),
+    "Cooking list never claims actual bag contents")
 clear(); SlashCmdList.FOREVEREXPLORER("")
 expect(has("Mulgore"), "Explorer respects local map API")
 clear(); SlashCmdList.FOREVERPERFORMANCE("details")
