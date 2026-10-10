@@ -5,7 +5,7 @@
 local _, addon = ...
 
 local function PrintHelp()
-    addon.Print("Commands: /fcook | skill | need <count> <ingredient> | needs | clear | version | help")
+    addon.Print("Commands: /fcook | skill | need <count> <ingredient> | done <ingredient> | needs | clear | version | help")
     addon.Print("Ingredient plan is manual, NOT confirmed bags or recipes.")
 end
 
@@ -34,9 +34,12 @@ local function Handle(message)
             addon.Print("Usage: /fcook need <1-999> <ingredient name>")
             return
         end
+    elseif lower:sub(1,5) == "done " then
+        mode = "done"
+        name = cmd:sub(6)
     elseif lower ~= "" and lower ~= "skill" and lower ~= "needs"
         and lower ~= "clear" then
-        addon.Print("Usage: /fcook [skill|need <count> <ingredient>|needs|clear|version|help]")
+        addon.Print("Usage: /fcook [skill|need <count> <ingredient>|done <ingredient>|needs|clear|version|help]")
         return
     end
 
@@ -56,6 +59,15 @@ local function Handle(message)
             addon.Print(string.format(
                 "Planned manually: %s +%d (need %d).",
                 entry.name, entry.added, entry.count))
+        end
+    elseif mode == "done" then
+        local removed, reason = addon.RemoveNeed(name)
+        if not removed then
+            addon.Print(reason)
+        else
+            addon.Print(string.format(
+                "Removed manual ingredient: %s (%d planned).",
+                removed.name, removed.count))
         end
     elseif mode == "needs" then
         addon.RenderNeeds()

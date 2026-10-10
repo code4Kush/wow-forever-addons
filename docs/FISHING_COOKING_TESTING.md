@@ -116,7 +116,7 @@ This is only a note. The addon does NOT confirm those fish are in your bags or p
 Expected:
 
 ~~~text
-Forever Cooking: Ingredient plan: 3 units across 1 labels (manual; not bag contents).
+Forever Cooking: Ingredient plan: 3 units across 1 label (manual; not bag contents).
 Forever Cooking: Raw Brilliant Smallfish: need 3 (player-entered).
 ~~~
 
@@ -139,6 +139,22 @@ Forever Cooking: Planned manually: Raw Brilliant Smallfish +2 (need 5).
 ~~~
 
 Expected 5 fish across 1 name, not new label or a bag count.
+
+**Optional manual removal:**
+
+~~~text
+/fcook done Raw Brilliant Smallfish
+~~~
+
+Expected if five manual fish remain:
+
+~~~text
+Forever Cooking: Removed manual ingredient: Raw Brilliant Smallfish (5 planned).
+~~~
+
+This is only removing a plan entry. The addon does not assert the player
+gathered or consumed the ingredient. You may skip this optional command
+and proceed directly to clear.
 
 **Test 10 — Clear notes:**
 

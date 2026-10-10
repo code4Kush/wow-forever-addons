@@ -58,14 +58,38 @@ function addon.RenderNeeds()
         return
     end
     addon.Print(string.format(
-        "Ingredient plan: %d units across %d labels (manual; not bag contents).",
-        total, #order
+        "Ingredient plan: %d units across %d %s (manual; not bag contents).",
+        total, #order, #order == 1 and "label" or "labels"
     ))
     for _, key in ipairs(order) do
         local entry = items[key]
         addon.Print(string.format("%s: need %d (player-entered).",
             entry.name, entry.count))
     end
+end
+
+--- Remove one human-entered ingredient without reading actual inventory.
+--- @param name string Player-entered ingredient name, matched case-insensitively.
+--- @return table|nil removed Previous name/count if note existed.
+--- @return string|nil reason Why removal was rejected.
+function addon.RemoveNeed(name)
+    if not ValidName(name) then
+        return nil, "Usage: /fcook done <ingredient name>"
+    end
+    local key = string.lower(name)
+    local previous = items[key]
+    if not previous then
+        return nil, "Ingredient not in manual plan."
+    end
+    items[key] = nil
+    for index, existing in ipairs(order) do
+        if existing == key then
+            table.remove(order, index)
+            break
+        end
+    end
+    total = total - previous.count
+    return {name = previous.name, count = previous.count}
 end
 
 --- Delete human-entered plan on /fcook clear and Core disable.

@@ -102,6 +102,19 @@ expect(listCalls == 2 and uiCalls == 0,
     "Manual planning has no hidden game reads")
 local total, unique = addon.NeedTotals()
 expect(total == 6 and unique == 2, "Correct bounded plan totals")
+reset(); SlashCmdList.FOREVERCOOKING("done refreshing spring water")
+expect(has("Removed manual ingredient: Refreshing Spring Water (1 planned)."),
+    "Removing one planned ingredient doesn't claim item consumed")
+total, unique = addon.NeedTotals()
+expect(total == 5 and unique == 1, "Remove preserves other planned labels")
+reset(); SlashCmdList.FOREVERCOOKING("done Refreshing Spring Water")
+expect(has("Ingredient not in manual plan."),
+    "Double remove does not create negative counts")
+reset(); SlashCmdList.FOREVERCOOKING("need 1 Refreshing Spring Water")
+expect(has("need 1"), "Manual plan can restore removed label")
+total, unique = addon.NeedTotals()
+expect(total == 6 and unique == 2, "Removal and re-add restore correct totals")
+
 
 for _, bad in ipairs({
     "need 0 Water", "need 1000 Water", "need 1.5 Water",
@@ -115,6 +128,9 @@ end
 total, unique = addon.NeedTotals()
 expect(total == 6 and unique == 2, "Rejected input leaves store unchanged")
 
+reset(); SlashCmdList.FOREVERCOOKING("done |Hbad")
+expect(has("Usage: /fcook done <ingredient name>"),
+    "WoW color/item markup cannot enter remove operation")
 reset(); SlashCmdList.FOREVERCOOKING("clear")
 expect(has("Manual ingredient plan cleared (session only)."),
     "Explicit manual clear acknowledgement")

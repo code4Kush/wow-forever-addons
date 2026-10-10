@@ -58,8 +58,20 @@ Forever Cooking: Planned manually: Raw Brilliant Smallfish +3 (need 3).
 Expected after just that example:
 
 ~~~text
-Forever Cooking: Ingredient plan: 3 units across 1 labels (manual; not bag contents).
+Forever Cooking: Ingredient plan: 3 units across 1 label (manual; not bag contents).
 Forever Cooking: Raw Brilliant Smallfish: need 3 (player-entered).
+~~~
+
+**Remove a manually planned ingredient (without suggesting it was acquired):**
+
+~~~text
+/fcook done Raw Brilliant Smallfish
+~~~
+
+Expected after only the example 3-fish entry:
+
+~~~text
+Forever Cooking: Removed manual ingredient: Raw Brilliant Smallfish (3 planned).
 ~~~
 
 **Clear manual plan:**
