@@ -118,6 +118,30 @@ ClearMessages()
 SlashCmdList.FOREVERJOURNAL("progress 3 5")
 AssertContains("Progress: 60.00%", "Legacy progress command")
 
+-- Verify pagination with a longer quest log, including the second page.
+activeQuestRows = {}
+for questNumber = 1, 8 do
+    activeQuestRows[questNumber] = {
+        title = "Test Quest " .. questNumber,
+        questID = 200 + questNumber,
+        level = 10,
+    }
+end
+
+ClearMessages()
+SlashCmdList.FOREVERJOURNAL("quests 2")
+AssertContains("page 2/2", "Second page navigation")
+AssertContains("Test Quest 7 (ID 207)", "First quest on second page")
+AssertContains("Test Quest 8 (ID 208)", "Last quest on second page")
+
+-- A temporarily unavailable quest objective response must be nonfatal.
+C_QuestLog.GetQuestObjectives = function() return nil end
+local missingObjectives, objectivesError = addon.QuestLog.GetObjectives(201)
+assert(
+    missingObjectives == nil and type(objectivesError) == "string",
+    "Uncached objective information should produce a helpful error"
+)
+
 C_Map = nil
 zoneName, mapID = addon.QuestLog.GetCurrentArea()
 assert(zoneName == "Fallback Zone" and mapID == nil, "Zone name fallback")
