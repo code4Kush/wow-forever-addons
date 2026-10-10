@@ -15,3 +15,9 @@ wow-dev.config.local.json
 WTF/
 Cache/
 Logs/
+
+# Local, opt-in, NEVER committed developer install ZIPs
+dist/
+# Python standard-library testing caches
+__pycache__/
+*.pyc
