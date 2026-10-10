@@ -1,5 +1,8 @@
 # WoW Forever Addons
 
+> **Integrated modular DEV candidate (draft PR #37; no public release):** Twelve independent addon directories now support a reproducible **offline** developer ZIP: Core-only, Tank, Professions, Full, or custom subsets. Dashboard v0.2 paginates Core module statuses without background polling. [Build instructions](docs/FULL_SUITE_TESTING.md) · [Market/architecture comparison](docs/MARKET_AND_PERFORMANCE.md) · [Integration PR #37](https://github.com/code4Kush/wow-forever-addons/pull/37). Initial component in-game passes apply only to earlier versions on Forever build 70338; the **full integrated candidate remains NOT LIVE VERIFIED**. Full source license, public security and release approval remain outstanding.
+
+
 A readable, documented collection of World of Warcraft: Forever addons.
 
 **Status:** ForeverCore M1 is in a draft PR with partial player-reported in-game PASS; other acceptance steps remain. The optional ForeverWarrior 0.1.0 starter exists on a stacked feature branch and is NOT yet game-tested. The existing Journal 0.1.0 on main remains unchanged; Journal 0.2–0.4 features are in separate review branches.
@@ -130,3 +133,23 @@ No automatic harvesting/crafting, event tracking, persistence or telemetry. **No
 ## Fishing Sprint 4 — manual session catch notes (draft PR #35)
 
 Independent `ForeverFishing` v0.2 can record a **user-entered** catch tally while leveling Fishing/Cooking: `/ffish log 3 Raw Brilliant Smallfish`, `/ffish catches`, `/ffish clear`. The example is **not** proof of an actual catch or item ownership. Maximum 10 species, on-demand only, no loot hooks, persistent data, market prices or automated fishing. New pack version **has not yet been tested in game**; [single-command field test](docs/FISHING_TESTING.md), [module README](addons/ForeverFishing/README.md) and [draft PR #35](https://github.com/code4Kush/wow-forever-addons/pull/35). No public player release approved.
+
+## Build and test the complete modular developer suite
+
+Only `ForeverCore` is required. Other packs remain physically independent addon folders with their own `_Camelot.toc`. A bundled ZIP is just a **convenient set of independent folders**, not a monolithic runtime.
+
+Offline source/manifests validation in Terminal:
+
+~~~sh
+python3 tools/build_dev_bundle.py --check --profile full
+~~~
+
+Create a local dev-only installable ZIP (not a public release):
+
+~~~sh
+python3 tools/build_dev_bundle.py --profile full --output dist/ForeverSuite-full-DEV.zip
+~~~
+
+Profiles: `minimal` (Core only), `tank`, `professions`, `full` (all twelve directories). Custom selections with `--include ForeverCooking` or `--exclude ForeverGuild`. The builder validates complete Lua TOC ordering/dependencies, excludes probes, enforces safe files and writes a deterministic ZIP with SHA256; **it never touches the game folder**.
+
+One integrated game-testing pass after user installation: [FULL_SUITE_TESTING.md](docs/FULL_SUITE_TESTING.md). For market context, source links and honest performance limitations see [MARKET_AND_PERFORMANCE.md](docs/MARKET_AND_PERFORMANCE.md). No FPS/CPU comparison or complete quest/profession database is claimed. Do not distribute DEV ZIPs as public player releases without license, policy/security review and owner approval.
