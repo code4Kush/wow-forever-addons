@@ -20,3 +20,5 @@ jobs:
         run: lua5.1 tests/test_progress.lua
       - name: Run Forever Core registry tests
         run: lua5.1 tests/test_core.lua
+      - name: Run Forever Warrior advisory tests
+        run: lua5.1 tests/test_warrior.lua
