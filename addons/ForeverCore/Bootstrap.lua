@@ -7,7 +7,7 @@
 ]]
 
 local addonName, addon = ...
-local API_VERSION = "0.1.0"
+local API_VERSION = "0.2.0"
 
 -- Export only one documented global for cross-addon integration.
 _G.ForeverCore = addon

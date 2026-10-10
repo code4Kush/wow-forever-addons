@@ -284,8 +284,18 @@ function core.StartForCharacter(context)
     playerContext = context
     playerReady = true
 
+    -- Reads a character-scoped SavedVariables table, never a name-keyed
+    -- account-wide table. SavedVariables restoration remains beta-unverified.
+    core.OpenCharacterProfile()
+
     for _, moduleId in ipairs(orderedIds) do
-        Start(registered[moduleId])
+        local record = registered[moduleId]
+        local preference = core.GetProfilePreference(moduleId)
+        if preference ~= nil then
+            record.requestedEnabled = preference
+            record.preferenceDisabled = preference == false
+        end
+        Start(record)
     end
 end
 
@@ -362,6 +372,14 @@ function core.RegisterModule(definition)
         active = false,
     }
 
+    if playerReady then
+        local preference = core.GetProfilePreference(definition.id)
+        if preference ~= nil then
+            record.requestedEnabled = preference
+            record.preferenceDisabled = preference == false
+        end
+    end
+
     registered[definition.id] = record
     orderedIds[#orderedIds + 1] = definition.id
     table.sort(orderedIds)
@@ -391,6 +409,9 @@ function core.SetModuleEnabled(moduleId, enabled)
     end
 
     record.requestedEnabled = enabled
+    -- This legacy command is session-only; it deliberately does not
+    -- overwrite a saved character preference.
+    record.preferenceDisabled = false
 
     if enabled then
         Start(record)
@@ -398,6 +419,34 @@ function core.SetModuleEnabled(moduleId, enabled)
         Stop(record)
     end
 
+    return true
+end
+
+
+--- Stores a character-only module preference and updates the live module.
+--- Unlike SetModuleEnabled this requests SavedVariables persistence, which
+--- requires validation in the real beta client before any guarantee.
+--- @param moduleId string Registered module ID.
+--- @param enabled boolean Player preference.
+--- @return boolean success
+--- @return string|nil errorMessage
+function core.SetPreferredModuleEnabled(moduleId, enabled)
+    local record = registered[moduleId]
+    if not record then
+        return false, "Module is not registered (possibly not installed)."
+    end
+    local saved, errorMessage = core.WriteProfilePreference(moduleId, enabled)
+    if not saved then
+        return false, errorMessage
+    end
+
+    record.requestedEnabled = enabled
+    record.preferenceDisabled = not enabled
+    if enabled then
+        Start(record)
+    else
+        Stop(record)
+    end
     return true
 end
 
@@ -429,7 +478,8 @@ function core.GetModuleStatus(moduleId)
 
     if not record.requestedEnabled then
         state = "disabled"
-        reason = "session only"
+        reason = record.preferenceDisabled and "character profile"
+            or "session only"
     elseif record.error then
         state = "error"
         reason = record.error
