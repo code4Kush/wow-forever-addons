@@ -1,6 +1,15 @@
 # Repository instructions for coding agents
 
-Read this document before any edits. Also read CODING_STANDARDS.md, docs/ARCHITECTURE.md, docs/API_NOTES.md, and the relevant addon's README.
+Read this document before any edits. Also read CODING_STANDARDS.md, docs/ARCHITECTURE.md, docs/API_NOTES.md, docs/BLIZZARD_POLICY.md, docs/RELEASE_CHECKLIST.md, and the relevant addon's README.
+
+## Blizzard policy gate
+
+- Distinguish an in-game Lua addon from a separate Blizzard web-API application; the rules and credential requirements differ.
+- All publicly distributed addon code must be fully visible; no obfuscation, paid features, in-game advertising, or donation prompts.
+- Keep the source private while developing if desired, but do not publicly distribute the addon until its full code is accessible to everyone.
+- Avoid copyrighted Blizzard assets, botting, memory reading, client modification, combat automation, unauthorized data extraction, or attempts to bypass secret values.
+- Use official Blizzard policy and legal links in docs/BLIZZARD_POLICY.md as normative rules. Treat community repositories and mirrors as secondary compatibility evidence, never official authority.
+- Before release, complete docs/RELEASE_CHECKLIST.md and record game-client build, tests, and remaining uncertainties.
 
 ## Scope and priorities
 

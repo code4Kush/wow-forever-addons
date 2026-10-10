@@ -27,6 +27,8 @@ docs/
   DEVELOPMENT.md
   TESTING.md
   API_NOTES.md
+  BLIZZARD_POLICY.md
+  RELEASE_CHECKLIST.md
 tests/
   test_progress.lua
 .github/workflows/
@@ -63,7 +65,9 @@ The recorded beta interface number is 16001; verify it on your own client after 
 - CODING_STANDARDS.md: rules for readable, maintainable Lua.
 - docs/ARCHITECTURE.md: dependency and module boundaries.
 - docs/API_NOTES.md: evidence-based API and beta compatibility notes.
+- docs/BLIZZARD_POLICY.md: official Blizzard policy, source links, and the distinction between addons and external API applications.
+- docs/RELEASE_CHECKLIST.md: pre-publication compliance and client test gate.
 - docs/TESTING.md: tests and in-game verification.
 - CONTRIBUTING.md: change and review workflow.
 
-No license has been selected. Do not assume permission to redistribute this repository or third-party code.
+No license has been selected. Do not assume permission to redistribute this repository or third-party code. **Before public distribution**, Blizzard's addon policy requires the complete addon source to be publicly viewable; private development alone is not the same as public distribution.
