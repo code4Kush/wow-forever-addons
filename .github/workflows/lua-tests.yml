@@ -44,6 +44,8 @@ jobs:
         run: lua5.1 tests/test_fishing.lua
       - name: Run lazy Dashboard integration tests
         run: lua5.1 tests/test_dashboard.lua
+      - name: Run complete twelve-addon TOC integration tests
+        run: lua5.1 tests/test_full_integration.lua
       - name: Test safe modular developer ZIP builder
         run: python3 -m unittest discover -s tests -p 'test_bundle.py' -v
       - name: Validate complete modular suite manifests
