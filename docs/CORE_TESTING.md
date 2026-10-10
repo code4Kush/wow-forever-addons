@@ -1,6 +1,6 @@
 # ForeverCore M1 — one-at-a-time in-game testing
 
-**Status (2026-10-10):** Player confirmed live PASS for Core-only loading on Uddergrief (Tauren Warrior), and separately confirmed live PASS for two independently installed developer probe packs and the initial `PLAYER_LEVEL_UP` listener count of 2. **Not yet verified:** disable/re-enable cleanup, non-Warrior eligibility, full client build, cold restart.
+**Status (2026-10-10):** Player confirmed live PASS for Core-only loading on Uddergrief (Tauren Warrior), and separately confirmed live PASS for two independently installed developer probe packs and the initial `PLAYER_LEVEL_UP` listener count of 2. **Further player-reported PASS (2026-10-10):** Disabling `probe-warrior`, reducing `PLAYER_LEVEL_UP` listeners from 2 to 1, and `/forever status probe-warrior` showing disabled all matched expected output. **Not yet verified:** disabling the General probe (listeners to 0), re-enabling Warrior (listeners to 1), non-Warrior eligibility, full client build, cold restart.
 
 **IMPORTANT: World of Warcraft's chat is not a command batch processor.** Every in-game slash command in this guide appears in its **own single-command code block** and must be entered/submitted **individually**, in order. Do not paste multiple commands in one chat submission. Each expected output follows the command that produces it. Chat color formatting is omitted.
 
@@ -111,7 +111,7 @@ Forever Core: PLAYER_LEVEL_UP: 2 active listener(s).
 
 **PASS:** Both packs registered independently and share the Core event bridge. **FAIL:** Either is absent/ineligible, count not 2, or Lua errors. Player explicitly confirmed **PASS** for this phase on 2026-10-10.
 
-### M1-02B — Disable and re-enable independently (NOT YET VERIFIED)
+### M1-02B — Disable and re-enable independently (PARTIAL PASS: first three commands)
 
 Perform commands sequentially. **Submit each individually** and compare its output before continuing. Do not reload until all six commands are complete.
 
@@ -150,6 +150,8 @@ Expected exact output:
 ~~~text
 Forever Core: probe-warrior v0.1.0: disabled (session only) [probe.warrior]
 ~~~
+
+**Player-confirmed PASS:** Commands 1–3 above worked as intended on Uddergrief. Only this single-module transition (2 → 1) is verified; the remaining 1 → 0 → 1 sequence is still outstanding.
 
 **Command 4 — Disable General probe:**
 
