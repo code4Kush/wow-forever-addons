@@ -11,7 +11,7 @@ local _, addon = ...
 local MODULE_ID = "forever-warrior"
 
 local function PrintHelp()
-    addon.Print("Commands: /fw plan | ready | professions | status | version")
+    addon.Print("Commands: /fw plan | ready [done|undo <1-5>|reset] | professions | status | version")
     addon.Print("All readiness checks are MANUAL; no equipment or skill scan.")
 end
 
@@ -45,8 +45,9 @@ local function GetCurrentLevel(character)
     -- Core's identity snapshot is made at login. Prefer a read-only live
     -- level query so /fw plan advances immediately after leveling.
     if type(UnitLevel) == "function" then
-        local current = UnitLevel("player")
-        if type(current) == "number" and current >= 1
+        local ok, current = pcall(UnitLevel, "player")
+        if ok and type(current) == "number" and current == current
+            and current >= 1 and current <= 1000
             and current % 1 == 0 then
             return current
         end
@@ -73,17 +74,34 @@ local function PrintPlan(character)
     addon.Print("Next: " .. plan.nextGoal)
 end
 
-local function PrintManualReadiness()
-    addon.Print("Dungeon readiness checklist (MANUAL; not checked by addon):")
-
-    for _, instruction in ipairs(addon.Plans.ManualReadiness()) do
-        addon.Print("[ ] " .. instruction)
+local function HandleReadiness(argument)
+    if argument == "" then
+        addon.RenderReady()
+        return
     end
+    if argument == "reset" then
+        addon.ClearReady()
+        addon.Print("Manual readiness marks cleared (session only).")
+        return
+    end
+    local action, number = argument:match("^(done)%s+([1-5])$")
+    if not action then
+        action, number = argument:match("^(undo)%s+([1-5])$")
+    end
+    if not action then
+        addon.Print("Usage: /fw ready [done <1-5>|undo <1-5>|reset]")
+        return
+    end
+    local index = tonumber(number)
+    addon.MarkReady(index, action == "done")
+    addon.Print(string.format("Readiness item %d manually %s (session only).",
+        index, action == "done" and "checked" or "unchecked"))
 end
 
 local function PrintProfessionGoals()
-    addon.Print("Profession goals only; your skills and bags are NOT scanned.")
-    addon.Print("Primary: Mining + Blacksmithing (ore, gear, useful crafts).")
+    addon.Print("Profession ideas only; your trained skills and bags are NOT scanned.")
+    addon.Print("Gathering: Mining + Herbalism can fund gear and repairs.")
+    addon.Print("Crafting alternative: Mining + Blacksmithing only if you choose to train it.")
     addon.Print("Secondary: Fishing + Cooking + First Aid (food, income, survival).")
     addon.Print("Gold: Compare raw materials with finished goods before selling.")
 end
@@ -115,7 +133,7 @@ local function HandleSlashCommand(message)
         return
     end
 
-    if remainder ~= "" then
+    if remainder ~= "" and command ~= "ready" then
         addon.Print("Unexpected argument; try /fw for available commands.")
         return
     end
@@ -128,7 +146,7 @@ local function HandleSlashCommand(message)
     if command == "plan" then
         PrintPlan(character)
     elseif command == "ready" then
-        PrintManualReadiness()
+        HandleReadiness(remainder)
     elseif command == "professions" then
         PrintProfessionGoals()
     else
