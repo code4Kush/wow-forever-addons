@@ -42,19 +42,19 @@ InCombatLockdown = function() return false end
 
 local addon = {}
 for _, filename in ipairs({
-    "Bootstrap.lua","Module.lua","Read.lua","Tracker.lua","Commands.lua"
+    "Bootstrap.lua","Module.lua","Read.lua","Tracker.lua","Goals.lua","Commands.lua"
 }) do
     assert(loadfile("addons/ForeverProfessions/"..filename))(
         "ForeverProfessions",addon)
 end
 check(descriptor.id == "professions", "Registered module")
 check(descriptor.minCoreVersion == "0.2.0", "Minimum Core")
-check(#descriptor.events == 0 and #descriptor.capabilities == 2,
+check(#descriptor.events == 0 and #descriptor.capabilities == 3,
     "No automatic listeners and explicit new capability")
 check(slotCalls == 0 and infoCalls == 0, "Never sample on load")
 
 reset(); SlashCmdList.FOREVERPROFESSIONS("version")
-check(has("Version 0.2.0"), "Version")
+check(has("Version 0.3.0"), "Version")
 reset(); SlashCmdList.FOREVERPROFESSIONS("help")
 check(has("snapshot | progress | clear"), "Help")
 check(slotCalls == 0, "No reads on help/version")

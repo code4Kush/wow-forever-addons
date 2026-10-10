@@ -89,3 +89,11 @@ These are source-reviewed API candidates, not assertions that a particular WoW b
 - **New behaviors:** `/fprof snapshot` stores at most five names and ranks in session Lua memory; `/fprof progress` rereads manually and shows signed rank delta for matching names. Newly readable and no-longer-readable skills are explicitly incomparable (not a false increase/loss). `/fprof clear`, Core disable and interface reload drop the snapshot.
 - **Safety:** nil/protected/unavailable/malformed APIs fail explicitly, no estimated ranks. Queries are guarded during combat when `InCombatLockdown` is available; none are run on timers or background events. No protected crafting/gameplay calls.
 - **Live acceptance:** `docs/PROFESSIONS_TESTING.md` provides each WoW slash command in an independent code block and dynamic output format. No live PASS should be recorded until actual results on numeric build 70338 are received.
+
+## ForeverProfessions v0.3 manual skill goals (2026-10-10)
+
+- **APIs remain:** `GetProfessions` and `GetProfessionInfo`; see their source links in the v0.2 section above. This sprint adds **no new WoW API**. The user reported PASS for the v0.2 in-game read/snapshot tests on previously confirmed Forever 1.60.1 build 70338, **without sharing exact profession names/ranks**. v0.3 targets themselves are **NOT YET GAME-TESTED**.
+- `/fprof goal <name> <rank>` validates a player-entered positive whole-number target against a **currently readable**, client-reported skill maximum. No fixed Fishing/Cooking cap is assumed. Names are compared case-insensitively within a session; changed locale/name can make a skill unreadable.
+- `/fprof goals` reads existing visible ranks on demand (never in a timer, frame update, or game event), lists up to 5 goals, and treats missing/unreadable skills as **remaining unknown**, not rank zero.
+- `/fprof ungoal <name>` and `/fprof goals clear` make no game API calls; Core disable and interface reload clear session goals. `/fprof clear` continues clearing only the unrelated v0.2 session snapshot. The two stores never persist across reloads.
+- **No crafting, auto-fishing, vendor actions, telemetry, or saved account/game data.** Manual test: [PROFESSION_GOALS_TESTING.md](PROFESSION_GOALS_TESTING.md).

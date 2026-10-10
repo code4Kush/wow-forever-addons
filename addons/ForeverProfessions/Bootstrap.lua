@@ -1,13 +1,13 @@
 --[[
-    ForeverProfessions 0.2: standalone, local-only module namespace.
-    No saved variables, automatic profiling, or external communication.
+    ForeverProfessions 0.3: isolated local-only namespace.
+    No persistent settings, unsolicited reports or external sharing.
 ]]
 local name, addon = ...
 addon.name = name
-addon.version = "0.2.0"
+addon.version = "0.3.0"
 
---- Displays one user-requested, local status message.
---- @param message string Human-readable, safely formatted status.
+--- Displays one local message for a user-invoked action.
+--- @param message string Human-readable summary.
 function addon.Print(message)
     print("|cff66ccffForever Professions|r: " .. tostring(message))
 end

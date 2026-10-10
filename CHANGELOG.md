@@ -4,6 +4,15 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### ForeverProfessions 0.3.0 — Sprint 3 manual skill targets (NOT LIVE VERIFIED)
+
+- Adds session-only manual profession goals: `/fprof goal <name> <rank>`, `/fprof goals`, `/fprof ungoal <name>`, `/fprof goals clear`.
+- Allows up to five read-only goals for client-observable professions, including Fishing/Cooking when actually readable. Shows points remaining or reached without assuming unlearned skills or fixed caps.
+- Preserves prior snapshot/progress and old `/fprof` output. Core disable/reload clears both independent session stores.
+- No additional WoW APIs, timers, SaveVariables, crafting, farming automation, sharing or telemetry. New goal feature awaits real-beta testing; Lua 5.1 mock suite covers goal isolation and safety.
+
+
+
 ### ForeverProfessions 0.2.0 — Sprint 2, skill snapshots (NOT YET LIVE VERIFIED)
 
 - Preserved `/fprof` read-only profession names and ranks.

@@ -1,12 +1,13 @@
 ## Interface: 16001
 ## Title: Forever Professions
-## Notes: Read-only professions and manual skill progress; optional Core pack
+## Notes: Manual skill snapshots and session-only progression targets
 ## Author: code4Kush
-## Version: 0.2.0
+## Version: 0.3.0
 ## Dependencies: ForeverCore
 
 Bootstrap.lua
 Module.lua
 Read.lua
 Tracker.lua
+Goals.lua
 Commands.lua
