@@ -6,6 +6,14 @@ local _, addon = ...
 local window
 local label
 
+--- Hides an already-open frame when Core deactivates this pack.
+--- This does not attempt to unload Lua or manipulate protected UI.
+function addon.Hide()
+    if window and window.Hide then
+        window:Hide()
+    end
+end
+
 function addon.Render()
     if type(InCombatLockdown) == "function" and InCombatLockdown() then
         addon.Print("Dashboard unavailable during combat; try afterward.")

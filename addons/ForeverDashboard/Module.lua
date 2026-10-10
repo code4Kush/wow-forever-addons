@@ -11,7 +11,11 @@ local descriptor = {
     events = {},
     Initialize = function(self, character) end,
     Enable = function(self, character) end,
-    Disable = function(self) end,
+    Disable = function(self)
+        if addon.Hide then
+            addon.Hide()
+        end
+    end,
 }
 local ok, reason = ForeverCore.RegisterModule(descriptor)
 if not ok then

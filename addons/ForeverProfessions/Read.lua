@@ -16,7 +16,10 @@ function addon.Render()
     local ok, records = pcall(function()
         local slots = { GetProfessions() }
         local results = {}
-        for _, id in ipairs(slots) do
+        -- GetProfessions may return nil primary slots but populated
+        -- secondary slots. ipairs would stop at the first nil hole.
+        for index = 1, 5 do
+            local id = slots[index]
             if type(id) == "number" then
                 local name, _, rank, maxRank = GetProfessionInfo(id)
                 if type(name) == "string" and type(rank) == "number"

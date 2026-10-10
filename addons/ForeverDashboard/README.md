@@ -4,7 +4,7 @@
 
 ## What it does
 
-movable on-demand frame listing active feature packs; no saved position, no combat UI. The code runs only after the player invokes a command, except the small Core-managed event registration lifecycle. It never casts spells, equips items, crafts, sells, plays the game, or transmits data externally.
+movable on-demand frame listing active feature packs; no saved position, automatically hides on Core disable, no combat UI. The code runs only after the player invokes a command, except the small Core-managed event registration lifecycle. It never casts spells, equips items, crafts, sells, plays the game, or transmits data externally.
 
 **Depends on:** ForeverCore **0.2.0 or later**. No other optional packs required. Only an installed and active pack responds.
 
