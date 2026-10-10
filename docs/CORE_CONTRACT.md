@@ -91,4 +91,4 @@ No automated combat, item selling, quest acceptance, mail, protected actions, sc
 
 ### Known limitations
 
-The API is version 0.1.0 and not yet proven on this WoW: Forever build. No support for dependency cycles, dynamic Lua unloading or automatic discovery of installed-but-disabled addons. The optional `GetStatus` health hook is informational; it doesn't stop update callbacks itself. Invalid WoW event names require protective validation in future if third-party plugins are accepted. Use documented real events.
+The API is version 0.1.0 and not yet proven on this WoW: Forever build. No support for dependency cycles, dynamic Lua unloading or automatic discovery of installed-but-disabled addons. The optional `GetStatus` health hook is informational; it doesn't stop update callbacks itself. If a module requests an event that the client rejects, Core reports an event registration error for that module and reverts its partial subscriptions. Feature authors must still use documented real events and verify them on the target client.
