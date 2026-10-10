@@ -1,10 +1,15 @@
 ## Interface: 16001
 ## Title: Forever Journal
-## Notes: A minimal foundation for a World of Warcraft: Forever completionist journal
+## Notes: A read-only quest-log companion for World of Warcraft: Forever
 ## Author: code4Kush
-## Version: 0.1.0
+## Version: 0.4.0
 
 Core/Bootstrap.lua
 Modules/Progress.lua
+Modules/QuestLog.lua
+Modules/QuestHistory.lua
+Modules/Character.lua
+Data/MulgoreStarter.lua
+Modules/ZoneJournal.lua
 Core/Events.lua
 Core/Commands.lua
