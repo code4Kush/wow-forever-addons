@@ -117,3 +117,12 @@ remain required.
 
 Full one-chat-command-at-a-time field test:
 [FULL_SUITE_TESTING.md](FULL_SUITE_TESTING.md).
+
+## Further full-load and low-allocation checks (integration PR #37)
+
+A dedicated Lua 5.1 integration test now loads **all twelve actual `_Camelot.toc` manifests** in their declared file order with independent addon namespaces and one shared ForeverCore registration contract. It verifies eleven optional modules register and activate for the mock Tauren Warrior, that Dashboard page 2/2 is accessible with eleven packs, and that Guild starts without consent or outgoing messages. These are simulated game APIs; a **real combined installation on build 70338 is still unverified**.
+
+The shared Core event bridge now uses a fast path when there is **only one event subscriber**: it invokes that module without building and sorting a temporary ID array. This is relevant to the Guild-only `CHAT_MSG_ADDON` subscription in a full installation. The multi-subscriber case keeps the stable sorted snapshot and error isolation. The new mock test confirms **zero table sorts** on the single-subscriber event path; it does **not** prove any quantifiable reduction in FPS time or addon RAM.
+
+The offline ZIP builder now rejects binary Lua bytecode and non-UTF-8 or control-byte source files as part of its strict source-readability policy. A green validator is still **not** a code-license, copyright, security, or Blizzard policy approval.
+
