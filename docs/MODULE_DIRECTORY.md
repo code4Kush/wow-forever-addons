@@ -13,7 +13,7 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 | Addon directory | Core registry ID | Slash command | v0.x functional scope | Explicitly **not** implemented |
 | --- | --- | --- | --- | --- |
 | ForeverCore | Foundation, not a pack | `/forever` | Character identity, registry, settings, version, error and event management | Proven durable settings, automation |
-| ForeverDashboard | `dashboard` | `/fdash` | Movable module list, on-demand open/close | Full tabbed interactive UI, saved layout |
+| ForeverDashboard | `dashboard` | `/fdash` | Lazy one-frame, paged up-to-six Core status rows + on-demand status report (v0.2 candidate) | All-purpose interactive UI, saved layout, automatic scanning |
 | ForeverJournal | `journal` | `/fj` | Active/history/quest objectives, 12-item curated starter list | All Mulgore quests, zone-wide completion, guild sharing |
 | ForeverInventory | `inventory` | `/finv` | Counts current backpack and equipped bags | Bank, equipment rankings, selling, AH pricing |
 | ForeverGold | `gold` | `/fgold` | Current wallet + manual baseline and signed net delta (v0.2 candidate) | Transaction categories, actual income/profit, AH prices, saved history |
@@ -73,3 +73,9 @@ On-demand tests, example one-command-per-block outputs, user-reported historical
 ## Fishing Sprint 4 (draft PR #35)
 
 `ForeverFishing` v0.2 adds **only explicit manual** `/ffish log <count> <fish name>`, `/ffish catches`, and `/ffish clear`. This does **not** inspect bags, loot or inventory or prove any fish was caught. Ten species max, local session memory only, no new APIs or background events, no guild/network sends. The older `/ffish` requires a separate `C_TradeSkillUI` path, not established by the user's `/fprof` live success. See [FISHING_TESTING.md](FISHING_TESTING.md). Live v0.2 test PENDING on build 70338.
+
+## Full modular developer bundle and Dashboard v0.2 (draft PR #37)
+
+The complete development branch contains **twelve independently installable addon directories**: Core plus eleven optional packs. Offline `tools/build_dev_bundle.py` validates each pack's `_Camelot.toc`, source files and dependency rules before creating a reproducible ZIP. Profiles `minimal`, `tank`, `professions`, `full` and explicit custom include/exclude prevent players from loading unused features by default. Full **includes** Guild (opt-in transmit only, but its minimal receive event is registered); choose another profile or exclude Guild if unwanted. The script never installs into WoW or creates a public release.
+
+Dashboard v0.2 shows disabled as well as active registered modules through an on-demand, six-row-per-page window; it creates one frame/label lazily and reuses them, and `/fdash status` does not allocate a frame. The design is checked in mocked Lua tests and **awaits integrated in-game acceptance**. [Full suite test guide](FULL_SUITE_TESTING.md) · [Market and performance review](MARKET_AND_PERFORMANCE.md).
