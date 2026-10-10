@@ -36,6 +36,10 @@ Prefer readable, explicit code to compact or clever code. Use focused modules wi
 - Accompany behavior changes with appropriate tests, game-test steps, and documentation.
 - Do not merge copied third-party code without checking licenses.
 - Preserve backwards compatibility of user settings unless migration is deliberate and documented.
+- Treat public addon source as a permanent, reviewable contract. Include a file-level purpose comment for every Lua file, LuaLS parameter/return docs for public methods, nil/error outcomes, and event/TOC/load-order responsibilities where relevant.
+- Document each non-obvious runtime requirement (character eligibility, optional provider, protected API, versioned data, game-build limitation, session vs persistent state).
+- Every PR must document changed behavior, linked issue, exact CI commit/run, one-at-a-time in-game commands with expected/actual results, regressions, release/public-source consequences and known unknowns. See [docs/DOCUMENTATION_STANDARD.md](docs/DOCUMENTATION_STANDARD.md).
+- Before distribution, publicly expose complete unobfuscated source and settle the license/third-party rights decision; documentation alone does not authorize release.
 
 ## Example
 
