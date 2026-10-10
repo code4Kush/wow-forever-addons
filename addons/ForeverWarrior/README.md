@@ -1,11 +1,11 @@
-# Forever Warrior — advisory MVP (0.1.0 candidate)
+# Forever Warrior — manual dungeon readiness (0.2.0 beta candidate)
 
 Optional, independently installable Warrior progression companion for **WoW: Forever**.
 Originally designed for Uddergrief (Tauren Warrior) but never tied to one name,
 realm or race. This pack implements a limited slice of [M9 / issue #14](https://github.com/code4Kush/wow-forever-addons/issues/14).
 
-**Status: code candidate, not yet tested in the actual Forever client.**
-It is built against ForeverCore 0.1.0 from PR #18; **Core M1 is not yet merged**.
+**Status:** v0.1 Warrior guidance received a player-reported live PASS during full-suite testing. The new v0.2 manual readiness marks remain game-untested.
+It requires ForeverCore 0.2+; all development branches remain unmerged.
 ForeverWarrior is a draft stacked PR and must not be treated as shipped.
 
 ## Installation
@@ -33,8 +33,11 @@ level-4 Warrior and testing instructions live in [docs/WARRIOR_TESTING.md](../..
 | `/fw version` | Pack version |
 | `/fw status` | Core registration and activation status |
 | `/fw plan` | Level-banded combat, dungeon, profession and next-goal advice |
-| `/fw ready` | Five unchecked, manually verified dungeon-prep reminders |
-| `/fw professions` | Your optional Mining/Blacksmithing/Fishing/Cooking/First Aid plan |
+| `/fw ready` | Five manual dungeon-prep reminders and session progress |
+| `/fw ready done <1-5>` | Mark a reminder as checked by the player |
+| `/fw ready undo <1-5>` | Uncheck a reminder |
+| `/fw ready reset` | Clear all session readiness marks |
+| `/fw professions` | Gathering and optional crafting tradeoffs without claiming trained skills |
 | `/forever disable forever-warrior` | Stop character guidance for this session |
 | `/forever enable forever-warrior` | Reactivate guidance for this session |
 
@@ -55,6 +58,7 @@ level-4 Warrior and testing instructions live in [docs/WARRIOR_TESTING.md](../..
 
 - `Bootstrap.lua`: private pack namespace, chat output.
 - `Plans.lua`: pure-Lua curated level bands and manual readiness checklist.
+- `Readiness.lua`: user-controlled session-only checkmarks, no API reads.
 - `Module.lua`: ForeverCore registration and Warrior-class restriction.
 - `Commands.lua`: safe on-demand read-only commands.
 
