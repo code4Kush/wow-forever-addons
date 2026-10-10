@@ -430,3 +430,17 @@ This integrated test rounds out initial compatibility, not the complete
 features of specialist addons such as Questie, ForeverArtisan, FishFry
 or Auctionator. Their behavior and memory footprint must be measured on the
 same client before performance comparisons can be claimed.
+
+## CI evidence: what the integration test verifies (not live evidence)
+
+The development branch includes `tests/test_full_integration.lua`. It loads
+all twelve _Camelot.toc manifests in actual file order and executes mock
+PLAYER_LOGIN, Core module registration, Dashboard paging, local command
+routing, manual Memory details, and no-consent Guild behavior. The Core
+single-subscriber event path is checked for zero per-message sorts in
+this Lua 5.1 **mock**. The Python source validator additionally rejects
+compiled Lua bytecode or unreadable/binary source and checks deterministic
+bundle packaging. **None of these tests establish live FPS, live heap
+memory, client API compatibility, actual cold restart profile persistence
+or a safe public release.**
+
