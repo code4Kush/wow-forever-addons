@@ -54,3 +54,20 @@ jobs:
         run: python3 tools/build_dev_bundle.py --check --profile full
       - name: Validate minimal Core-only profile
         run: python3 tools/build_dev_bundle.py --check --profile minimal
+
+      - name: Build complete 12-pack modular DEV ZIP (not a release)
+        run: |
+          python3 tools/build_dev_bundle.py --profile full --output dist/ForeverSuite-full-BETA-DEV.zip
+          cd dist
+          sha256sum ForeverSuite-full-BETA-DEV.zip > SHA256SUMS.txt
+          unzip -t ForeverSuite-full-BETA-DEV.zip
+      - name: Upload short-lived development test bundle
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ForeverSuite-12packs-BETA-DEV-UNVERIFIED
+          path: |
+            dist/ForeverSuite-full-BETA-DEV.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 3
