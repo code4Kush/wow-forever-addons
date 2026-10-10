@@ -4,6 +4,16 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### Integrated complete modular beta candidate (draft PR #41)
+
+- Final integrated beta candidate contains **12 independent addon folders**, Core-only optional-pack dependencies, full TOC/source validation and one-shot [field test](docs/FULL_BETA_ACCEPTANCE.md). It is a scoped **v0.x development build**, not feature parity with larger quest, crafting or auction addons.
+- ForeverWarrior 0.2 adds five **player-checked**, session-only dungeon readiness reminders with `/fw ready done|undo <1-5>` and `/fw ready reset`. Changes misleading unconditional Blacksmithing primary recommendation to offer Mining+Herbalism gathering and optional Blacksmithing if later trained; guards live level read.
+- ForeverPerformance 0.2 retains all on-demand memory reporting with bounded top-3 ranking instead of sorting every snapshot row. **No real-client measured speed/memory gain claimed**; earlier user screenshots showed variable 0.1 self-attribution and need a matched retest.
+- Fishing 0.3/Cooking 0.2 independent no-window profession-list readouts and manual Cooking ingredient notes incorporated from draft PR #39; those new behaviors remain game-unverified.
+- GitHub Actions now builds checksum-verified, **short-lived developer-only modular ZIP** after Lua/Python testing; this is not a public release and does not select a license or merge code.
+- All beta changes are guarded by full 12-addon TOC boot simulation, standalone Lua 5.1 regression suites, Python standard-library source safety checks and one consolidated in-game acceptance guide. Exact-head CI and game results are recorded separately.
+
+
 ### Fishing 0.3 / Cooking 0.2 — optional windowless skill candidate (unverified in game)
 
 - Standalone on-demand skill readers try up to five sparse GetProfessions/GetProfessionInfo positions with strict rank validation, then the previous open-profession-window fallback. They do not depend on the optional Professions pack.
