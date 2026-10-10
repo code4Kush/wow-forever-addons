@@ -72,6 +72,7 @@ end
 
 LoadCore("Bootstrap.lua")
 LoadCore("Character.lua")
+LoadCore("Profile.lua")
 LoadCore("Registry.lua")
 LoadCore("Events.lua")
 LoadCore("Commands.lua")
@@ -82,7 +83,7 @@ Expect(frame.registeredEvents.PLAYER_LOGIN,
 
 ClearOutput()
 SlashCmdList.FOREVERCORE("version")
-ExpectOutput("Version 0.1.0")
+ExpectOutput("Version 0.2.0")
 
 ClearOutput()
 SlashCmdList.FOREVERCORE("modules")

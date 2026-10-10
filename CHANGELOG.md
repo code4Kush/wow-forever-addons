@@ -4,6 +4,14 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### Modular suite candidates (UNVERIFIED IN FOREVER GAME)
+- Core 0.2.0 adds character-scoped experimental profile preferences and cold-restart marker testing.
+- Dashboard, Inventory, Gold, Professions, Fishing, Cooking, Explorer and Guild independently register with Core.
+- Guild sharing is OFF by default, manually announced with consent, rate-limited and session-only.
+- None of these modules does combat automation, unsolicited marketing or external telemetry; data availability is explicitly reported.
+- Journal v0.4 remains separate in PR #4; Warrior is inherited from PR #22. Public player release is not yet approved.
+
+
 ### ForeverWarrior 0.1.0 (M9 starter, stacked PR; NOT LIVE TESTED)
 - Added optional Warrior-only level-banded advice for dungeon progression, solo leveling and professions.
 - Added `/fw plan`, `/fw ready`, `/fw professions`, `/fw status` and `/fw version`.
