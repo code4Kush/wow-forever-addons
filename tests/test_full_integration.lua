@@ -248,8 +248,17 @@ expect(calls.refresh == 1 and calls.memory == 12,
 -- Guild has no outbound activity without an explicit opt-in + announce.
 clear(); SlashCmdList.FOREVERGUILD("status")
 expect(has("Sharing: OFF"), "Full profile starts with no sharing consent")
+-- One-subscriber events must avoid allocating/sorting an ID list for
+-- every incoming addon message while default Guild consent is OFF.
+local previousSort, sortCalls = table.sort, 0
+table.sort = function(...)
+    sortCalls = sortCalls + 1
+    return previousSort(...)
+end
 frames[1]:Fire("CHAT_MSG_ADDON", "FVRGUILD1",
     "HELLO|0.1.0", "GUILD", "AnotherPlayer")
+table.sort = previousSort
+expect(sortCalls == 0, "Single subscriber event never needs sorting")
 expect(#namespaces.ForeverGuild.GetPeers() == 0,
     "Incoming Guild event cannot record unconsented player data")
 clear(); SlashCmdList.FOREVERGUILD("announce")
