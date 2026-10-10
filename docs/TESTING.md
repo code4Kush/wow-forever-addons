@@ -31,7 +31,9 @@ A user-provided game screenshot shows live Forever Journal chat output in Red Cl
 - The command help shown in chat includes the new `/fj quest <ID>` functionality, supporting that the updated addon is loaded.
 - The user reports the addon lists current quest information. The screenshot itself does not show the entire output of `/fj quests`.
 
-**Not yet confirmed:** `/fj zone` response, version command explicitly showing 0.2.0, pagination with >6 quests, invalid-argument handling, live objective refresh after progress, cold restart, and full numeric client build. Do not mark the overall checklist complete yet.
+**Further confirmed by the player:** `/fj zone` returned `Mulgore (map 1412)` while the character was standing in Red Cloud Mesa, followed by `Area detection does not measure zone quest completion.` This verifies the command and map lookup on the observed interface 16001 client. The broader parent-zone name is expected; subzone identification is not implemented.
+
+**Not yet confirmed:** version command explicitly showing 0.2.0, pagination with >6 quests, invalid-argument handling, live objective refresh after progress, cold restart, and full numeric client build. Do not mark the overall checklist complete yet.
 
 ### Remaining manual checklist
 
