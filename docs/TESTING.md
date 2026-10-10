@@ -33,9 +33,9 @@ A user-provided game screenshot shows live Forever Journal chat output in Red Cl
 
 **Further confirmed by the player:** `/fj zone` returned `Mulgore (map 1412)` while the character was standing in Red Cloud Mesa, followed by `Area detection does not measure zone quest completion.` This verifies the command and map lookup on the observed interface 16001 client. The broader parent-zone name is expected; subzone identification is not implemented.
 
-**Additional live pass (player screenshot, 2026-10-10):** After further looting, `/fj quest 747` displayed two `[done]` rows for `7/7 Plainstrider Meat` and `7/7 Plainstrider Feather`, plus `Quest is ready to turn in.` The game's objective tracker independently displayed `Ready for turn-in`. Earlier screenshot showed partial progress, so on-demand objective-refresh and readiness transition are verified. The player intends to turn in both quests; actual turn-in and disappearance from the active log are **not yet tested**.
+**Additional live pass (player screenshot, 2026-10-10):** After further looting, `/fj quest 747` displayed two `[done]` rows for `7/7 Plainstrider Meat` and `7/7 Plainstrider Feather`, plus `Quest is ready to turn in.` The game's objective tracker independently displayed `Ready for turn-in`. Earlier screenshot showed partial progress, so on-demand objective-refresh and readiness transition are verified. The player then turned in both quests and confirmed that the active-log commands no longer showed quest IDs 747 and 752. This is evidence of active-log removal following turn-in, **not** proof that the addon can query a historical completion flag.
 
-**Not yet confirmed:** version command explicitly showing 0.2.0, pagination with >6 quests, invalid-argument handling, quest disappearance after turn-in, cold restart, and full numeric client build. Do not mark the overall checklist complete yet.
+**Not yet confirmed:** version command explicitly showing 0.2.0, pagination with >6 quests, invalid-argument handling, cold restart, and full numeric client build. Do not mark the overall checklist complete yet.
 
 ### Remaining manual checklist
 
