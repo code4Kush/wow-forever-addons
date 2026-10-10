@@ -18,8 +18,16 @@ local Character = addon.Character
 --- @return table identity Name, localized race/class, level and realm.
 function Character.GetIdentity()
     local name = type(UnitName) == "function" and UnitName("player") or nil
-    local className = type(UnitClass) == "function" and UnitClass("player") or nil
-    local raceName = type(UnitRace) == "function" and UnitRace("player") or nil
+    local className, classToken
+    local raceName, raceToken
+
+    if type(UnitClass) == "function" then
+        className, classToken = UnitClass("player")
+    end
+
+    if type(UnitRace) == "function" then
+        raceName, raceToken = UnitRace("player")
+    end
     local level = type(UnitLevel) == "function" and UnitLevel("player") or nil
     local realmName = type(GetRealmName) == "function" and GetRealmName() or nil
 
@@ -32,5 +40,7 @@ function Character.GetIdentity()
         level = type(level) == "number" and tostring(level) or "?",
         realm = type(realmName) == "string" and realmName ~= ""
             and realmName or nil,
+        classToken = type(classToken) == "string" and classToken or nil,
+        raceToken = type(raceToken) == "string" and raceToken or nil,
     }
 end

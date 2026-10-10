@@ -53,6 +53,14 @@ Every entry below is documented for Forever 1.60.1 by Warcraft Wiki. **The proje
 
 The completion query is documented for Forever 1.60.1. We do not infer historical completion from quests disappearing from the active log. Character identity is queried at runtime so the addon works for players other than Uddergrief. Source URLs require in-game validation on the player's current client.
 
+## v0.4.0 candidate: curated Mulgore starter journal
+
+No new WoW API calls. The journal uses already-documented `C_QuestLog.GetInfo`, `C_QuestLog.IsComplete`, and `C_QuestLog.IsQuestFlaggedCompleted` with `UnitRace` and `UnitClass`. Only **selected** quest IDs are catalogued. Every status is refreshed on request.
+
+See `docs/QUEST_CATALOG.md` for the full 12-ID starter catalog and source URLs. Classic quest IDs are not proof that the quest is obtainable or unchanged in Forever. The journal's denominator is its curated catalog size, not the number of Mulgore quests.
+
+Status: NOT YET TESTED IN GAME.
+
 ## Risks and design safeguards
 
 - No active quest-log function provides a complete zone-wide checklist. We cannot calculate total zone completion from `GetNumQuestLogEntries`.

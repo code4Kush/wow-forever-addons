@@ -8,11 +8,13 @@ local _, addon = ...
 
 local QUESTS_PER_PAGE = 6
 local MAX_QUEST_ID = 100000000
+local JOURNAL_PAGE_SIZE = 6
 
 local function PrintHelp()
     addon.Print("Commands: /fj, /fj version, /fj progress <completed> <total>")
     addon.Print("/fj zone | /fj quests [page] | /fj quest <questID>")
     addon.Print("/fj status <questID> | /fj character")
+    addon.Print("/fj journal [page] - curated Mulgore starter quests")
 end
 
 --- Parses a positive decimal integer without accepting signs or fractions.
@@ -232,6 +234,69 @@ local function PrintCharacter()
     end
 end
 
+
+--- Displays a curated Mulgore starting-area checklist.
+---
+--- The catalog is not exhaustive and is never described as zone-wide
+--- completion. All statuses are read directly from the game on demand.
+---
+--- @param argument string Optional decimal page number.
+local function PrintMulgoreJournal(argument)
+    local page = 1
+
+    if argument ~= "" then
+        page = ParsePositiveInteger(argument, 999)
+
+        if not page then
+            addon.Print("Usage: /fj journal [page number]")
+            return
+        end
+    end
+
+    local snapshot, errorMessage = addon.ZoneJournal.GetMulgoreStarterSnapshot()
+
+    if not snapshot then
+        addon.Print(errorMessage)
+        return
+    end
+
+    local pageCount = math.ceil(#snapshot.entries / JOURNAL_PAGE_SIZE)
+
+    if page > pageCount then
+        addon.Print(string.format("Only %d journal page(s) available.", pageCount))
+        return
+    end
+
+    addon.Print(string.format(
+        "Mulgore starter catalog: %d/%d flagged complete, %d active.",
+        snapshot.completed,
+        snapshot.total,
+        snapshot.active
+    ))
+    addon.Print(string.format(
+        "Page %d/%d - curated sample, NOT all Mulgore quests.",
+        page,
+        pageCount
+    ))
+
+    local firstIndex = (page - 1) * JOURNAL_PAGE_SIZE + 1
+    local lastIndex = math.min(firstIndex + JOURNAL_PAGE_SIZE - 1, #snapshot.entries)
+
+    for entryIndex = firstIndex, lastIndex do
+        local quest = snapshot.entries[entryIndex]
+        local status = "[" .. quest.status .. "]"
+
+        addon.Print(string.format(
+            "%s %s (ID %d)",
+            status,
+            quest.label,
+            quest.id
+        ))
+    end
+
+    addon.Print("Not flagged does not mean available; use /fj journal <page>.")
+end
+
 --- Handles a player-entered /fj command.
 ---
 --- @param message string|nil Arguments entered after /fj.
@@ -298,6 +363,11 @@ local function HandleSlashCommand(message)
         end
 
         PrintCharacter()
+        return
+    end
+
+    if command == "journal" then
+        PrintMulgoreJournal(arguments)
         return
     end
 
