@@ -71,7 +71,7 @@ Load("Commands.lua")
 
 Expect(moduleDefinition.id == "forever-warrior",
     "Pack must register with the independent Core")
-Expect(moduleDefinition.minCoreVersion == "0.1.0",
+Expect(moduleDefinition.minCoreVersion == "0.2.0",
     "Pack must declare the required Core API version")
 Expect(#moduleDefinition.events == 0,
     "Starter must not register game events or combat hooks")
@@ -112,16 +112,40 @@ ExpectOutput("[ ] Equip a one-handed weapon and shield")
 ExpectOutput("[ ] Check healer mana")
 Expect(not table.concat(output, "\n"):find("[x]", 1, true),
     "Readiness items must not be marked completed automatically")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready done 2")
+ExpectOutput("Readiness item 2 manually checked")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready")
+ExpectOutput("Readiness: 1/5 manually checked")
+ExpectOutput("2. [x] Repair equipment")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready undo 2")
+ExpectOutput("Readiness item 2 manually unchecked")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready")
+ExpectOutput("Readiness: 0/5 manually checked")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready done 6")
+ExpectOutput("Usage: /fw ready")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready done 1")
+ExpectOutput("Readiness item 1 manually checked")
+moduleDefinition.Disable(moduleDefinition)
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready")
+ExpectOutput("Readiness: 0/5 manually checked")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready done 3")
+ExpectOutput("Readiness item 3 manually checked")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready reset")
+ExpectOutput("Manual readiness marks cleared")
+ClearOutput(); SlashCmdList.FOREVERWARRIOR("ready")
+ExpectOutput("Readiness: 0/5 manually checked")
+
 
 ClearOutput()
 SlashCmdList.FOREVERWARRIOR("professions")
-ExpectOutput("Primary: Mining + Blacksmithing")
+ExpectOutput("Gathering: Mining + Herbalism")
+ExpectOutput("Mining + Blacksmithing only if you choose to train it")
 ExpectOutput("Secondary: Fishing + Cooking + First Aid")
-ExpectOutput("skills and bags are NOT scanned")
+ExpectOutput("trained skills and bags are NOT scanned")
 
 ClearOutput()
 SlashCmdList.FOREVERWARRIOR("version")
-ExpectOutput("Version 0.1.0 (advisory only)")
+ExpectOutput("Version 0.2.0 (advisory only)")
 
 moduleState = "disabled"
 ClearOutput()
