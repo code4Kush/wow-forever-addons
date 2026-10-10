@@ -126,3 +126,8 @@ The shared Core event bridge now uses a fast path when there is **only one event
 
 The offline ZIP builder now rejects binary Lua bytecode and non-UTF-8 or control-byte source files as part of its strict source-readability policy. A green validator is still **not** a code-license, copyright, security, or Blizzard policy approval.
 
+
+## Post-comparison beta integration: performance v0.2
+
+User screenshots from a clean, earlier all-twelve-folder ForeverPerformance **0.1** session showed a 346.58 KB baseline, +27.05 KB to 373.62 KB, and a **different** later detailed sample of 405.96 KB. On-screen values included ForeverPerformance 122.88 KB and ForeverCore 108.15 KB in that later sample. These attributed LUA values fluctuate with garbage collection and the measurement itself; **no leak was demonstrated and no independent competing addon benchmark exists**. Performance 0.2 removes whole-list sorting and retains at most the three user-visible memory/delta ranking rows per report, with mocked comparison-order tests; a measured client gain still requires matched baseline and follow-up under the new build. The full twelve-pack developer artifact intentionally excludes old `probe-general` and `probe-warrior` addons. See [FULL_BETA_ACCEPTANCE.md](FULL_BETA_ACCEPTANCE.md).
+

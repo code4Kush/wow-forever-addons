@@ -223,6 +223,15 @@ expect(#frames == 3 and fontStrings == 1,
 
 clear(); SlashCmdList.FOREVERWARRIOR("plan")
 expect(has("Mulgore foundations"), "Warrior plan from independent module")
+expect(namespaces.ForeverWarrior.version == "0.2.0",
+    "Full beta includes Warrior 0.2 in its own addon namespace")
+clear(); SlashCmdList.FOREVERWARRIOR("ready done 1")
+expect(has("Readiness item 1 manually checked"),
+    "Warrior readiness only changes through explicit player action")
+clear(); SlashCmdList.FOREVERWARRIOR("ready")
+expect(has("Readiness: 1/5 manually checked"),
+    "Integrated Warrior manual readiness renders without game scanning")
+
 clear(); SlashCmdList.FOREVERJOURNAL("version")
 expect(has("Version 0.5.0"), "Journal bridge loads with Core")
 clear(); SlashCmdList.FOREVERGOLD("")
@@ -254,6 +263,8 @@ expect(has("Mulgore"), "Explorer respects local map API")
 clear(); SlashCmdList.FOREVERPERFORMANCE("details")
 expect(has("12 known loaded pack(s), 12.00 KB total"),
     "Performance counts Core plus all 11 independent packs")
+expect(namespaces.ForeverPerformance.version == "0.2.0",
+    "Full beta includes bounded Performance 0.2 module")
 expect(calls.refresh == 1 and calls.memory == 12,
     "Exactly one on-demand memory refresh and one read per pack")
 
@@ -287,6 +298,14 @@ expect(core.GetModuleStatus("gold").state == "active",
 core.SetModuleEnabled("fishing", true)
 expect(core.GetModuleStatus("fishing").state == "active",
     "Independently re-enabled pack restores correctly")
+core.SetModuleEnabled("forever-warrior", false)
+clear(); SlashCmdList.FOREVERWARRIOR("ready")
+expect(has("Module disabled"), "Disabled Warrior does not show manual readiness")
+core.SetModuleEnabled("forever-warrior", true)
+clear(); SlashCmdList.FOREVERWARRIOR("ready")
+expect(has("Readiness: 0/5 manually checked"),
+    "Core disable clears Warrior flags but does not affect other packs")
+
 
 print = originalPrint
 print("Full modular-suite TOC load/registry/consent integration mocks passed ("

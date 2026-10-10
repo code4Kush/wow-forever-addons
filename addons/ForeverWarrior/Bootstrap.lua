@@ -8,7 +8,7 @@
 local addonName, addon = ...
 
 addon.name = addonName
-addon.version = "0.1.0"
+addon.version = "0.2.0"
 
 --- Writes local, non-automating advice to the player's chat window.
 --- @param message string|number Text to display.

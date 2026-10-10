@@ -2,7 +2,7 @@
 ## Title: Forever Performance
 ## Notes: Optional on-demand addon memory diagnostics for the Forever suite
 ## Author: code4Kush
-## Version: 0.1.0
+## Version: 0.2.0
 ## Dependencies: ForeverCore
 
 Bootstrap.lua

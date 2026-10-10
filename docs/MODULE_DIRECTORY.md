@@ -20,10 +20,10 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 | ForeverProfessions | `professions` | `/fprof` | Read-only current skills, session snapshots/progress and up to 5 manually set goals (v0.3 candidate) | Automatic training/crafting, persistently saved skills, recipes |
 | ForeverFishing | `fishing` | `/ffish` | Independent profession-list or open-UI Fishing rank + manual catch notes (v0.3 candidate; new read mock-only) | Verified loot detection, auto-fishing, pricing, saved catch history |
 | ForeverCooking | `cooking` | `/fcook` | Independent profession-list or open-UI Cooking rank + manual ingredient plan (v0.2 candidate) | Actual bag/recipe scanning, crafting, retained ingredient history |
-| ForeverWarrior | `forever-warrior` | `/fw` | Leveling advice, manual dungeon preparation checklist | Tank threat automation, protected combat analysis |
+| ForeverWarrior | `forever-warrior` | `/fw` | Level-banded advice + 5 player-marked session readiness checks (v0.2 beta candidate) | Equipment auto-checks, tank threat automation, protected combat analysis |
 | ForeverExplorer | `explorer` | `/fexplore` | Current lowest UI map name/ID | Confirmed map discovery or zone-exploration completion |
 | ForeverGuild | `guild` | `/fguild` | Consent-gated manual version-only guild announcements, bounded local peer list | Automatic guild chat, roster sync, quest sharing, raid planner |
-| ForeverPerformance | `performance` | `/fperf` | On-demand known-pack KB, top-3/details and session baseline/delta | Total game RAM, CPU profiling, telemetry, automatic GC, guaranteed leak detection |
+| ForeverPerformance | `performance` | `/fperf` | On-demand known-pack KB, low-allocation top-3/details and session baseline/delta (v0.2 beta candidate) | Total game RAM, CPU profiling, telemetry, automatic GC, guaranteed leak detection |
 
 ## Safe API constraints and privacy
 
@@ -83,3 +83,7 @@ Dashboard v0.2 shows disabled as well as active registered modules through an on
 ## New player-tested follow-up (candidate PR #39)
 
 The player confirmed in live testing that the older Fishing and Cooking skill readouts required open skill windows. Draft PR #39 adds a guarded alternative using the profession-list API already used by the independent ForeverProfessions pack; fallback to open UI remains. Cooking adds a human-entered prep list (not inventory). Standalone pack dependencies remain Core-only. **Closed-window behavior has not been game-tested yet**, and this code must not be installed during the existing PR #37 memory baseline. See [FISHING_COOKING_TESTING.md](FISHING_COOKING_TESTING.md).
+
+## Full modular beta integration — draft PR #41
+
+The final integrated development candidate includes Core + eleven optional packs and builds one deterministic ZIP only after tests pass. Warrior v0.2 adds manual ready checks and flexible primary-profession advice; Performance v0.2 limits temporary ranking allocations. Fishing v0.3 and Cooking v0.2 independent profession-list readers and ingredient notes are included. All optional folders remain independently installable and depend **only** on ForeverCore; dev-only Probe folders are NOT shipped. Existing player-reported passes and screenshot measurements apply to earlier PR #37 modules, **not automatically to new revisions**. Full user-chosen one-round field testing is described in [FULL_BETA_ACCEPTANCE.md](FULL_BETA_ACCEPTANCE.md). License, source-ownership/security/policy, client testing and explicit public-release approval remain unresolved.

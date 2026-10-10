@@ -6,7 +6,7 @@
 ]]
 local addonName, addon = ...
 addon.name = addonName
-addon.version = "0.1.0"
+addon.version = "0.2.0"
 addon.baseline = nil
 
 --- Writes one locally visible diagnostic line.
