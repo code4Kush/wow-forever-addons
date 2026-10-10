@@ -1,5 +1,5 @@
 --[[
-    Forever Performance 0.1: Lua 5.1 mocked memory compatibility and safety.
+    Forever Performance 0.2: Lua 5.1 mocked memory compatibility and safety.
 
     The numbers below are deterministic fixtures. They are NOT measurements
     from a running WoW client; true compatibility needs live beta evidence.
@@ -107,7 +107,7 @@ SlashCmdList.FOREVERPERFORMANCE("help")
 Assert(Has("memory | details | baseline | delta | clear"),
     "Help includes all commands")
 SlashCmdList.FOREVERPERFORMANCE("version")
-Assert(Has("Version 0.1.0"), "Standalone version command")
+Assert(Has("Version 0.2.0"), "Standalone version command")
 Assert(refreshCalls == 0, "Help/version must not run the memory API")
 
 Reset()
@@ -135,6 +135,19 @@ Assert(Has("Top 3: ForeverDashboard 31.90 KB."), "Third largest usage")
 Assert(not Has("ForeverInventory"), "Absent packs never falsely measured")
 Assert(refreshCalls == 1 and readCalls == 5,
     "Exactly one refresh and one reading per known pack")
+-- Ranking must avoid table.sort to limit its self-attributed allocations.
+-- The game APIs report addon Lua memory including this diagnostic pack.
+local savedSort = table.sort
+table.sort = function() error("Performance must not sort snapshots") end
+local ranked = addon.TopMemory({
+    {folder="A",kb=9}, {folder="C",kb=10},
+    {folder="B",kb=10}, {folder="D",kb=1}
+}, 3)
+Assert(#ranked == 3 and ranked[1].folder == "B"
+    and ranked[2].folder == "C" and ranked[3].folder == "A",
+    "Top three ranked without sorting and deterministic ties")
+table.sort = savedSort
+
 Assert(CountLines() == 4, "Summary never floods chat")
 
 Reset()
@@ -160,6 +173,10 @@ Assert(Has("Since baseline: +9.09 KB (was 140.42 KB; now 149.51 KB)."),
     "Delta preserves sign and measured readings")
 Assert(Has("Change: ForeverDashboard +9.09 KB."),
     "Module-level delta for the largest absolute contributor")
+local changed = addon.Compare(addon.baseline, addon.TakeSnapshot())
+Assert(#changed.differences <= 3 and changed.differences[1].folder == "ForeverDashboard",
+    "Comparison only holds the three user-visible contributors")
+
 Assert(refreshCalls == 4, "Delta samples exactly once")
 Assert(addon.baseline.totalKB > 140.41
     and addon.baseline.totalKB < 140.43,
