@@ -49,6 +49,8 @@ local accepted, errorMessage = ForeverCore.RegisterModule(definition)
 - `id` is lowercase letters, numbers and hyphens; unique within the active session.
 - `version` and `minCoreVersion` require numeric `major.minor.patch` components.
 - Modules requiring a future Core are registered for diagnostics but not started.
+- Core snapshots descriptor metadata arrays when registering. Feature packs must not change declared events after registration; re-register with a versioned change instead.
+- `PLAYER_LOGIN` is a reserved Core lifecycle event and cannot be listed by feature packs.
 - Capabilities and optional requirements are descriptive metadata; missing optional providers do not stop a module from starting. `FindCapabilityProviders(name)` lists only active providers.
 - Callback errors are isolated. A failed event handler deactivates the affected module and unsubscribes its events rather than allowing repeated errors.
 - `GetStatus` can report an active module as degraded/unavailable without unloading it. A module must not attempt to treat this as permission to bypass game APIs.
