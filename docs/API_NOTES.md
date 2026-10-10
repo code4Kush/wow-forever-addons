@@ -13,6 +13,8 @@ Last documentary review: 2026-10-10. Third-party API references are **not an in-
 - 2026-10-10: Later screenshot shows `/fj quest 747` reflected updated objective progress at `7/7 Plainstrider Meat` and `7/7 Plainstrider Feather`, both `[done]`; status changed to `Quest is ready to turn in`, consistent with the in-game objective tracker. This validates refresh-on-command after gameplay progress without a UI reload.
 - 2026-10-10: Player subsequently reported successful turn-in of quest IDs 747 and 752; the entries were then absent from the active quest log. This verifies post-turn-in disappearance but does not establish an independent historical completion flag.
 
+- 2026-10-10: The player reported that v0.3.0's `/fj character`, `/fj status 747`, and `/fj status 752` **all worked as intended** in-game. This is user-reported verification of runtime character identification and positive historical completion flags for quests 747 and 752. Exact level, realm, full build, response text and cold-restart persistence were not supplied; do not infer them.
+
 ## Community-observed beta baseline
 
 - Forever uses a modern/Mainline-style UI API. Classic Era API examples can contain missing globals.
@@ -38,7 +40,7 @@ Every entry below is documented for Forever 1.60.1 by Warcraft Wiki. **The proje
 | `C_Map.GetMapInfo(mapID)` | Read the map's human-readable name | https://warcraft.wiki.gg/wiki/API:C_Map.GetMapInfo |
 | `GetZoneText()` | Fallback zone name if map API gives no usable result | https://warcraft.wiki.gg/wiki/API:GetZoneText |
 
-## v0.3.0 candidate: historical completion and identity APIs (not yet tested in-game)
+## v0.3.0 candidate: historical completion and identity APIs (primary commands user-tested in-game)
 
 | API | Purpose | Documentation |
 | --- | --- | --- |
