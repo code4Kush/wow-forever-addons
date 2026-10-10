@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: Forever Core
+## Notes: Shared modular foundation for World of Warcraft Forever addons
+## Author: code4Kush
+## Version: 0.1.0
+
+Bootstrap.lua
+Character.lua
+Registry.lua
+Events.lua
+Commands.lua

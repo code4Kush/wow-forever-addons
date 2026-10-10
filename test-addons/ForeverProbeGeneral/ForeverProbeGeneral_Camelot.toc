@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: Forever Probe General (TEST ONLY)
+## Notes: Developer-only modular-core registration fixture
+## Version: 0.1.0
+## Dependencies: ForeverCore
+
+Probe.lua

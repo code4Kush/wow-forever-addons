@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: Forever Probe Warrior (TEST ONLY)
+## Notes: Developer-only Warrior eligibility fixture
+## Version: 0.1.0
+## Dependencies: ForeverCore
+
+Probe.lua
