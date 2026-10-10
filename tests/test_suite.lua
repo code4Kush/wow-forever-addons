@@ -92,6 +92,8 @@ for _, name in ipairs(packs) do
     local files = {"Bootstrap.lua","Module.lua","Read.lua","Commands.lua"}
     if name == "ForeverGuild" then
         files = {"Bootstrap.lua","Protocol.lua","Module.lua","Commands.lua"}
+    elseif name == "ForeverGold" then
+        files = {"Bootstrap.lua","Module.lua","Read.lua","Tracker.lua","Commands.lua"}
     end
     local ns = {}
     for _, file in ipairs(files) do
@@ -115,6 +117,16 @@ expect(has("Module not active: disabled"), "disabled feature does not run")
 SlashCmdList.FOREVERCORE("pref gold on")
 reset(); SlashCmdList.FOREVERGOLD("")
 expect(has("Wallet: 12g 34s 56c"), "wallet conversion")
+reset(); SlashCmdList.FOREVERGOLD("baseline")
+expect(has("Baseline saved: 12g 34s 56c (session only)."),
+    "Gold session baseline")
+reset(); SlashCmdList.FOREVERGOLD("delta")
+expect(has("Wallet change: +0g 0s 0c"), "Gold no-change delta")
+reset(); SlashCmdList.FOREVERGOLD("clear")
+expect(has("Baseline cleared (session only)."), "Gold clear")
+reset(); SlashCmdList.FOREVERGOLD("delta")
+expect(has("No baseline. Use /fgold baseline first."),
+    "Gold cleared baseline cannot silently persist")
 reset(); SlashCmdList.FOREVERINVENTORY("")
 expect(has("Bags 0-4: 1/2 occupied slots; 4 total items"), "bag totals")
 reset(); SlashCmdList.FOREVERPROFESSIONS("")
