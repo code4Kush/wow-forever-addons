@@ -92,7 +92,7 @@ for _, name in ipairs(packs) do
     local files = {"Bootstrap.lua","Module.lua","Read.lua","Commands.lua"}
     if name == "ForeverGuild" then
         files = {"Bootstrap.lua","Protocol.lua","Module.lua","Commands.lua"}
-    elseif name == "ForeverGold" then
+    elseif name == "ForeverGold" or name == "ForeverProfessions" then
         files = {"Bootstrap.lua","Module.lua","Read.lua","Tracker.lua","Commands.lua"}
     end
     local ns = {}
