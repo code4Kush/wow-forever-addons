@@ -37,7 +37,7 @@ local LEVEL_BANDS = {
         minimum = 20, maximum = 29, title = "Growing as a tank (20-29)",
         combat = "Practice multi-target threat, interruptions and defensive timing.",
         dungeon = "Learn Wailing Caverns and other appropriate dungeon routes.",
-        professions = "Keep reserve gold; craft only useful Blacksmithing upgrades.",
+        professions = "Keep reserve gold; compare any useful crafted upgrade before buying.",
         nextGoal = "Become comfortable leading groups through unfamiliar pulls.",
     },
     {
