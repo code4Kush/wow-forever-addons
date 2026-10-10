@@ -7,7 +7,8 @@ Last documentary review: 2026-10-10. Third-party API references are **not an in-
 - 2026-10-10: `select(4, GetBuildInfo())` returned interface **16001**.
 - 2026-10-10: Forever Journal **0.1.0** loaded and `/fj`, `/fj version`, `/fj progress 3 5` produced the expected output.
 - Full numeric client build was **not recorded**.
-- Version **0.2.0 is not yet tested in-game**.
+- 2026-10-10: Version **0.2.0 is partially tested in-game** (player screenshot and confirmation). `/fj quest 747` displayed "The Hunt Begins", unready status and objectives "5/7 Plainstrider Meat" and "4/7 Plainstrider Feather"; `/fj quest 752` displayed "A Humble Task", ready-to-turn-in status, and handled zero objective rows. The user reports active quest data is shown.
+- Screenshot aligns the quest objective numbers with the game's own objective tracker. This supports the live behavior of `C_QuestLog.GetInfo`, `C_QuestLog.IsComplete`, and `C_QuestLog.GetQuestObjectives` on the tested client. Exact full build is not yet recorded, and map API, reload, and persistence behaviors remain unverified.
 
 ## Community-observed beta baseline
 
