@@ -1,6 +1,6 @@
 # ForeverPerformance 0.1.0 (development candidate)
 
-**Status:** Code and Lua 5.1 mock tests in [draft PR #27](https://github.com/code4Kush/wow-forever-addons/pull/27). **NOT TESTED IN GAME AS THIS NEW PACK.** The user previously confirmed working memory functions in their Forever beta, but no full numeric client build was recorded.
+**Status:** Code and Lua 5.1 mock tests in [draft PR #27](https://github.com/code4Kush/wow-forever-addons/pull/27), plus **PARTIAL PLAYER-OBSERVED IN-GAME PASS** on Forever `1.60.1`, build `70338`, interface `16001` (build date October 9, 2026). Memory summary, details, manual baseline/delta, clear, and Core navigation have been observed working. **Not yet fully game-verified or released:** missing-baseline test after `/reload`, long-session stability, real combat guard, exact installed SHA, license and security checks.
 
 ## Purpose
 

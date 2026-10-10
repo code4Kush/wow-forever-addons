@@ -1,6 +1,6 @@
 # WoW: Forever API and compatibility notes
 
-Last documentary review: 2026-10-10. These are external reports, **not a record of testing the owner's own client**.
+Last documentary review: 2026-10-10. Unless explicitly labeled **player-observed**, references below are external reports and **not** evidence that an API works in the actual Forever beta client. Live test evidence is source-scoped; verification of one function does not establish every feature.
 
 ## M1 Core candidate — conventional APIs still requiring live Forever verification
 
@@ -71,4 +71,5 @@ These are source-reviewed API candidates, not assertions that a particular WoW b
 - `GetAddOnMemoryUsage(addonName)`: returns attributed addon memory in **kilobytes**; code uses named addon folders, as observed working in the player's earlier direct `/run` test. Reference: https://warcraft.wiki.gg/wiki/API_GetAddOnMemoryUsage .
 - **Observed player evidence:** WoW Forever beta interface `16001`, October 10 2026, with `type()` confirming both functions; three named addon readings, plus Dashboard measurements 11.32 → 140.982421875 → 150.068359375 → 31.8955078125 KB following user-initiated `collectgarbage("collect")`. Full numeric build **not recorded** and no new ForeverPerformance code running at that time.
 - **Safety:** Both API calls are checked with `type()`/`pcall()`. Missing/negative/nonfinite readings are errors, not values to quietly total as zero. The pack never triggers `collectgarbage` or runs polling. It only includes known Core-registered Forever addons, including logically disabled packages that are still loaded; it does not claim to enumerate every WoW addon or system RAM.
-- **NOT YET VERIFIED:** New module's actual beta load, timing impact, addon memory attribution against installed packs, repeated runs, session baseline and delta. Run `docs/PERFORMANCE_TESTING.md`, recording client build and observed outputs. CPU profiling API support **not established**, so no fabricated CPU metrics.
+- **Player-observed new pack evidence on `1.60.1` / `70338` / `Oct 9 2026` / `16001`:** `/fperf version` and `/fperf memory` produced valid game-chat output. Four loaded packs totaled 116.44 KB in the initial screenshot. A later `/fperf delta` showed +2.89 KB versus a 109.88 KB baseline, `/fperf details` showed a four-pack total of 114.71 KB, and clearing the baseline correctly prevented a later delta. The Core `/forever memory` navigation command worked as expected. See `docs/PERFORMANCE_TESTING.md` and issue #26 for exact evidence levels.
+- **Still NOT VERIFIED:** New pack's idle CPU/performance over long play sessions, exact installed code SHA, post-`/reload` baseline reset (output not captured), actual combat guard operation, all missing-API scenarios, and public release readiness. CPU profiling API support is **not established**, so do not report fabricated CPU metrics.

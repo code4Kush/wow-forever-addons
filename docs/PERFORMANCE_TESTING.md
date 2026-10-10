@@ -1,8 +1,26 @@
 # ForeverPerformance 0.1 — live WoW acceptance (one command at a time)
 
-**Status:** New diagnostic module **NOT YET LIVE TESTED**. Player previously confirmed `UpdateAddOnMemoryUsage` and `GetAddOnMemoryUsage` were present and reported addon KB for Core, Dashboard and Journal; *the new ForeverPerformance pack was not installed when those results were recorded*. Source: user-reported WoW Forever beta, October 10, 2026; full numeric build not provided.
+**Status:** **PARTIAL LIVE GAME PASS**: the new pack has been observed working in the player’s WoW Forever client. Exact **client version `1.60.1`, build `70338`, build date Oct 9 2026, interface `16001`** was captured from `/run print("Forever client:",GetBuildInfo())` on October 10, 2026. Several diagnostic tests passed, but the *reload baseline reset*, full installed SHA, combat guard, and long-session stability remain unverified. Earlier pre-install observations used the older pack set.
 
 **Rule:** Enter **each single WoW slash command in a separate chat submission**. Never paste multiple WoW commands at once. Color codes stripped below. `<FIELDS>` are expected dynamic values; values are never invented.
+
+## Player-reported live acceptance evidence — 2026-10-10
+
+**Recorded client:** `1.60.1`, build `70338`, build date `Oct 9 2026`, interface `16001`. The following are excerpts from **player-provided in-game screenshots** and clearly identified player-reported PASS claims, **not** GitHub CI fixtures. Screenshots contain guild chat and other player information and have **not** been uploaded into this public repository.
+
+| Action | Evidence | Verdict |
+| --- | --- | --- |
+| `/fperf version` | `Forever Performance: Version 0.1.0 (on-demand only).` visible in screenshot | **IN-GAME PASS** |
+| `/fperf memory` | Four loaded Forever packs, total `116.44 KB`; top Core `47.47 KB`, Performance `35.24 KB`, Warrior `22.42 KB` | **IN-GAME PASS** for bounded reporting |
+| `/fperf baseline` then `/fperf delta` | `Since baseline: +2.89 KB (was 109.88 KB; now 112.77 KB).` and Performance `+2.89 KB`, Core `+0.00 KB`, Dashboard `+0.00 KB` | **IN-GAME PASS** for delta format; baseline invocation inferred from comparison, its output not photographed |
+| `/fperf details` | Four packs `114.71 KB`: Core `47.34 KB`, Dashboard `11.32 KB`, Warrior `22.42 KB`, Performance `33.63 KB` | **IN-GAME PASS**, displayed total agrees with rows |
+| `/fperf clear` then `/fperf delta` | Clear acknowledgment followed by `No baseline. Use /fperf baseline first.` | **IN-GAME PASS** |
+| Disable pack, refuse reading, re-enable, discard baseline | User replied **PASS** for all 5 individually submitted commands; no screenshot of this test | **USER-REPORTED PASS** |
+| `/forever memory` after reload instructions | `Forever Core: Memory diagnostics: use /fperf memory, details, baseline or delta.` screenshot | **IN-GAME PASS** |
+| `/run print("Forever client:",GetBuildInfo())` | `Forever client: 1.60.1 70338 Oct 9 2026 16001` screenshot | **IN-GAME PASS** |
+| `/reload` followed by `/fperf delta` | The most recent screenshot does **not** show either the reload or missing-baseline output | **NOT YET VERIFIED** |
+
+Do **not** interpret the absence of an error in a screenshot as proof no errors ever occurred. The locally installed exact Git commit was not independently captured, and CI checks are a separate evidence type. A few KB of temporary memory is not itself a leak. Follow the command-by-command manual plan below to finish the remaining checks.
 
 ## Prerequisites
 
@@ -291,7 +309,8 @@ The last reading is consistent with temporary objects being collectable. It **do
 
 ## Completion gate
 
-- [ ] Real WoW beta version/build recorded via its client build info; exact SHA and installed addon versions captured.
+- [x] Real WoW beta version/build captured in game: `1.60.1` / `70338` / `Oct 9 2026` / `16001`.
+- [ ] Exact locally installed Git SHA captured (not established from screenshots).
 - [ ] Every command above entered **individually**; actual outputs or screenshots and PASS/FAIL recorded.
 - [ ] No unexpected polling, memory sampling, forced GC, protected actions or chatter while idle.
 - [ ] Missing/invalid memory API behavior verified on an affected build if possible; mock tests are not enough.
