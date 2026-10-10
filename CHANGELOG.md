@@ -4,6 +4,13 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### Integrated full-load validation and single-subscriber efficiency
+
+- New `tests/test_full_integration.lua` loads **all twelve actual addon TOCs** together with separate per-addon namespaces, mocks PLAYER_LOGIN, verifies all eleven optional Core registrations, local commands, paginated Dashboard, on-demand full-pack memory, module disable isolation and Guild consent OFF/no sending. Distinct from in-game testing on Forever build 70338.
+- Core's shared event dispatcher avoids allocating and sorting an ID snapshot for the **one-subscriber** case; retains deterministic copied-ID ordering for two or more subscribers and unchanged error isolation. Lua mock test verifies no sort during single Guild CHAT_MSG_ADDON dispatch; real FPS/CPU savings unmeasured.
+- Developer source ZIP validator rejects non-UTF-8 Lua/assets, Lua bytecode, NULs and terminal controls. Packaging tests verify these failures and accept readable UTF-8 comments; does not itself license code or authorize a release.
+
+
 ### Integrated modular DEV candidate — Dashboard v0.2, bundle builder (UNVERIFIED FULL CLIENT)
 
 - Offline deterministic local test ZIP builder with Core-only, Tank, Professions and Full profiles and explicit include/exclude options. Validates interface-16001 manifests, Core dependencies, TOC Lua paths, file bounds and symlinks; never installs or releases automatically.
