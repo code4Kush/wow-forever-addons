@@ -2,6 +2,17 @@
 
 Last documentary review: 2026-10-10. These are external reports, **not a record of testing the owner's own client**.
 
+## M1 Core candidate — conventional APIs still requiring live Forever verification
+
+- `PLAYER_LOGIN`, `CreateFrame`, `Frame:RegisterEvent`, `Frame:UnregisterEvent`, `Frame:SetScript` for a single Core event bridge.
+- `UnitName`, `UnitClass`, `UnitRace`, `UnitLevel`, `UnitGUID`, `GetRealmName` for runtime character identity (some can be unavailable).
+- `SlashCmdList` registration for `/forever` diagnostic commands.
+- `## Dependencies: ForeverCore` manifest load-order behavior with `_Camelot.toc` must be proven on the target 16001 client.
+
+Reference: https://warcraft.wiki.gg/wiki/World_of_Warcraft_API ; https://warcraft.wiki.gg/wiki/TOC_format
+
+These APIs and loading conditions are **NOT YET GAME-TESTED in the new Core**. No Core-only session, cross-character or persistence pass has been recorded. Tests are documented in `docs/CORE_TESTING.md`.
+
 ## Recorded beta baseline
 
 - WoW: Forever 1.60.1 beta uses TOC Interface 16001 in community-verified builds.

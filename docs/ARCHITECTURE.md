@@ -19,6 +19,10 @@ Player types /fj progress 3 5 -> Commands parses counts -> Progress calculates p
 
 No external requests, filesystem access, automatic quest inspection, or saved-variable storage are performed.
 
+## M1 independent ForeverCore candidate (not yet game-verified)
+
+A second, separate addon package under `addons/ForeverCore/` now hosts a public cross-addon registry, character context and shared event frame. It can load by itself, or load before explicitly dependent optional probe packs. See `docs/CORE_CONTRACT.md`. This is additive: the working ForeverJournal code is not modified, integrated or migrated in M1. Durable profiles and Dashboard remain separate later milestones.
+
 ## Future expansion
 
 Quest tracking, exploration, collections, persistence, and UI will be separate modules only after their APIs and data semantics are verified on the target game build. Avoid creating empty placeholders now.
