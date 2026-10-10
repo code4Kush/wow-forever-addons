@@ -64,3 +64,11 @@ Each future API entry should include function/event name, source URL, client bui
 | Core Profiles | SavedVariablesPerCharacter | Experimental Forever beta retention; user cold-restart test required |
 
 These are source-reviewed API candidates, not assertions that a particular WoW beta build safely supports them. Any real-client failures must be documented against the exact full build before advertising features to others.
+
+## ForeverPerformance 0.1.0: memory attribution APIs (2026-10-10)
+
+- `UpdateAddOnMemoryUsage()`: manually requests a refresh of WoW's per-addon memory attribution, used exactly once per on-demand `/fperf` reading. Reference: https://warcraft.wiki.gg/wiki/API_UpdateAddOnMemoryUsage .
+- `GetAddOnMemoryUsage(addonName)`: returns attributed addon memory in **kilobytes**; code uses named addon folders, as observed working in the player's earlier direct `/run` test. Reference: https://warcraft.wiki.gg/wiki/API_GetAddOnMemoryUsage .
+- **Observed player evidence:** WoW Forever beta interface `16001`, October 10 2026, with `type()` confirming both functions; three named addon readings, plus Dashboard measurements 11.32 → 140.982421875 → 150.068359375 → 31.8955078125 KB following user-initiated `collectgarbage("collect")`. Full numeric build **not recorded** and no new ForeverPerformance code running at that time.
+- **Safety:** Both API calls are checked with `type()`/`pcall()`. Missing/negative/nonfinite readings are errors, not values to quietly total as zero. The pack never triggers `collectgarbage` or runs polling. It only includes known Core-registered Forever addons, including logically disabled packages that are still loaded; it does not claim to enumerate every WoW addon or system RAM.
+- **NOT YET VERIFIED:** New module's actual beta load, timing impact, addon memory attribution against installed packs, repeated runs, session baseline and delta. Run `docs/PERFORMANCE_TESTING.md`, recording client build and observed outputs. CPU profiling API support **not established**, so no fabricated CPU metrics.

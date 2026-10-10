@@ -23,6 +23,7 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 | ForeverWarrior | `forever-warrior` | `/fw` | Leveling advice, manual dungeon preparation checklist | Tank threat automation, protected combat analysis |
 | ForeverExplorer | `explorer` | `/fexplore` | Current lowest UI map name/ID | Confirmed map discovery or zone-exploration completion |
 | ForeverGuild | `guild` | `/fguild` | Consent-gated manual version-only guild announcements, bounded local peer list | Automatic guild chat, roster sync, quest sharing, raid planner |
+| ForeverPerformance | `performance` | `/fperf` | On-demand known-pack KB, top-3/details and session baseline/delta | Total game RAM, CPU profiling, telemetry, automatic GC, guaranteed leak detection |
 
 ## Safe API constraints and privacy
 
@@ -35,7 +36,7 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 
 ## Acceptance coverage: completed vs unverified
 
-**Automated:** All eight CI mock suites (Core, progress, Warrior, modular suite, Journal quest log, Journal history, Journal curated catalog and Journal/Core bridge) passed on the initial PR #25 commit. Any new commit requires new exact-SHA CI confirmation.
+**Automated:** The original eight CI mock suites (Core, progress, Warrior, modular suite, Journal quest log, Journal history, Journal curated catalog and Journal/Core bridge) passed on the initial PR #25 commit. Any new commit requires new exact-SHA CI confirmation.
 
 **In-game:** The earlier Core M1 commands and portions of Journal v0.4 were user-confirmed. **None of the Core 0.2 preference changes, the seven new information packs, Guild networking, or Journal Core bridge have yet been tested in the real client.** Do not publish these as supported features until the relevant manual tests pass. Journal v0.4 screenshot was a PARTIAL pass; it was not a full zone-completion test.
 
@@ -50,3 +51,9 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 7. Keep **all** feature PRs draft until game compatibility, licensing, public-source, settings protection and release reviews are finished.
 
 Feature completeness should be tracked in individual [milestone issues #5–#16](https://github.com/code4Kush/wow-forever-addons/issues), not inferred from the presence of a folder.
+
+## Optional performance measurement (M12, PR #27)
+
+`ForeverPerformance` is another independently installable, character-selectable optional pack depending on Core 0.2. It reports **only** the 12 explicitly cataloged Forever addon folders when actually registered with Core; a pack logically disabled by Core remains resident and is still measured. `/forever memory` in Core only directs you to `/fperf` and never causes memory-refresh calls itself.
+
+On-demand tests, example one-command-per-block outputs, user-reported historical Dashboard observations, and missing-API fallbacks are in [PERFORMANCE_TESTING.md](PERFORMANCE_TESTING.md). **This pack's live beta compatibility is not yet established**, and its current module list must be expanded explicitly when future shipped folders are added. `test-addons/` probes and third-party addons are deliberately out of scope.
