@@ -8,10 +8,28 @@ Thumbs.db
 # Locally generated test and coverage artifacts
 coverage/
 *.luac
-# Local machine settings and game data
+# Local machine settings, credentials, screenshots and game data.
+# These prevent accidental new commits but DO NOT remove past commits.
 .env
 .env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*.sqlite
+*.sqlite3
+*.db
+*.log
+credentials.json
+credentials.*.json
+*secrets*.local.*
 wow-dev.config.local.json
 WTF/
 Cache/
 Logs/
+Screenshots/
