@@ -89,26 +89,43 @@ function addon.TakeSnapshot()
     }
 end
 
---- Returns at most N copied rows ranked by memory, with stable ties.
---- @param entries table Snapshot rows.
---- @param maximum number Upper bound of rows to return.
---- @return table ranking New array; original snapshot is unchanged.
-function addon.TopMemory(entries, maximum)
-    local sorted = {}
-    for _, row in ipairs(entries or {}) do
-        sorted[#sorted + 1] = { folder = row.folder, kb = row.kb }
-    end
-    table.sort(sorted, function(left, right)
-        if left.kb == right.kb then
-            return left.folder < right.folder
+-- Keep only the top N rows during collection. This avoids copying and
+-- sorting all twelve records for each manual /fperf memory request.
+-- Ordering is deterministic by descending magnitude, then folder name.
+local function RankAhead(left, right, absolute)
+    local a = absolute and math.abs(left.kb) or left.kb
+    local b = absolute and math.abs(right.kb) or right.kb
+    if a == b then return left.folder < right.folder end
+    return a > b
+end
+
+local function InsertTop(rows, entry, limit, absolute)
+    if limit < 1 then return end
+    local position = #rows + 1
+    for index = 1, #rows do
+        if RankAhead(entry, rows[index], absolute) then
+            position = index
+            break
         end
-        return left.kb > right.kb
-    end)
-    local limited = {}
-    for index = 1, math.min(maximum, #sorted) do
-        limited[#limited + 1] = sorted[index]
     end
-    return limited
+    if position <= limit then
+        table.insert(rows, position, entry)
+        if #rows > limit then rows[#rows] = nil end
+    end
+end
+
+--- Return up to N copied rows, preserving deterministic ties and source.
+--- @param entries table Snapshot rows.
+--- @param maximum number Max returned rows (internally bounded to 12).
+--- @return table ranking Bounded new array.
+function addon.TopMemory(entries, maximum)
+    local top = {}
+    local bound = type(maximum) == "number" and maximum or 0
+    bound = math.max(0, math.min(12, math.floor(bound)))
+    for _, row in ipairs(entries or {}) do
+        InsertTop(top, {folder = row.folder, kb = row.kb}, bound, false)
+    end
+    return top
 end
 
 --- Compares only explicitly requested session snapshots.
@@ -117,6 +134,8 @@ end
 --- @param after table Current snapshot.
 --- @return table comparison Total KB change and top absolute contributors.
 function addon.Compare(before, after)
+    -- The UI only prints three changes; do not build/sort 12 temporary
+    -- difference rows that are immediately thrown away.
     local differences = {}
     local differentSet = #before.entries ~= #after.entries
 
@@ -125,10 +144,9 @@ function addon.Compare(before, after)
         if previous == nil then
             differentSet = true
         else
-            differences[#differences + 1] = {
-                folder = folder,
-                kb = value - previous,
-            }
+            InsertTop(differences, {
+                folder = folder, kb = value - previous
+            }, 3, true)
         end
     end
     for folder in pairs(before.byFolder) do
@@ -136,13 +154,6 @@ function addon.Compare(before, after)
             differentSet = true
         end
     end
-
-    table.sort(differences, function(left, right)
-        if math.abs(left.kb) == math.abs(right.kb) then
-            return left.folder < right.folder
-        end
-        return math.abs(left.kb) > math.abs(right.kb)
-    end)
 
     return {
         deltaKB = after.totalKB - before.totalKB,
