@@ -4,6 +4,15 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### ForeverProfessions 0.2.0 — Sprint 2, skill snapshots (NOT YET LIVE VERIFIED)
+
+- Preserved `/fprof` read-only profession names and ranks.
+- Added `/fprof snapshot`, `/fprof progress` and `/fprof clear` for bounded, manually requested session skill comparisons.
+- Reports +/−/0 changes against matching skill names without inferring a gain/loss from missing game API data. Fishing/Cooking may appear when exposed by the client.
+- No background events, timers, SavedVariables, gameplay actions or external sharing; disabling via Core discards state. Lua 5.1 mocks cover sparse profession slots and defensive API behavior.
+
+
+
 ### ForeverGold 0.2.0 — Sprint 1 manual wallet change (NOT LIVE VERIFIED)
 
 - Keeps the original on-demand `/fgold` wallet display.

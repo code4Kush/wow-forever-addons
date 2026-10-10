@@ -116,3 +116,9 @@ No background polling, garbage collection, CPU tracing, persisted logs or teleme
 ## ForeverGold Sprint 1 (draft PR #29 — manual wallet net change)
 
 The optional `ForeverGold` pack now has a proposed read-only **session baseline and delta**: `/fgold` retains the current wallet view; `/fgold baseline`, `/fgold delta`, and `/fgold clear` help track net wallet movement while questing. **Net wallet movement is NOT earned gold or profit.** No automatic scanning, purchases, telemetry or persistent history. **Not yet verified on WoW Forever 1.60.1 / 70338**; see [Gold Testing](docs/GOLD_TESTING.md), [ForeverGold README](addons/ForeverGold/README.md), and [PR #29](https://github.com/code4Kush/wow-forever-addons/pull/29). Public release remains gated.
+
+## Professions Sprint 2 (draft PR #31 — skill progress)
+
+The independent ForeverProfessions pack now has a proposed **manual session snapshot and progress** view: `/fprof` shows readable professions, `/fprof snapshot` saves ranks locally, `/fprof progress` shows signed differences, and `/fprof clear` forgets the baseline. If Fishing/Cooking appear among the exposed profession APIs, their skill ranks are included. Missing or newly readable professions remain uncomparable rather than being called untrained or gained from zero.
+
+No automatic harvesting/crafting, event tracking, persistence or telemetry. **Not yet live-verified on Forever 1.60.1 build 70338**. See [professions live test guide](docs/PROFESSIONS_TESTING.md), [ForeverProfessions README](addons/ForeverProfessions/README.md), and [draft PR #31](https://github.com/code4Kush/wow-forever-addons/pull/31). Public release/security/license gates remain pending.

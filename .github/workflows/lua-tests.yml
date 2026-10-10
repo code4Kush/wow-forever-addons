@@ -36,3 +36,5 @@ jobs:
         run: lua5.1 tests/test_performance.lua
       - name: Run Forever Gold session wallet tests
         run: lua5.1 tests/test_gold.lua
+      - name: Run Forever Professions skill tests
+        run: lua5.1 tests/test_professions.lua

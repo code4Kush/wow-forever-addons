@@ -1,31 +1,60 @@
---[[ ForeverProfessions: on-demand, independent slash command.
-    Output is generated only for an active Core module.
+--[[
+    ForeverProfessions: one-command-at-a-time read-only public interface.
+
+    All game API reads occur only for explicitly requested /fprof,
+    /fprof snapshot and /fprof progress commands, never in Core events.
 ]]
 local _, addon = ...
 
---- Handles a single player-entered command; does not automate gameplay.
---- @param message string|nil Chat text after /fprof.
+local function PrintHelp()
+    addon.Print("Commands: /fprof | snapshot | progress | clear | version | help")
+    addon.Print("Skill changes are session-only; missing skills are unknown.")
+end
+
+--- Handles one player-entered slash command.
+--- @param message string|nil Text following /fprof.
 local function Handle(message)
-    local cmd = (message or ""):match("^%s*(.-)%s*$")
-    if cmd == "version" then
+    local command = string.lower((message or ""):match("^%s*(.-)%s*$"))
+    if command == "version" then
         addon.Print("Version " .. addon.version)
         return
     end
-    if cmd == "help" then
-        addon.Print("Commands: /fprof | /fprof version | /fprof help")
+    if command == "help" then
+        PrintHelp()
         return
     end
-    if cmd ~= "" then
-        addon.Print("Usage: /fprof [version|help]")
+    if command ~= "" and command ~= "snapshot"
+        and command ~= "progress" and command ~= "clear" then
+        addon.Print("Usage: /fprof [snapshot|progress|clear|version|help]")
         return
     end
 
     local status = ForeverCore.GetModuleStatus("professions")
     if not status or status.state ~= "active" then
-        addon.Print("Module not active: " .. (status and status.state or "not registered") .. ".")
+        addon.Print("Module not active: "
+            .. (status and status.state or "not registered") .. ".")
         return
     end
-    addon.Render()
+
+    if command == "" then
+        addon.Render()
+    elseif command == "snapshot" then
+        local count, reason = addon.SaveSnapshot()
+        if not count then
+            addon.Print(reason)
+        else
+            addon.Print(string.format(
+                "Snapshot saved: %d readable profession(s) (session only).",
+                count
+            ))
+        end
+    elseif command == "progress" then
+        addon.RenderProgress()
+    else
+        addon.ClearSnapshot()
+        addon.Print("Snapshot cleared (session only).")
+    end
 end
+
 SLASH_FOREVERPROFESSIONS1 = "/fprof"
 SlashCmdList.FOREVERPROFESSIONS = Handle

@@ -1,33 +1,100 @@
-# ForeverProfessions — 0.1.0 candidate
+# ForeverProfessions v0.2.0 — manual session skill progress
 
-**State:** NEW AND NOT YET TESTED IN THE REAL FOREVER CLIENT. This is a free, independent, unendorsed community WoW addon candidate.
+**State:** Proposed [draft PR #31](https://github.com/code4Kush/wow-forever-addons/pull/31); **not yet verified in the real Forever game client**. Target: player-observed **WoW Forever 1.60.1, build 70338, interface 16001** (October 2026). The client APIs `GetProfessions` and `GetProfessionInfo` are conventional references, not yet confirmed working on this exact beta build.
 
-## What it does
+## What the pack does
 
-readable profession skill names/current levels when API exposes them; not recipe inventory. The code runs only after the player invokes a command, except the small Core-managed event registration lifecycle. It never casts spells, equips items, crafts, sells, plays the game, or transmits data externally.
+`/fprof` displays the currently readable trained profession ranks. `/fprof snapshot` saves the current skill levels **only in your current session's Lua memory**, and `/fprof progress` reports how many points changed when you explicitly ask. `/fprof clear` forgets the snapshot.
 
-**Depends on:** ForeverCore **0.2.0 or later**. No other optional packs required. Only an installed and active pack responds.
+This can include Mining, Blacksmithing, Fishing and Cooking **when the game exposes those skills**. It does not infer that an absent profession is unlearned. A newly readable profession after baseline is labelled **not comparable**, not falsely gained from zero.
 
-## Install or uninstall
+## Installation
 
-Copy the entire `addons/ForeverProfessions/` folder to WoW Forever's `Interface/AddOns/ForeverProfessions/` directory while the client is closed, along with the required `addons/ForeverCore/` package. Enable the addon in WoW's AddOns interface, then reload. To uninstall, quit WoW and remove only this addon directory. The Core should remain installed for other packs.
+Install `ForeverCore` v0.2+ and the complete `addons/ForeverProfessions/` directory into `Interface/AddOns/ForeverProfessions/` on WoW beta, enable both packs in the AddOns menu, then reload. Other packs (Gold, Warrior, Dashboard, Fishing and Cooking) are independently optional; they need not be installed for this module.
 
-The `## Interface: 16001` and `_Camelot.toc` suffix are based on previously observed beta behavior; **full current game-build verification remains pending**.
+See [PROFESSIONS_TESTING.md](../../docs/PROFESSIONS_TESTING.md) for Mac Terminal install steps and individually submitted WoW commands with exact expected output and PASS/FAIL.
 
-## Command (one chat submission)
+## Commands — each must be submitted separately in WoW chat
 
-```text
+**List skills:**
+
+~~~text
 /fprof
-```
+~~~
 
-Expected exact/dynamic output and explicit PASS/FAIL rules are in [SUITE_TESTING.md](../../docs/SUITE_TESTING.md). Enter each WoW command independently.
+Expected format:
 
-To change this pack's per-character preference (example only, replace `<module-id>` with the identifier documented in the Core module list), use `/forever pref <module-id> off` or `on`. **SavedVariables reliability is not established** until testing after a complete game quit and restart.
+~~~text
+Forever Professions: Known professions: <NAME1> <RANK>/<MAX>; <NAME2> <RANK>/<MAX>
+~~~
 
-## Game API and limitations
+The list length is variable (1–5). If unavailable, you will see a clear `Profession API unavailable`, `Profession details unavailable` or `No readable trained professions` line instead.
 
-GetProfessions/GetProfessionInfo; data can be absent or nil. Calls are guarded and return an explicit unavailable message if needed. Mock tests do not demonstrate real-client compatibility. See [API_NOTES.md](../../docs/API_NOTES.md).
+**Save current ranks:**
 
-## Privacy and licensing
+~~~text
+/fprof snapshot
+~~~
 
-No third-party SDKs or telemetry included. No separate license has yet been chosen for the public repository, and no packaged player release has been approved. See the project root [README](../../README.md) and security policy PR #20.
+Expected:
+
+~~~text
+Forever Professions: Snapshot saved: <COUNT> readable profession(s) (session only).
+~~~
+
+**Compare current to initial skills:**
+
+~~~text
+/fprof progress
+~~~
+
+Expected header format:
+
+~~~text
+Forever Professions: Skill progress: <COUNT> comparable; <CHANGED> changed (session only).
+~~~
+
+Per-skill rows show `<NAME>: +<N> skill (was <BEFORE>; now <AFTER>).` or a negative sign for lower reported ranks. New/missing professions use explicit non-comparable messages. If you have not saved a baseline, the exact output is `Forever Professions: No snapshot. Use /fprof snapshot first.`
+
+**Clear:**
+
+~~~text
+/fprof clear
+~~~
+
+Expected exact:
+
+~~~text
+Forever Professions: Snapshot cleared (session only).
+~~~
+
+**Version:**
+
+~~~text
+/fprof version
+~~~
+
+Expected exact:
+
+~~~text
+Forever Professions: Version 0.2.0
+~~~
+
+**Help:**
+
+~~~text
+/fprof help
+~~~
+
+Expected:
+
+~~~text
+Forever Professions: Commands: /fprof | snapshot | progress | clear | version | help
+Forever Professions: Skill changes are session-only; missing skills are unknown.
+~~~
+
+## Privacy, memory and limitations
+
+No saved profile, passive profession event tracking, networking, extra addons, auto-fishing, auto-cooking, crafting, sales, recipes or external analytics. At most five name/rank records are retained until `/fprof clear`, Core disables the `professions` module, or the interface reloads. Every profession query is explicitly user-requested and refused during combat if the game's `InCombatLockdown()` guard exists.
+
+The game may return incomplete lists when profession APIs or windows behave differently; unknown does **not** mean untrained, learned, lost or completed. A changed language or API representation may make a name uncomparable. This is independent community source with licensing/public security review pending; no distribution approved.
