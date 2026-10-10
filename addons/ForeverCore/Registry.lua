@@ -105,6 +105,10 @@ local function ValidateDescriptor(definition)
                 if type(entry) ~= "string" or entry == "" or seen[entry] then
                     return field .. " contains an invalid or duplicate entry."
                 end
+                if field == "events" and entry == "PLAYER_LOGIN" then
+                    return "PLAYER_LOGIN is reserved for Core's lifecycle."
+                end
+
                 seen[entry] = true
             end
         end
@@ -339,8 +343,20 @@ function core.RegisterModule(definition)
         return false, "Module ID is already registered."
     end
 
+    -- Copy caller-provided metadata so later edits to the descriptor's
+    -- event/capability arrays cannot change live subscriptions unexpectedly.
+    local storedDefinition = {}
+
+    for key, value in pairs(definition) do
+        storedDefinition[key] = value
+    end
+
+    for _, field in ipairs({ "events", "capabilities", "optionalRequires" }) do
+        storedDefinition[field] = CopyArray(definition[field])
+    end
+
     local record = {
-        definition = definition,
+        definition = storedDefinition,
         requestedEnabled = true,
         initialized = false,
         active = false,
