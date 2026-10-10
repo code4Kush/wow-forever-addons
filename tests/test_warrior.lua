@@ -66,6 +66,7 @@ end
 
 Load("Bootstrap.lua")
 Load("Plans.lua")
+Load("Readiness.lua")
 Load("Module.lua")
 Load("Commands.lua")
 
