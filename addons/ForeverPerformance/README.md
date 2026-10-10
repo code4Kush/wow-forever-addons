@@ -1,4 +1,4 @@
-# ForeverPerformance 0.1.0 (development candidate)
+# ForeverPerformance 0.2.0 (development candidate)
 
 **Status:** Code and Lua 5.1 mock tests in [draft PR #27](https://github.com/code4Kush/wow-forever-addons/pull/27), plus **PARTIAL PLAYER-OBSERVED IN-GAME PASS** on Forever `1.60.1`, build `70338`, interface `16001` (build date October 9, 2026). Memory summary, details, manual baseline/delta, clear, and Core navigation have been observed working. **Not yet fully game-verified or released:** missing-baseline test after `/reload`, long-session stability, real combat guard, exact installed SHA, license and security checks.
 
@@ -112,3 +112,7 @@ See [PERFORMANCE_TESTING.md](../../docs/PERFORMANCE_TESTING.md) for **every test
 ## Public-release constraints
 
 This is independent, free, human-readable addon source, not affiliated with Blizzard. A license is **not yet chosen**, and [public-repository security PR #20](https://github.com/code4Kush/wow-forever-addons/pull/20) plus release gates are still pending. No downloadable public release is approved.
+
+## Version 0.2 allocation-bounded ranking
+
+`/fperf memory` now inserts only the best three rows into a bounded ranking instead of copying and sorting up to twelve rows, and `/fperf delta` similarly retains only the three displayed differences. The module still performs one **on-demand** `UpdateAddOnMemoryUsage` and at most twelve `GetAddOnMemoryUsage` calls, and retains one session baseline. No forced GC or polling. Player screenshot measurements from the earlier 0.1 build (346.58 KB baseline; +27.05 KB initial delta; 405.96 KB separate later detail; Performance 122.88 KB self-attribution) remain observations, **not proof of an actual leak** or measured gains from these changes. New version memory needs a controlled live retest.
