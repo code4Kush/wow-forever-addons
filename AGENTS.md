@@ -28,6 +28,7 @@ Read this document before any edits. Also read CODING_STANDARDS.md, docs/ARCHITE
 - Run lua5.1 tests/test_progress.lua whenever calculation behavior changes.
 - Run luacheck addons if installed.
 - For game-facing changes, document an actual in-game test or mark clearly as NOT TESTED IN GAME.
+- Every requested in-game manual test must include: (1) the exact command/action, (2) expected output in a code block with variable fields clearly marked, (3) the feature being verified, (4) explicit PASS and FAIL conditions, and (5) a request to report the actual output if it differs. Do not make the player guess the expected output.
 - When adding an API assumption, update docs/API_NOTES.md with source URL, build number, observation date, and confidence.
 - Update the addon README and CHANGELOG.md when user-facing behavior changes.
 - In the PR or completion report, state files changed, behavior added, test results, and unverified claims.

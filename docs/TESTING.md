@@ -13,11 +13,12 @@ From repository root:
 ~~~sh
 lua5.1 tests/test_progress.lua
 lua5.1 tests/test_questlog.lua
+lua5.1 tests/test_history.lua
 ~~~
 
 The second script mocks the WoW C_QuestLog and C_Map namespaces and exercises filtering, objective access, area fallback, pagination, command validation and error handling.
 
-GitHub Actions runs both tests on pull requests. These mock tests cannot validate live game API compatibility.
+GitHub Actions runs all three tests on pull requests. These mock tests cannot validate live game API compatibility.
 
 ## 0.2.0 in-game checklist — partial manual pass (2026-10-10)
 
@@ -53,6 +54,59 @@ Record the full `/run print(GetBuildInfo())` output or equivalent client build i
 10. Try `/reload` and a cold restart. Confirm commands still work and no Lua errors appear.
 
 If a command fails, note the exact output, build, class/zone where relevant, and which API may be missing. Do not claim game compatibility until this checklist is completed.
+
+## 0.3.0 candidate — partial manual pass (reported 2026-10-10)
+
+The player reported that **all three requested commands worked as intended**: `/fj character`, `/fj status 747`, and `/fj status 752`. This confirms that character identity and historical completion flags for the two handed-in quests functioned on the player's live client. We do **not** have the exact level/realm text, full client build, cold-restart result, or invalid-ID test output. Do not mark the remaining checks as passed.
+
+### Mandatory manual test format
+
+Every future in-game test instruction must show the **exact command**, **expected output** (with placeholders for dynamic details), **what it verifies**, and **PASS/FAIL criteria**. Ask the player to confirm a match or paste the actual output if different.
+
+### Expected v0.3.0 outputs (examples)
+
+`/fj version`
+
+~~~text
+Forever Journal: Version 0.3.0
+~~~
+
+`/fj character`
+
+~~~text
+Forever Journal: Uddergrief - Tauren Warrior - level <current level> - realm <realm name>
+~~~
+
+Realm may be omitted if unavailable. Level and realm are not known from the reported test.
+
+`/fj status 747`
+
+~~~text
+Forever Journal: Quest 747: flagged completed for this character.
+~~~
+
+`/fj status 752`
+
+~~~text
+Forever Journal: Quest 752: flagged completed for this character.
+~~~
+
+**PASS:** Commands display the expected version, current player identity and positive completion flags without errors. **FAIL:** Missing output, wrong character/class, false completion flags, or Lua/API errors. The player reported these primary tests passed, but the exact output was not pasted.
+
+### Remaining manual tests (not yet verified)
+
+1. Update all addon files (including `Modules/QuestHistory.lua` and `Modules/Character.lua`) and run `/reload`.
+2. Run `/fj version`; expect `0.3.0`. Check `/fj` for `status` and `character` commands.
+3. Run `/fj character` as Uddergrief; verify Tauren Warrior name/race/class, current level, and reported realm.
+4. Run `/fj status 747`; since "The Hunt Begins" was handed in, expect `flagged completed`.
+5. Run `/fj status 752`; since "A Humble Task" was handed in, expect `flagged completed`.
+6. Run `/fj status 99999999` and note it may report "not flagged completed" because the ID is invalid. This must NOT be displayed as proof of an uncompleted quest.
+7. Run `/fj status bananas`; verify friendly usage text and no Lua error.
+8. Run `/fj status <ID for a current accepted quest>`; verify it displays active state rather than a historical completion.
+9. Verify existing `/fj quests`, `/fj quest <ID>`, `/fj zone`, and `/fj progress 3 5` still work.
+10. Cold-restart game and verify the same quest flags. No saved variables are involved in this candidate.
+
+Record the actual game build and screenshots. Successful unit tests alone do not satisfy this checklist.
 
 ## Release policy
 
