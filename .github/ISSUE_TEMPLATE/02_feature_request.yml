@@ -1,0 +1,75 @@
+name: Feature or milestone request
+description: Propose a modular feature with explicit scope, dependencies and acceptance checks.
+title: "[Feature] "
+body:
+  - type: textarea
+    id: player_value
+    attributes:
+      label: Player problem and desired outcome
+      description: Describe the user value, not only a solution idea.
+    validations:
+      required: true
+  - type: dropdown
+    id: target
+    attributes:
+      label: Module / domain
+      options:
+        - ForeverCore
+        - ForeverDashboard
+        - ForeverJournal
+        - ForeverInventory
+        - ForeverGold
+        - ForeverProfessions
+        - ForeverFishing
+        - ForeverCooking
+        - ForeverWarrior
+        - ForeverExplorer
+        - New optional module
+        - Documentation / release engineering
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: In scope, out of scope and module dependencies
+      description: Specify optional vs required packs and whether another class/character is affected.
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: Candidate game APIs, sources and limitations
+      description: Link official/community references; distinguish proposed from verified Forever behavior.
+    validations:
+      required: false
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Implementation checklist
+      description: One actionable checkbox per development, docs, test and review task.
+      placeholder: |
+        - [ ] Implement the read-only adapter.
+        - [ ] Add mock tests and a safe no-API fallback.
+        - [ ] Document API provenance and character restrictions.
+        - [ ] Run in-game commands and record actual output.
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Acceptance criteria, commands and expected output
+      description: Each WoW command must be tested individually. Mark dynamic values and provide PASS/FAIL rules.
+      placeholder: |
+        Command: /forever modules
+        Expected: <literal output after implementation>
+        PASS when ...
+        FAIL when ...
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Dependencies, risks, rollout and rollback
+      description: Note combat protections, persistence, API uncertainty, performance or licensing.
+    validations:
+      required: false

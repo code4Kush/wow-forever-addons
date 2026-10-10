@@ -1,0 +1,74 @@
+name: Bug report
+description: Report an unexpected in-game behavior with steps and actual results.
+title: "[Bug] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Explain the visible issue and which feature pack was affected.
+      placeholder: The addon displays the wrong status for a completed quest.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior and exact output
+      description: Show expected UI text or a single WoW slash command and its expected output.
+      placeholder: |
+        Command: /fj status 747
+        Expected: Forever Journal: Quest 747: flagged completed for this character.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and reproduction
+      description: Include steps in order, actual chat output and any error text. Enter slash commands individually.
+      placeholder: |
+        1. Install Forever Journal.
+        2. Log in as a Tauren Warrior.
+        3. Type /fj status 747.
+        Actual: <paste output>
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Addon version and commit/release
+      placeholder: ForeverJournal 0.4.0 / commit SHA if known
+    validations:
+      required: true
+  - type: input
+    id: build
+    attributes:
+      label: Game flavor and full build/interface
+      description: Use /run print(GetBuildInfo()) if possible.
+      placeholder: WoW Forever beta, interface 16001, full build <value>
+    validations:
+      required: false
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Severity
+      options:
+        - Cosmetic or documentation
+        - Normal gameplay disruption
+        - Addon cannot load or crashes
+        - Potential compliance, safety or security issue
+    validations:
+      required: true
+  - type: textarea
+    id: related
+    attributes:
+      label: Screenshots, modules and related issues
+      description: Remove realm, account, or other private information you do not want publicly visible.
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Proposed verification / PASS criteria
+      description: What concrete behavior would demonstrate a fix?
+    validations:
+      required: false

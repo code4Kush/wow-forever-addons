@@ -1,0 +1,59 @@
+name: Forever API compatibility finding
+description: Record a WoW Forever beta API experiment, regression or compatibility observation.
+title: "[API] "
+body:
+  - type: input
+    id: api
+    attributes:
+      label: API or loading behavior
+      placeholder: C_QuestLog.IsQuestFlaggedCompleted
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: WoW client, full build and interface
+      description: Include the exact output of GetBuildInfo where possible.
+      placeholder: Forever beta, interface 16001, build <full build>
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence_type
+    attributes:
+      label: Evidence level
+      options:
+        - Proposed / unverified
+        - Source documented only
+        - Mocked test only
+        - Tested in real game
+        - Game test failed
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source references
+      description: Link official documentation or community references and say which are authoritative.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: One-command reproduction and expected output
+      description: Include safe read-only test steps; each WoW command is submitted individually.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Actual output, errors and screenshots
+      description: Record what happened rather than inferring a result.
+    validations:
+      required: true
+  - type: textarea
+    id: implications
+    attributes:
+      label: Impact, fallback, fix and acceptance checks
+      description: Explain downstream modules and whether a safe degraded mode is available.
+    validations:
+      required: false
