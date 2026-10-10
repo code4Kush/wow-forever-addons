@@ -322,3 +322,70 @@ PASS if no further peers or sends without renewed consent, including after /relo
 - [ ] Guild consent OFF, validation/throttle/optout verified; two-player messaging is optional until explicitly arranged.
 - [ ] No secret-value reads or data exfiltration, copied assets, memory access or automated gameplay.
 - [ ] API evidence recorded with exact full beta build and screenshots. Do not label a mock-only feature as ready for public release.
+
+## Journal Core bridge v0.5 (new separate branch, NOT IN-GAME VERIFIED)
+
+Install Core 0.2 and the Journal directory from this branch. Existing `/fj` commands retain their read-only meanings and starter catalog page layout. Use each command separately.
+
+**Command:**
+
+~~~text
+/fj version
+~~~
+
+Expected exact:
+
+~~~text
+Forever Journal: Version 0.5.0
+~~~
+
+**Command:**
+
+~~~text
+/forever pref journal off
+~~~
+
+Expected exact:
+
+~~~text
+Forever Core: journal: preference off (restart unverified).
+~~~
+
+**Command:**
+
+~~~text
+/fj journal
+~~~
+
+Expected exact while disabled:
+
+~~~text
+Forever Journal: Journal module not active: disabled.
+~~~
+
+**Command:**
+
+~~~text
+/forever pref journal on
+~~~
+
+Expected exact:
+
+~~~text
+Forever Core: journal: preference on (restart unverified).
+~~~
+
+**Command:**
+
+~~~text
+/fj journal 2
+~~~
+
+Expected beginning after re-enabling (progress numbers depend on character and may have changed):
+
+~~~text
+Forever Journal: Mulgore starter catalog: <DONE>/12 flagged complete, <ACTIVE> active.
+Forever Journal: Page 2/2 - curated sample, NOT all Mulgore quests.
+~~~
+
+PASS if quests 747 and 752 remain historically flagged completed (when applicable), the catalog is explicitly *not* the entire Mulgore quest set, a disabled Journal doesn't read quest data, and no Lua errors occur. FAIL for false zone completion, incorrect player, incomplete Core class filter, or unexpected unavailable API. Client character/game build and actual outputs are needed; mock tests are not game verification.
