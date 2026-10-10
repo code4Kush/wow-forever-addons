@@ -1,32 +1,49 @@
 # WoW: Forever API and compatibility notes
 
-Last documentary review: 2026-10-10. These are external reports, **not a record of testing the owner's own client**.
+Last documentary review: 2026-10-10. Third-party API references are **not an in-game test of 0.2.0**.
 
-## Recorded beta baseline
+## Confirmed on the player's beta client
 
-- WoW: Forever 1.60.1 beta uses TOC Interface 16001 in community-verified builds.
-- The beta product folder has been reported as _classic_beta_.
-- A modern/Mainline-style WoW UI API is used despite Forever's classic game design.
-- Addon manifests named with _Camelot.toc have been used by Forever addon developers.
+- 2026-10-10: `select(4, GetBuildInfo())` returned interface **16001**.
+- 2026-10-10: Forever Journal **0.1.0** loaded and `/fj`, `/fj version`, `/fj progress 3 5` produced the expected output.
+- Full numeric client build was **not recorded**.
+- Version **0.2.0 is not yet tested in-game**.
+
+## Community-observed beta baseline
+
+- Forever uses a modern/Mainline-style UI API. Classic Era API examples can contain missing globals.
+- Product folder is commonly `_classic_beta_`, and manifests use `_Camelot.toc`.
+- Interface 16001 is a beta observation and matches the player's current result.
 
 References:
 - https://github.com/Thunderz96/forever-addon-kit
 - https://github.com/Atraeau/WoW-Addons
 - https://github.com/Atraeau/WoW-Addons/blob/main/docs/api/README.md
-- https://www.curseforge.com/wow/addons/quest-master
 
-## Known risks
+## v0.2.0 API use: quest and map inspection
 
-- Existing Classic Era API examples may call removed globals; inspect the modern C_* namespaces first.
-- Modern WoW includes restrictions around protected actions and secret values. This project will not attempt to bypass them.
-- A 2026-09 beta report identified saved-variable loading problems. Persistent completion data must be verified across **cold game restarts** before relying on it.
+Every entry below is documented for Forever 1.60.1 by Warcraft Wiki. **The project's own client test is pending.**
 
-## APIs used by initial scaffold
+| API | Purpose | Documentation |
+| --- | --- | --- |
+| `C_QuestLog.GetNumQuestLogEntries()` | Iterate the currently loaded log, including headers | https://warcraft.wiki.gg/wiki/API:C_QuestLog.GetNumQuestLogEntries |
+| `C_QuestLog.GetInfo(index)` | Read current quest IDs, titles, header status and levels | https://warcraft.wiki.gg/wiki/API:C_QuestLog.GetInfo |
+| `C_QuestLog.IsComplete(questID)` | Check whether the quest is **ready**, not historically turned in | https://warcraft.wiki.gg/wiki/API:C_QuestLog.IsComplete |
+| `C_QuestLog.GetQuestObjectives(questID)` | Read objectives of a quest **in the log**; may return nothing while uncached | https://warcraft.wiki.gg/wiki/API:C_QuestLog.GetQuestObjectives |
+| `C_Map.GetBestMapForUnit("player")` | Read the player's current UI map | https://warcraft.wiki.gg/wiki/API:C_Map.GetBestMapForUnit |
+| `C_Map.GetMapInfo(mapID)` | Read the map's human-readable name | https://warcraft.wiki.gg/wiki/API:C_Map.GetMapInfo |
+| `GetZoneText()` | Fallback zone name if map API gives no usable result | https://warcraft.wiki.gg/wiki/API:GetZoneText |
 
-- CreateFrame("Frame") and PLAYER_LOGIN to mark readiness: conventional WoW event use, **not individually validated in Forever by this project**.
-- SlashCmdList and SLASH_FOREVERJOURNAL1 to register /fj: conventional WoW slash-command use, **not individually validated in Forever by this project**.
-- No quest, map, collection, combat, or persistence APIs are currently invoked.
+## Risks and design safeguards
+
+- No active quest-log function provides a complete zone-wide checklist. We cannot calculate total zone completion from `GetNumQuestLogEntries`.
+- A quest ready to hand in is still in the log. `IsComplete` is **not** a "quest turned in historically" flag.
+- Do not assume zone category headers map to the player's physical location.
+- Quest information may be uncached. Do not report a missing objective as incomplete or failed.
+- `QUEST_LOG_UPDATE` can fire frequently. We do **not** register for it in 0.2.0; reads happen only on command.
+- The modern UI has protected/secret value restrictions. This addon does not act on combat or hidden data.
+- Beta saved-variable behavior has varied; 0.2.0 deliberately does not persist quest history.
 
 ## Evidence convention
 
-Each future API entry should include function/event name, source URL, client build, date, whether tested in-game, expected behavior, and limitations. Never translate reported beta behavior into an unconditional guarantee.
+For each future API, capture source URL, observation date, game build, in-game test steps and result, and known limitations. Community documentation and a working in-game result are separate categories of evidence.

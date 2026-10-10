@@ -7,7 +7,7 @@
 local addonName, addon = ...
 
 addon.name = addonName
-addon.version = "0.1.0"
+addon.version = "0.2.0"
 
 --- Prints a readable, consistently prefixed addon message.
 ---
