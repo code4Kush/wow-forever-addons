@@ -49,3 +49,18 @@ References:
 ## Evidence convention
 
 Each future API entry should include function/event name, source URL, client build, date, whether tested in-game, expected behavior, and limitations. Never translate reported beta behavior into an unconditional guarantee.
+
+## Suite candidate APIs (2026-10-10; **NOT YET LIVE VERIFIED**)
+
+| Pack | API | Source / specific limits |
+| --- | --- | --- |
+| Dashboard | CreateFrame, UIParent, CreateFontString, CreateTexture | Conventional WoW UI frame APIs; on-demand only, no protected actions |
+| Inventory | C_Container.GetContainerNumSlots, C_Container.GetContainerItemInfo | https://warcraft.wiki.gg/wiki/API:C_Container.GetContainerItemInfo ; only bags 0–4, nil is unknown |
+| Gold | GetMoney | Read-only current player copper; no claim of profit/market price |
+| Professions | GetProfessions, GetProfessionInfo | Conventional UI profession functions, must be game-tested for Forever beta |
+| Fishing/Cooking | C_TradeSkillUI.GetBaseProfessionInfo | https://warcraft.wiki.gg/wiki/API:C_TradeSkillUI.GetBaseProfessionInfo ; available when the corresponding skill UI is displayed; absence not proof of unlearned |
+| Explorer | C_Map.GetBestMapForUnit, C_Map.GetMapInfo | https://warcraft.wiki.gg/wiki/API:C_Map.GetBestMapForUnit ; returns lowest UI map, not zone completion |
+| Guild | C_ChatInfo.RegisterAddonMessagePrefix, C_ChatInfo.SendAddonMessage, CHAT_MSG_ADDON | https://warcraft.wiki.gg/wiki/API_C_ChatInfo.RegisterAddonMessagePrefix and https://warcraft.wiki.gg/wiki/API:C_ChatInfo.SendAddonMessage ; prefix <=16 bytes, payload <=255 bytes; messages throttled, sending accepted doesn't prove delivery |
+| Core Profiles | SavedVariablesPerCharacter | Experimental Forever beta retention; user cold-restart test required |
+
+These are source-reviewed API candidates, not assertions that a particular WoW beta build safely supports them. Any real-client failures must be documented against the exact full build before advertising features to others.
