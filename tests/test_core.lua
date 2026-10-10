@@ -25,6 +25,9 @@ end
 local frame = { registeredEvents = {} }
 
 function frame:RegisterEvent(event)
+    if event == "INVALID_TEST_EVENT" then
+        error("unsupported game event")
+    end
     self.registeredEvents[event] = true
 end
 
@@ -238,6 +241,21 @@ Expect(core.GetModuleStatus("broken").state == "error",
     "Event callback exception must mark module as errored")
 Expect(not core.GetModuleStatus("broken").active,
     "Errored module should be removed from event delivery")
+
+-- An invalid WoW event must not crash the shared Core event bridge.
+-- The earlier PLAYER_LEVEL_UP subscription is rolled back for this module.
+local listenerCountBefore = core.GetSubscriberCount("PLAYER_LEVEL_UP")
+accepted = core.RegisterModule(FakeDescriptor("bad-event", {
+    events = { "PLAYER_LEVEL_UP", "INVALID_TEST_EVENT" },
+    OnEvent = function() end,
+}))
+Expect(accepted, "Invalid-event module registers for diagnostics")
+Expect(core.GetModuleStatus("bad-event").state == "error",
+    "Invalid WoW event registration should mark only that module as errored")
+Expect(core.GetSubscriberCount("PLAYER_LEVEL_UP") == listenerCountBefore,
+    "Failed event registration must not leave an orphan subscription")
+Expect(core.GetModuleStatus("probe-general").state == "active",
+    "A healthy pack must remain active despite another pack's bad event")
 
 ClearOutput()
 SlashCmdList.FOREVERCORE("status absent-pack")
