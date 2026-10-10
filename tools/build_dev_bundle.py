@@ -173,7 +173,18 @@ def read_module_files(name: str, addons: Path = ADDON_ROOT) -> dict[str, bytes]:
         size = item.stat().st_size
         if size > MAX_SOURCE_SIZE:
             raise BundleError(name + " exceeds per-file source size bound.")
-        discovered[relative] = item.read_bytes()
+        data = item.read_bytes()
+        # Public source must remain inspectable plain UTF-8. Reject bytecode,
+        # NULs and terminal controls rather than packaging unreadable Lua
+        # or disguised scripts into a distributable-looking DEV archive.
+        try:
+            data.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise BundleError(name + " contains non-UTF8 source: " + relative) from exc
+        if any(byte < 32 and byte not in (9, 10, 13) or byte == 127
+               for byte in data):
+            raise BundleError(name + " contains control bytes: " + relative)
+        discovered[relative] = data
 
     if len(discovered) > MAX_FILES_PER_PACK:
         raise BundleError(name + " exceeds file-count bound.")
