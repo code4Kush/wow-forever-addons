@@ -11,7 +11,7 @@ local _, core = ...
 local function PrintHelp()
     core.Print("Commands: /forever version | modules | status <id> | character")
     core.Print("/forever enable <id> | disable <id> | listeners <EVENT>")
-    core.Print("/forever pref <id> on|off | profile | marker [test-id]")
+    core.Print("/forever pref <id> on|off | profile | marker [test-id] | memory")
     core.Print("Enable/disable is SESSION ONLY; pref/marker persistence is UNVERIFIED.")
 end
 
@@ -107,6 +107,20 @@ local function HandleSlashCommand(message)
         else
             core.Print(id .. ": preference " .. choice
                 .. " (restart unverified).")
+        end
+        return
+    end
+
+    if command == "memory" then
+        if argument ~= "" then
+            core.Print("Usage: /forever memory")
+            return
+        end
+        local providers = core.FindCapabilityProviders("performance.memory")
+        if #providers > 0 then
+            core.Print("Memory diagnostics: use /fperf memory, details, baseline or delta.")
+        else
+            core.Print("Memory diagnostics unavailable: install and enable ForeverPerformance.")
         end
         return
     end

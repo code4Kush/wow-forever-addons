@@ -32,3 +32,5 @@ jobs:
         run: lua5.1 tests/test_journal.lua
       - name: Run Journal Core bridge tests
         run: lua5.1 tests/test_journal_bridge.lua
+      - name: Run Forever Performance memory tests
+        run: lua5.1 tests/test_performance.lua

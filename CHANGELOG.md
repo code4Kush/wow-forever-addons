@@ -4,6 +4,15 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### ForeverPerformance 0.1.0 (M12, optional development candidate, NOT YET LIVE TESTED)
+
+- New independent performance diagnostics pack measures *known Core-registered Forever addon* attributed KB on demand.
+- Displays bounded total/top-3 summary, optional per-addon details, manually captured session baseline and signed differences. Core `/forever memory` only points to the optional pack.
+- No background events, timers, automatic garbage collection, SavedVariables, CPU profiling or external telemetry. Missing/invalid memory APIs report unavailable instead of inventing zeroes.
+- Earlier user-measured Dashboard usage fell from 150.07 KB to 31.90 KB after manual GC; this is an observation, not proof of absence of memory leaks.
+
+
+
 ### Journal 0.5.0 Core integration candidate (MOCK TESTS ONLY)
 - Imported existing 0.4.0 quest log/history/curated Tauren Mulgore data into modular suite development branch.
 - Journal now depends on Core 0.2.0 and follows character-level module enablement for data-reading commands.

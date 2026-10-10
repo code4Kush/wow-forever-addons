@@ -42,3 +42,7 @@ Run `lua5.1 tests/test_core.lua` and all pre-existing tests. GitHub Actions veri
 Adds `## SavedVariablesPerCharacter: ForeverCharacterDB` and a schema-versioned profile module. `/forever profile` reports schema and preference count; `/forever pref <module-id> on|off` requests the current character's default on next login; existing `/forever enable|disable` still controls only the current session. `/forever marker test-ud-01` writes a harmless marker to verify after a FULL game quit/restart.
 
 **Important:** The Forever beta may fail to restore saved variables. A writable in-memory Lua table is not evidence of persistence. `docs/SUITE_TESTING.md` provides separately submitted commands and expected outputs; do not ship a claim of durable profiles until the test succeeds on the actual client. Unknown or malformed schemas are kept read-only rather than silently overwritten.
+
+## Optional memory diagnostic navigation (PR #27)
+
+The `/forever memory` command checks whether an **active** module provides the `performance.memory` capability. If the optional `ForeverPerformance` addon is installed, it prints the `/fperf` commands; if absent/disabled, it prints an installation hint. **Core does not sample memory, create reports or poll anything by itself.** Core 0.2 and all existing commands retain their previous behavior; see `addons/ForeverPerformance/README.md`.
