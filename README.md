@@ -1,5 +1,8 @@
 # WoW Forever Addons
 
+> **Complete modular beta development candidate — [draft PR #41](https://github.com/code4Kush/wow-forever-addons/pull/41).** Exactly **12 independent addon folders** (ForeverCore + 11 optional packs). Fishing 0.3, Cooking 0.2, Warrior 0.2 and Performance 0.2 add a profession-list skill reader, manual Cooking ingredient plan, manual tank-readiness marks and bounded memory report rankings. A developer ZIP and SHA256SUMS file are generated **only after full CI passes**; they're short-lived Actions artifacts, **not public player releases**. Read [single-install/single-test guide](docs/FULL_BETA_ACCEPTANCE.md). The full candidate is **NOT yet verified in the real Forever client** and remains unmerged pending user test, source/security/license/policy and owner approval.
+
+
 > **Integrated modular DEV candidate (draft PR #37; no public release):** Twelve independent addon directories now support a reproducible **offline** developer ZIP: Core-only, Tank, Professions, Full, or custom subsets. Dashboard v0.2 paginates Core module statuses without background polling. [Build instructions](docs/FULL_SUITE_TESTING.md) · [Market/architecture comparison](docs/MARKET_AND_PERFORMANCE.md) · [Integration PR #37](https://github.com/code4Kush/wow-forever-addons/pull/37). Initial component in-game passes apply only to earlier versions on Forever build 70338; the **full integrated candidate remains NOT LIVE VERIFIED**. Full source license, public security and release approval remain outstanding.
 
 
