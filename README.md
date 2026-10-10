@@ -2,7 +2,7 @@
 
 A readable, documented collection of World of Warcraft: Forever addons.
 
-**Status:** ForeverCore M1 0.1.0 candidate exists on a feature branch; it has not been tested in-game. The existing Journal 0.1.0 on main remains unchanged; Journal 0.2–0.4 features are in separate review branches.
+**Status:** ForeverCore M1 is in a draft PR with partial player-reported in-game PASS; other acceptance steps remain. The optional ForeverWarrior 0.1.0 starter exists on a stacked feature branch and is NOT yet game-tested. The existing Journal 0.1.0 on main remains unchanged; Journal 0.2–0.4 features are in separate review branches.
 
 ## Guiding principles
 
@@ -24,6 +24,13 @@ addons/
     Registry.lua
     Events.lua
     Commands.lua
+  ForeverWarrior/
+    ForeverWarrior_Camelot.toc
+    Bootstrap.lua
+    Plans.lua
+    Module.lua
+    Commands.lua
+    README.md
   ForeverJournal/
     ForeverJournal_Camelot.toc
     Core/
@@ -37,6 +44,7 @@ docs/
 tests/
   test_progress.lua
   test_core.lua
+  test_warrior.lua
 test-addons/
   ForeverProbeGeneral/
   ForeverProbeWarrior/
@@ -51,6 +59,10 @@ CHANGELOG.md
 ## M1 candidate: Forever Core
 
 A separate Core addon provides runtime character identity, a versioned module registry, class eligibility, safe event subscription cleanup, and session-only module toggles. This foundation has **no UI and no SavedVariables**. It currently coexists alongside the existing ForeverJournal but does not yet integrate it. Install and run exact tests from [docs/CORE_TESTING.md](docs/CORE_TESTING.md), then read [docs/CORE_CONTRACT.md](docs/CORE_CONTRACT.md).
+
+## M9 candidate: Forever Warrior
+
+A separate **Warrior-only** addon, stacked on the unmerged ForeverCore M1 PR, offers `/fw plan`, `/fw ready`, and `/fw professions` with level-banded guidance and explicitly **manual** dungeon preparation. It does not inspect talents, professions, gear or combat logs. It is not yet verified in game. See [ForeverWarrior README](addons/ForeverWarrior/README.md) and [WARRIOR_TESTING.md](docs/WARRIOR_TESTING.md) for commands with expected output.
 
 ## First addon: Forever Journal
 
