@@ -184,7 +184,7 @@ Expected format if returned by client:
 
 ~~~text
 Forever Fishing: Fishing: <SKILL>/<MAX> (open profession window).
-Forever Fishing: Catches are NOT tracked; no auto-fishing.
+Forever Fishing: Catches are manually logged only; no auto-fishing.
 ~~~
 
 If Fishing skill cannot be read, first line is exactly `Forever Fishing: Fishing skill not readable; open Fishing UI and retry.`, second line unchanged. **Do not assume not learned** from an unavailable window.
@@ -389,3 +389,13 @@ Forever Journal: Page 2/2 - curated sample, NOT all Mulgore quests.
 ~~~
 
 PASS if quests 747 and 752 remain historically flagged completed (when applicable), the catalog is explicitly *not* the entire Mulgore quest set, a disabled Journal doesn't read quest data, and no Lua errors occur. FAIL for false zone completion, incorrect player, incomplete Core class filter, or unexpected unavailable API. Client character/game build and actual outputs are needed; mock tests are not game verification.
+
+## Integrated development candidate (2026-10-10)
+
+This earlier suite plan covers initial Core 0.2 candidates and may include
+older module versions. The newer stacked integration branch updates
+Dashboard to v0.2, Gold v0.2, Professions v0.3 and Fishing v0.2.
+For a **complete modular dev ZIP** and current one-command-at-a-time
+acceptance steps, prefer [FULL_SUITE_TESTING.md](FULL_SUITE_TESTING.md).
+Mocks and individual earlier user-reported passes do not establish
+compatibility of all packs installed together on game build 70338.

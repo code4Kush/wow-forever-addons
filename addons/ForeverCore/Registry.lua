@@ -313,7 +313,29 @@ function core.DispatchEvent(eventName, ...)
         return
     end
 
-    -- Build a stable ID snapshot in case an event handler disables a module.
+    -- Fast path: most optional events have only one subscriber (e.g.,
+    -- Guild's CHAT_MSG_ADDON). Do not allocate/sort an ID array for each
+    -- incoming message. Retain the full sorted snapshot below when more
+    -- than one feature subscribes, to isolate mid-dispatch changes.
+    local firstId = next(group)
+    if firstId and next(group, firstId) == nil then
+        local record = registered[firstId]
+        if record and record.active and subscribers[eventName]
+            and subscribers[eventName][firstId] then
+            local success, errorMessage = SafeCall(
+                record, "OnEvent", eventName, ...
+            )
+            if not success then
+                record.error = "OnEvent failed: " .. errorMessage
+                Stop(record)
+                core.Print(firstId .. ": disabled after an event error.")
+            end
+        end
+        return
+    end
+
+    -- Multiple subscribers may disable each other while dispatching.
+    -- Snapshot and sort only this rarer case for deterministic delivery.
     local ids = {}
     for moduleId in pairs(group) do
         ids[#ids + 1] = moduleId

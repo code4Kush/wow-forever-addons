@@ -1,8 +1,8 @@
 ## Interface: 16001
 ## Title: Forever Dashboard
-## Notes: Movable, on-demand registered-module window; optional ForeverCore pack
+## Notes: Lazy, paginated registered-module navigator; optional Core pack
 ## Author: code4Kush
-## Version: 0.1.0
+## Version: 0.2.0
 ## Dependencies: ForeverCore
 
 Bootstrap.lua

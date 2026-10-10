@@ -1,33 +1,104 @@
-# ForeverDashboard — 0.1.0 candidate
+# ForeverDashboard 0.2 — optional lazy module hub
 
-**State:** NEW AND NOT YET TESTED IN THE REAL FOREVER CLIENT. This is a free, independent, unendorsed community WoW addon candidate.
+**Status:** Development candidate in [draft PR #37](https://github.com/code4Kush/wow-forever-addons/pull/37). Lua 5.1 mock tests assert one reusable frame/label and bounded paging, but the new UI has **not yet been verified in game** on WoW Forever 1.60.1 build 70338.
 
-## What it does
+## Purpose
 
-movable on-demand frame listing active feature packs; no saved position, automatically hides on Core disable, no combat UI. The code runs only after the player invokes a command, except the small Core-managed event registration lifecycle. It never casts spells, equips items, crafts, sells, plays the game, or transmits data externally.
+A small, optional, draggable window for showing exactly which **installed and Core-registered** modules are active, disabled, ineligible, blocked, or unavailable. Up to six modules per page. Core handles actual lifecycle; Dashboard **never** disables or enables another pack automatically.
 
-**Depends on:** ForeverCore **0.2.0 or later**. No other optional packs required. Only an installed and active pack responds.
+Modules not installed or disabled in the game's **AddOns** screen do not load and cannot register; Dashboard must not invent their presence. Core-logically-disabled modules can still occupy Lua memory until interface reload, so Dashboard shows their disabled status instead of pretending they were unloaded.
 
-## Install or uninstall
+## Installation
 
-Copy the entire `addons/ForeverDashboard/` folder to WoW Forever's `Interface/AddOns/ForeverDashboard/` directory while the client is closed, along with the required `addons/ForeverCore/` package. Enable the addon in WoW's AddOns interface, then reload. To uninstall, quit WoW and remove only this addon directory. The Core should remain installed for other packs.
+The only dependency is `ForeverCore` 0.2+. Copy the entire `addons/ForeverDashboard/` directory to WoW beta's `Interface/AddOns/ForeverDashboard/` while the client is closed and enable it in the AddOns menu. No other optional pack is required. A full modular test build may instead be assembled with `python3 tools/build_dev_bundle.py --profile full --output dist/ForeverSuite-full-DEV.zip`. See [FULL_SUITE_TESTING.md](../../docs/FULL_SUITE_TESTING.md).
 
-The `## Interface: 16001` and `_Camelot.toc` suffix are based on previously observed beta behavior; **full current game-build verification remains pending**.
+## Single-command WoW chat interface
 
-## Command (one chat submission)
+**Toggle the dashboard:**
 
-```text
+~~~text
 /fdash
-```
+~~~
 
-Expected exact/dynamic output and explicit PASS/FAIL rules are in [SUITE_TESTING.md](../../docs/SUITE_TESTING.md). Enter each WoW command independently.
+Expected exact on first open:
 
-To change this pack's per-character preference (example only, replace `<module-id>` with the identifier documented in the Core module list), use `/forever pref <module-id> off` or `on`. **SavedVariables reliability is not established** until testing after a complete game quit and restart.
+~~~text
+Forever Dashboard: Dashboard shown.
+~~~
 
-## Game API and limitations
+Enter the same command separately to close; expected exact:
 
-Frame/UIParent/CreateFontString/CreateTexture; only after a player opens it. Calls are guarded and return an explicit unavailable message if needed. Mock tests do not demonstrate real-client compatibility. See [API_NOTES.md](../../docs/API_NOTES.md).
+~~~text
+Forever Dashboard: Dashboard hidden.
+~~~
 
-## Privacy and licensing
+**Next page:**
 
-No third-party SDKs or telemetry included. No separate license has yet been chosen for the public repository, and no packaged player release has been approved. See the project root [README](../../README.md) and security policy PR #20.
+~~~text
+/fdash next
+~~~
+
+Expected when at least seven registered modules exist:
+
+~~~text
+Forever Dashboard: Dashboard page 2/<PAGES>.
+~~~
+
+Pages clamp to the available registered packs. For fewer than seven, expect `Dashboard page 1/1.`
+
+**Previous page:**
+
+~~~text
+/fdash prev
+~~~
+
+Expected when there are two pages:
+
+~~~text
+Forever Dashboard: Dashboard page 1/2.
+~~~
+
+**Local status report without creating a frame:**
+
+~~~text
+/fdash status
+~~~
+
+Expected format:
+
+~~~text
+Forever Dashboard: <N> registered module(s); <ACTIVE> active. (Core logical disabling does not unload Lua.)
+~~~
+
+**Version:**
+
+~~~text
+/fdash version
+~~~
+
+Expected exact:
+
+~~~text
+Forever Dashboard: Version 0.2.0
+~~~
+
+**Help:**
+
+~~~text
+/fdash help
+~~~
+
+Expected exact:
+
+~~~text
+Forever Dashboard: Commands: /fdash | next | prev | status | version | help
+Forever Dashboard: On-demand, six module rows per page; never polls.
+~~~
+
+## Performance, boundaries and risks
+
+The pack registers **no game events**, performs no idle work, creates the first frame on the first visible window open, then reuses one frame and one font label for every page. `/fdash status` only requests one current Core registry snapshot and never allocates a frame. It does not use `OnUpdate`, timers, SavedVariables, permanent UI tracking or network connections. Frame movement is explicitly user initiated and guarded during combat. If UI APIs are missing, commands produce an unavailable line instead of crashing.
+
+Lua mocked tests check frame/label creation count and legacy toggle regression. **This is not a measured in-game memory or FPS comparison.** The earlier Dashboard 0.1 observed 11.32 KB at first and 31.90 KB after manually collecting garbage during repeated open/close testing; those observations were not made on this version and cannot be used to claim v0.2 optimization.
+
+Source is readable, free development code but repository license, security and public-release gates remain unfinished. Nothing here authorizes a public player release.
