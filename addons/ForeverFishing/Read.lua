@@ -28,5 +28,5 @@ function addon.Render()
     else
         addon.Print("Fishing skill not readable; open Fishing UI and retry.")
     end
-    addon.Print("Catches are NOT tracked; no auto-fishing.")
+    addon.Print("Catches are manually logged only; no auto-fishing.")
 end

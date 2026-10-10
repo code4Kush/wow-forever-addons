@@ -40,3 +40,5 @@ jobs:
         run: lua5.1 tests/test_professions.lua
       - name: Run Forever Professions goal tests
         run: lua5.1 tests/test_profession_goals.lua
+      - name: Run Forever Fishing manual catch tests
+        run: lua5.1 tests/test_fishing.lua

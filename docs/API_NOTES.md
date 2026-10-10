@@ -97,3 +97,10 @@ These are source-reviewed API candidates, not assertions that a particular WoW b
 - `/fprof goals` reads existing visible ranks on demand (never in a timer, frame update, or game event), lists up to 5 goals, and treats missing/unreadable skills as **remaining unknown**, not rank zero.
 - `/fprof ungoal <name>` and `/fprof goals clear` make no game API calls; Core disable and interface reload clear session goals. `/fprof clear` continues clearing only the unrelated v0.2 session snapshot. The two stores never persist across reloads.
 - **No crafting, auto-fishing, vendor actions, telemetry, or saved account/game data.** Manual test: [PROFESSION_GOALS_TESTING.md](PROFESSION_GOALS_TESTING.md).
+
+## ForeverFishing v0.2 — manual catch tally (2026-10-10)
+
+- **No new game API.** The original `/ffish` invokes `C_TradeSkillUI.GetBaseProfessionInfo()` only when explicitly requested, requires the Fishing trade skill view to expose the correct profession and retains an unavailable fallback. This particular API path is **not yet game-tested** for ForeverFishing on the player's client build 70338. The player's `/fprof` output relied on distinct `GetProfessions`/`GetProfessionInfo` APIs, so don't transfer that PASS as evidence to `C_TradeSkillUI`.
+- **New commands:** `/ffish log <1-999> <fish name>`, `/ffish catches`, `/ffish clear` operate only on local, **explicitly player-entered notes** and make **zero game API calls**. Counts are not validated catches, inventory, market sales, cooking ingredients or gold income.
+- **Bounds:** maximum 10 species, 9999 per species, 99999 total; 60-byte name bound; reject WoW color/link escape pipe and control characters; preserve first entered display spelling and group case-insensitively. Output is bounded to at most 11 lines per request. No SavedVariables or events; Core disable and interface reload clear all notes.
+- **Evidence:** Lua 5.1 mocks are a separate test layer; new client feature is **NOT YET VERIFIED on Forever 1.60.1 build 70338**. Exact single-command manual acceptance plan at [FISHING_TESTING.md](FISHING_TESTING.md).

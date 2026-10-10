@@ -1,11 +1,12 @@
 ## Interface: 16001
 ## Title: Forever Fishing
-## Notes: Read-only fishing skill view; optional ForeverCore pack
+## Notes: On-demand skill and manual session-only fish catch notes
 ## Author: code4Kush
-## Version: 0.1.0
+## Version: 0.2.0
 ## Dependencies: ForeverCore
 
 Bootstrap.lua
 Module.lua
 Read.lua
+Catches.lua
 Commands.lua

@@ -4,6 +4,15 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### ForeverFishing 0.2.0 — Sprint 4 manual catch notes (NOT GAME-TESTED)
+
+- Preserves `/ffish` read-only Fishing skill view and v0.1 safe fallback.
+- Adds `/ffish log <count> <fish name>`, `/ffish catches` and `/ffish clear` for **user-entered notes**, not verified catches or actual inventory.
+- Local session-only bounded counts (10 species, 9999 per species); Core disable/reload cleans up. No Lua hooks, game loot APIs, fishing automation, transmissions or SavedVariables.
+- Dedicated Lua 5.1 mocked tests and separate per-command live test plan. User acceptance on beta build 70338 is pending.
+
+
+
 ### ForeverProfessions 0.3.0 — Sprint 3 manual skill targets (NOT LIVE VERIFIED)
 
 - Adds session-only manual profession goals: `/fprof goal <name> <rank>`, `/fprof goals`, `/fprof ungoal <name>`, `/fprof goals clear`.

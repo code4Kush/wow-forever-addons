@@ -18,7 +18,7 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 | ForeverInventory | `inventory` | `/finv` | Counts current backpack and equipped bags | Bank, equipment rankings, selling, AH pricing |
 | ForeverGold | `gold` | `/fgold` | Current wallet + manual baseline and signed net delta (v0.2 candidate) | Transaction categories, actual income/profit, AH prices, saved history |
 | ForeverProfessions | `professions` | `/fprof` | Read-only current skills, session snapshots/progress and up to 5 manually set goals (v0.3 candidate) | Automatic training/crafting, persistently saved skills, recipes |
-| ForeverFishing | `fishing` | `/ffish` | Reads Fishing profession skill when its UI exposes data | Catch history, bait database, fishing automation |
+| ForeverFishing | `fishing` | `/ffish` | Fishing skill readout plus manual, session-only player-entered catch notes (v0.2 candidate) | Verified loot detection, auto-fishing, pricing, saved catch history |
 | ForeverCooking | `cooking` | `/fcook` | Reads Cooking profession skill when its UI exposes data | Ingredient planner, recipe history |
 | ForeverWarrior | `forever-warrior` | `/fw` | Leveling advice, manual dungeon preparation checklist | Tank threat automation, protected combat analysis |
 | ForeverExplorer | `explorer` | `/fexplore` | Current lowest UI map name/ID | Confirmed map discovery or zone-exploration completion |
@@ -69,3 +69,7 @@ On-demand tests, example one-command-per-block outputs, user-reported historical
 ## Professions Sprint 3 (draft PR #33)
 
 `ForeverProfessions` v0.3 adds the **independent manual skill-goal** feature: `/fprof goal <name> <rank>`, `/fprof goals`, `/fprof ungoal <name>`, `/fprof goals clear`. Goal rank must be within the current client-reported cap. At most five session-only targets are stored; no additional game APIs, continuous timers, or SavedVariables. Snapshot/progress works separately and is not erased by goal updates. **New goal feature NOT YET LIVE TESTED** on build 70338; see [PROFESSION_GOALS_TESTING.md](PROFESSION_GOALS_TESTING.md).
+
+## Fishing Sprint 4 (draft PR #35)
+
+`ForeverFishing` v0.2 adds **only explicit manual** `/ffish log <count> <fish name>`, `/ffish catches`, and `/ffish clear`. This does **not** inspect bags, loot or inventory or prove any fish was caught. Ten species max, local session memory only, no new APIs or background events, no guild/network sends. The older `/ffish` requires a separate `C_TradeSkillUI` path, not established by the user's `/fprof` live success. See [FISHING_TESTING.md](FISHING_TESTING.md). Live v0.2 test PENDING on build 70338.
