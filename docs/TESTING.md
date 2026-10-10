@@ -19,7 +19,21 @@ The second script mocks the WoW C_QuestLog and C_Map namespaces and exercises fi
 
 GitHub Actions runs both tests on pull requests. These mock tests cannot validate live game API compatibility.
 
-## 0.2.0 in-game checklist — not yet performed
+## 0.2.0 in-game checklist — partial manual pass (2026-10-10)
+
+A user-provided game screenshot shows live Forever Journal chat output in Red Cloud Mesa. User also confirmed the addon displays quest status and ready-to-turn-in state.
+
+**Confirmed by screenshot + user report:**
+
+- `/fj quest 747`: "The Hunt Begins" appears as not ready to turn in, with objective text "5/7 Plainstrider Meat" and "4/7 Plainstrider Feather".
+- `/fj quest 752`: "A Humble Task" appears as ready to turn in. Addon prints "No objective rows were returned for this quest" rather than crashing.
+- The objective tracker in the game screenshot independently displays the same current meat and feather counts.
+- The command help shown in chat includes the new `/fj quest <ID>` functionality, supporting that the updated addon is loaded.
+- The user reports the addon lists current quest information. The screenshot itself does not show the entire output of `/fj quests`.
+
+**Not yet confirmed:** `/fj zone` response, version command explicitly showing 0.2.0, pagination with >6 quests, invalid-argument handling, live objective refresh after progress, cold restart, and full numeric client build. Do not mark the overall checklist complete yet.
+
+### Remaining manual checklist
 
 Record the full `/run print(GetBuildInfo())` output or equivalent client build information, OS and addon install path.
 
