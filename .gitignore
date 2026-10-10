@@ -1,0 +1,17 @@
+# OS and editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*.log
+*.swp
+*~
+# Locally generated test and coverage artifacts
+coverage/
+*.luac
+# Local machine settings and game data
+.env
+.env.*
+wow-dev.config.local.json
+WTF/
+Cache/
+Logs/

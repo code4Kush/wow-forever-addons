@@ -1,0 +1,10 @@
+## Interface: 16001
+## Title: Forever Journal
+## Notes: A minimal foundation for a World of Warcraft: Forever completionist journal
+## Author: code4Kush
+## Version: 0.1.0
+
+Core/Bootstrap.lua
+Modules/Progress.lua
+Core/Events.lua
+Core/Commands.lua
