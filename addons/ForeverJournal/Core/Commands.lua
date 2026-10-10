@@ -12,6 +12,7 @@ local MAX_QUEST_ID = 100000000
 local function PrintHelp()
     addon.Print("Commands: /fj, /fj version, /fj progress <completed> <total>")
     addon.Print("/fj zone | /fj quests [page] | /fj quest <questID>")
+    addon.Print("/fj status <questID> | /fj character")
 end
 
 --- Parses a positive decimal integer without accepting signs or fractions.
@@ -155,6 +156,82 @@ local function PrintQuestDetails(argument)
     end
 end
 
+
+--- Reports a quest's historical completion flag and, where relevant,
+--- whether the quest remains in the character's active quest log.
+---
+--- @param argument string Quest identifier entered by the player.
+local function PrintHistoricalQuestStatus(argument)
+    local questID = ParsePositiveInteger(argument, MAX_QUEST_ID)
+
+    if not questID then
+        addon.Print("Usage: /fj status <questID>")
+        return
+    end
+
+    local flaggedCompleted, completionError = addon.QuestHistory.IsFlaggedCompleted(questID)
+
+    if flaggedCompleted == nil then
+        addon.Print(completionError)
+        return
+    end
+
+    if flaggedCompleted then
+        addon.Print(string.format(
+            "Quest %d: flagged completed for this character.",
+            questID
+        ))
+        return
+    end
+
+    local activeQuest, activeError = addon.QuestLog.FindActiveQuest(questID)
+
+    if activeError then
+        addon.Print(string.format(
+            "Quest %d: not flagged completed; active status unavailable.",
+            questID
+        ))
+        return
+    end
+
+    if activeQuest then
+        local readiness = activeQuest.isComplete == true
+            and "ready to turn in" or "in progress"
+
+        addon.Print(string.format(
+            "%s (quest %d): active, %s; not flagged completed.",
+            activeQuest.title,
+            questID,
+            readiness
+        ))
+        return
+    end
+
+    addon.Print(string.format(
+        "Quest %d: not flagged completed; it may be unaccepted, abandoned, or invalid.",
+        questID
+    ))
+end
+
+--- Prints the current player identity as reported by the game.
+---
+--- The identity is detected at runtime and is not hardcoded to any player.
+local function PrintCharacter()
+    local identity = addon.Character.GetIdentity()
+
+    if identity.realm then
+        addon.Print(string.format(
+            "%s - %s %s - level %s - realm %s",
+            identity.name, identity.race, identity.class, identity.level, identity.realm
+        ))
+    else
+        addon.Print(string.format(
+            "%s - %s %s - level %s",
+            identity.name, identity.race, identity.class, identity.level
+        ))
+    end
+end
+
 --- Handles a player-entered /fj command.
 ---
 --- @param message string|nil Arguments entered after /fj.
@@ -206,6 +283,21 @@ local function HandleSlashCommand(message)
 
     if command == "quest" then
         PrintQuestDetails(arguments)
+        return
+    end
+
+    if command == "status" then
+        PrintHistoricalQuestStatus(arguments)
+        return
+    end
+
+    if command == "character" then
+        if arguments ~= "" then
+            addon.Print("Usage: /fj character")
+            return
+        end
+
+        PrintCharacter()
         return
     end
 

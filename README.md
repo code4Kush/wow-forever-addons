@@ -2,7 +2,7 @@
 
 A readable, documented collection of World of Warcraft: Forever addons.
 
-**Status:** Early development. Forever Journal **0.2.0 candidate** adds an on-demand, read-only view of active quests and objectives; this version is **not yet tested in-game**. The previous version 0.1.0 was verified by the player on interface 16001.
+**Status:** Early development. Forever Journal **0.3.0 candidate** adds read-only per-quest historical completion flag queries and player identity. It is **not yet tested in-game**. Core 0.2.0 quest and zone features were user-verified on interface 16001.
 
 ## Guiding principles
 
@@ -30,6 +30,7 @@ docs/
 tests/
   test_progress.lua
   test_questlog.lua
+  test_history.lua
 .github/workflows/
   lua-tests.yml
 AGENTS.md
@@ -46,15 +47,17 @@ CHANGELOG.md
 - `/fj zone` — report current map/area
 - `/fj quests [page]` — show six active quest-log entries per page
 - `/fj quest <ID>` — show quest objectives and readiness to turn in
+- `/fj status <ID>` — query a historical completion flag, then active status if needed
+- `/fj character` — identify the current player in-game
 
-This is **not** a comprehensive zone completion tracker. It only inspects currently accepted quests. See `addons/ForeverJournal/README.md`.
+This is **not** a comprehensive zone completion tracker. It reads the active log and checks historical completion for a specific quest ID on demand; it does not provide a full database of known quests. See `addons/ForeverJournal/README.md`.
 
 ## Get started
 
 1. Read `docs/DEVELOPMENT.md` and `docs/API_NOTES.md`.
 2. Copy **all files** under `addons/ForeverJournal` to the beta client's `Interface/AddOns/ForeverJournal` directory.
 3. Log into the game, verify the addon is enabled, and type `/fj version`.
-4. Run both tests locally: `lua5.1 tests/test_progress.lua` and `lua5.1 tests/test_questlog.lua`.
+4. Run all tests locally: `lua5.1 tests/test_progress.lua`, `lua5.1 tests/test_questlog.lua`, and `lua5.1 tests/test_history.lua`.
 
 The recorded beta interface number is 16001; verify client API behavior after updates. Avoid assuming that the current API matches Classic Era simply because the setting is vanilla-inspired.
 

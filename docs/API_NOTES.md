@@ -38,6 +38,19 @@ Every entry below is documented for Forever 1.60.1 by Warcraft Wiki. **The proje
 | `C_Map.GetMapInfo(mapID)` | Read the map's human-readable name | https://warcraft.wiki.gg/wiki/API:C_Map.GetMapInfo |
 | `GetZoneText()` | Fallback zone name if map API gives no usable result | https://warcraft.wiki.gg/wiki/API:GetZoneText |
 
+## v0.3.0 candidate: historical completion and identity APIs (not yet tested in-game)
+
+| API | Purpose | Documentation |
+| --- | --- | --- |
+| `C_QuestLog.IsQuestFlaggedCompleted(questID)` | Historical completion flag for a specific quest ID; false may also mean an invalid ID | https://warcraft.wiki.gg/wiki/API_C_QuestLog.IsQuestFlaggedCompleted |
+| `UnitName("player")` | Current player's name | https://warcraft.wiki.gg/wiki/API_UnitName |
+| `UnitClass("player")` | Localized class label | https://warcraft.wiki.gg/wiki/API_UnitClass |
+| `UnitRace("player")` | Localized race label | https://warcraft.wiki.gg/wiki/API_UnitRace |
+| `UnitLevel("player")` | Current character level | https://warcraft.wiki.gg/wiki/API_UnitLevel |
+| `GetRealmName()` | Optional realm display name | https://warcraft.wiki.gg/wiki/API_GetRealmName |
+
+The completion query is documented for Forever 1.60.1. We do not infer historical completion from quests disappearing from the active log. Character identity is queried at runtime so the addon works for players other than Uddergrief. Source URLs require in-game validation on the player's current client.
+
 ## Risks and design safeguards
 
 - No active quest-log function provides a complete zone-wide checklist. We cannot calculate total zone completion from `GetNumQuestLogEntries`.

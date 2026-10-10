@@ -9,10 +9,12 @@ A single repository contains independently installable addons. No cross-addon de
 - `Core/Bootstrap.lua`: shared addon namespace, version and stable print helper.
 - `Modules/Progress.lua`: pure completion arithmetic; no WoW dependencies.
 - `Modules/QuestLog.lua`: read-only adapter for modern QuestLog and Map APIs.
+- `Modules/QuestHistory.lua`: read-only wrapper for a historical quest flag (one ID per request).
+- `Modules/Character.lua`: on-demand character display information.
 - `Core/Events.lua`: minimal player login lifecycle.
 - `Core/Commands.lua`: chat commands, pagination and delegation to other modules.
 
-The manifest declares the explicit order: Bootstrap, Progress, QuestLog, Events, Commands.
+The manifest declares the explicit order: Bootstrap, Progress, QuestLog, QuestHistory, Character, Events, Commands.
 
 ## Data flow
 
@@ -20,12 +22,14 @@ The manifest declares the explicit order: Bootstrap, Progress, QuestLog, Events,
 - `/fj zone` -> Commands -> QuestLog.GetCurrentArea -> Bootstrap output.
 - `/fj quests [page]` -> Commands -> QuestLog.GetActiveQuests -> paginated chat output.
 - `/fj quest <ID>` -> Commands -> QuestLog.FindActiveQuest -> QuestLog.GetObjectives -> chat output.
+- `/fj status <ID>` -> Commands -> QuestHistory.IsFlaggedCompleted -> optional QuestLog lookup -> chat output.
+- `/fj character` -> Commands -> Character.GetIdentity -> chat output.
 
-All queries are **on-demand**. There is no background polling, saving, external networking, automation, or persistent quest history.
+All queries are **on-demand**. Historical completion is read directly from the game's quest flag each time; there is no background polling, saving, external networking, automation, or local persistent quest history.
 
 ## Correctness boundaries
 
-"Active quests" means readable quest entries the game currently returns from the player's quest log. Quest headings are not quests. A quest may be ready to turn in without being historically completed. "Current area" is the current UI map, which may be a subzone, microdungeon, or continent. None of these constitute a comprehensive zone completion percentage.
+"Active quests" means readable quest entries the game currently returns from the player's quest log. Quest headings are not quests. A quest may be ready to turn in without being historically completed. "Current area" is the current UI map, which may be a subzone, microdungeon, or continent. A false quest completion flag can also mean an invalid quest ID. None of these constitute a comprehensive zone completion percentage.
 
 ## Future work
 

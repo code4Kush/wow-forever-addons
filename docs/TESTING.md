@@ -13,6 +13,7 @@ From repository root:
 ~~~sh
 lua5.1 tests/test_progress.lua
 lua5.1 tests/test_questlog.lua
+lua5.1 tests/test_history.lua
 ~~~
 
 The second script mocks the WoW C_QuestLog and C_Map namespaces and exercises filtering, objective access, area fallback, pagination, command validation and error handling.
@@ -53,6 +54,21 @@ Record the full `/run print(GetBuildInfo())` output or equivalent client build i
 10. Try `/reload` and a cold restart. Confirm commands still work and no Lua errors appear.
 
 If a command fails, note the exact output, build, class/zone where relevant, and which API may be missing. Do not claim game compatibility until this checklist is completed.
+
+## 0.3.0 candidate — additional manual tests (NOT YET VERIFIED)
+
+1. Update all addon files (including `Modules/QuestHistory.lua` and `Modules/Character.lua`) and run `/reload`.
+2. Run `/fj version`; expect `0.3.0`. Check `/fj` for `status` and `character` commands.
+3. Run `/fj character` as Uddergrief; verify Tauren Warrior name/race/class, current level, and reported realm.
+4. Run `/fj status 747`; since "The Hunt Begins" was handed in, expect `flagged completed`.
+5. Run `/fj status 752`; since "A Humble Task" was handed in, expect `flagged completed`.
+6. Run `/fj status 99999999` and note it may report "not flagged completed" because the ID is invalid. This must NOT be displayed as proof of an uncompleted quest.
+7. Run `/fj status bananas`; verify friendly usage text and no Lua error.
+8. Run `/fj status <ID for a current accepted quest>`; verify it displays active state rather than a historical completion.
+9. Verify existing `/fj quests`, `/fj quest <ID>`, `/fj zone`, and `/fj progress 3 5` still work.
+10. Cold-restart game and verify the same quest flags. No saved variables are involved in this candidate.
+
+Record the actual game build and screenshots. Successful unit tests alone do not satisfy this checklist.
 
 ## Release policy
 
