@@ -12,7 +12,7 @@ local descriptor = {
     id = "forever-warrior",
     displayName = "Forever Warrior",
     version = addon.version,
-    minCoreVersion = "0.1.0",
+    minCoreVersion = "0.2.0",
     capabilities = { "warrior.level-plan", "warrior.manual-readiness" },
     events = {},
 
@@ -33,7 +33,9 @@ local descriptor = {
     Enable = function(self, character) end,
 
     --- No event subscriptions or persistent state require cleanup.
-    Disable = function(self) end,
+    Disable = function(self)
+        if addon.ClearReady then addon.ClearReady() end
+    end,
 }
 
 local accepted, errorMessage = ForeverCore.RegisterModule(descriptor)
