@@ -18,7 +18,7 @@ lua5.1 tests/test_history.lua
 
 The second script mocks the WoW C_QuestLog and C_Map namespaces and exercises filtering, objective access, area fallback, pagination, command validation and error handling.
 
-GitHub Actions runs both tests on pull requests. These mock tests cannot validate live game API compatibility.
+GitHub Actions runs all three tests on pull requests. These mock tests cannot validate live game API compatibility.
 
 ## 0.2.0 in-game checklist — partial manual pass (2026-10-10)
 
@@ -55,7 +55,45 @@ Record the full `/run print(GetBuildInfo())` output or equivalent client build i
 
 If a command fails, note the exact output, build, class/zone where relevant, and which API may be missing. Do not claim game compatibility until this checklist is completed.
 
-## 0.3.0 candidate — additional manual tests (NOT YET VERIFIED)
+## 0.3.0 candidate — partial manual pass (reported 2026-10-10)
+
+The player reported that **all three requested commands worked as intended**: `/fj character`, `/fj status 747`, and `/fj status 752`. This confirms that character identity and historical completion flags for the two handed-in quests functioned on the player's live client. We do **not** have the exact level/realm text, full client build, cold-restart result, or invalid-ID test output. Do not mark the remaining checks as passed.
+
+### Mandatory manual test format
+
+Every future in-game test instruction must show the **exact command**, **expected output** (with placeholders for dynamic details), **what it verifies**, and **PASS/FAIL criteria**. Ask the player to confirm a match or paste the actual output if different.
+
+### Expected v0.3.0 outputs (examples)
+
+`/fj version`
+
+~~~text
+Forever Journal: Version 0.3.0
+~~~
+
+`/fj character`
+
+~~~text
+Forever Journal: Uddergrief - Tauren Warrior - level <current level> - realm <realm name>
+~~~
+
+Realm may be omitted if unavailable. Level and realm are not known from the reported test.
+
+`/fj status 747`
+
+~~~text
+Forever Journal: Quest 747: flagged completed for this character.
+~~~
+
+`/fj status 752`
+
+~~~text
+Forever Journal: Quest 752: flagged completed for this character.
+~~~
+
+**PASS:** Commands display the expected version, current player identity and positive completion flags without errors. **FAIL:** Missing output, wrong character/class, false completion flags, or Lua/API errors. The player reported these primary tests passed, but the exact output was not pasted.
+
+### Remaining manual tests (not yet verified)
 
 1. Update all addon files (including `Modules/QuestHistory.lua` and `Modules/Character.lua`) and run `/reload`.
 2. Run `/fj version`; expect `0.3.0`. Check `/fj` for `status` and `character` commands.
