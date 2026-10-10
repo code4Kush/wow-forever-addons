@@ -57,7 +57,7 @@ expect(fishingAPICalls == 0, "Help/version do not sample client API")
 reset(); SlashCmdList.FOREVERFISHING("")
 expect(has("Fishing: 2/75 (open profession window)."),
     "Original fishing skill view unchanged")
-expect(has("Catches are NOT tracked; no auto-fishing."),
+expect(has("Catches are manually logged only; no auto-fishing."),
     "Previous skill-view caveat retained")
 expect(fishingAPICalls == 1, "One requested skill read")
 
@@ -123,11 +123,13 @@ for i = 1, 10 do
     reset(); SlashCmdList.FOREVERFISHING("log 999 Fish1")
     expect(has("Logged manually:"), "Up to 9999 per species")
 end
+reset(); SlashCmdList.FOREVERFISHING("log 9 Fish1")
+expect(has("session total: 9999"), "Per-species cap reached")
 reset(); SlashCmdList.FOREVERFISHING("log 1 Fish1")
 expect(has("Catch quantity limit reached (9999 per species)."),
     "Reject over-limit accumulation")
 now, remaining = ns.CatchTotals()
-expect(now == 9990 and remaining == 1, "Failed entry never increments total")
+expect(now == 9999 and remaining == 1, "Failed entry never increments total")
 expect(fishingAPICalls == 1, "No hidden game API use for catch commands")
 
 -- Logical disabling must prevent command mutation and discard notes.
