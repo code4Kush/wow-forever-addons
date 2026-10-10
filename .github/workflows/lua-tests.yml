@@ -42,3 +42,11 @@ jobs:
         run: lua5.1 tests/test_profession_goals.lua
       - name: Run Forever Fishing manual catch tests
         run: lua5.1 tests/test_fishing.lua
+      - name: Run lazy Dashboard integration tests
+        run: lua5.1 tests/test_dashboard.lua
+      - name: Test safe modular developer ZIP builder
+        run: python3 -m unittest discover -s tests -p 'test_bundle.py' -v
+      - name: Validate complete modular suite manifests
+        run: python3 tools/build_dev_bundle.py --check --profile full
+      - name: Validate minimal Core-only profile
+        run: python3 tools/build_dev_bundle.py --check --profile minimal
