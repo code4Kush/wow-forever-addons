@@ -4,6 +4,12 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### ForeverCore 0.1.0 (M1 candidate, NOT YET IN-GAME TESTED)
+- Added separately installable ForeverCore with a versioned feature registry and runtime character context.
+- Added eligibility and minimum-version checks, active capability discovery, session-only toggles and shared event subscriber cleanup.
+- Added two optional developer-only probe addon fixtures, exact expected-output test instructions and mocked Lua tests.
+- No per-character persistent preferences, GUI, or integration with ForeverJournal yet.
+
 - Repository engineering standards, agent instructions, tests, and API notes established.
 
 ## [0.1.0] - 2026-10-10

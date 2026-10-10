@@ -2,7 +2,7 @@
 
 A readable, documented collection of World of Warcraft: Forever addons.
 
-**Status:** Early development. The first addon, Forever Journal, is a minimal working foundation, **not yet a quest or exploration tracker**.
+**Status:** ForeverCore M1 0.1.0 candidate exists on a feature branch; it has not been tested in-game. The existing Journal 0.1.0 on main remains unchanged; Journal 0.2–0.4 features are in separate review branches.
 
 ## Guiding principles
 
@@ -17,6 +17,13 @@ A readable, documented collection of World of Warcraft: Forever addons.
 
 ~~~text
 addons/
+  ForeverCore/
+    ForeverCore_Camelot.toc
+    Bootstrap.lua
+    Character.lua
+    Registry.lua
+    Events.lua
+    Commands.lua
   ForeverJournal/
     ForeverJournal_Camelot.toc
     Core/
@@ -29,6 +36,10 @@ docs/
   API_NOTES.md
 tests/
   test_progress.lua
+  test_core.lua
+test-addons/
+  ForeverProbeGeneral/
+  ForeverProbeWarrior/
 .github/workflows/
   lua-tests.yml
 AGENTS.md
@@ -36,6 +47,10 @@ CODING_STANDARDS.md
 CONTRIBUTING.md
 CHANGELOG.md
 ~~~
+
+## M1 candidate: Forever Core
+
+A separate Core addon provides runtime character identity, a versioned module registry, class eligibility, safe event subscription cleanup, and session-only module toggles. This foundation has **no UI and no SavedVariables**. It currently coexists alongside the existing ForeverJournal but does not yet integrate it. Install and run exact tests from [docs/CORE_TESTING.md](docs/CORE_TESTING.md), then read [docs/CORE_CONTRACT.md](docs/CORE_CONTRACT.md).
 
 ## First addon: Forever Journal
 
