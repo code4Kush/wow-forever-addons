@@ -258,7 +258,7 @@ Assert(Has("Module not active: disabled."),
     "Inactive module must not sample memory")
 Reset()
 SlashCmdList.FOREVERPERFORMANCE("version")
-Assert(Has("Version 0.1.0"), "Version still visible when disabled")
+Assert(Has("Version 0.2.0"), "Version still visible when disabled")
 
 addon.baseline = { totalKB = 1, entries = {}, byFolder = {} }
 recordedDescriptor.Disable(recordedDescriptor)
