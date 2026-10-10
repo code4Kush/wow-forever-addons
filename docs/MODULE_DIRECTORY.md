@@ -17,7 +17,7 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 | ForeverJournal | `journal` | `/fj` | Active/history/quest objectives, 12-item curated starter list | All Mulgore quests, zone-wide completion, guild sharing |
 | ForeverInventory | `inventory` | `/finv` | Counts current backpack and equipped bags | Bank, equipment rankings, selling, AH pricing |
 | ForeverGold | `gold` | `/fgold` | Current wallet + manual baseline and signed net delta (v0.2 candidate) | Transaction categories, actual income/profit, AH prices, saved history |
-| ForeverProfessions | `professions` | `/fprof` | Readable skill names/levels when client provides APIs | Recipe list, skill plans |
+| ForeverProfessions | `professions` | `/fprof` | Current skill names/ranks + manual session skill snapshots and signed differences (v0.2 candidate) | Automatic skill event history, recipes, skill plans |
 | ForeverFishing | `fishing` | `/ffish` | Reads Fishing profession skill when its UI exposes data | Catch history, bait database, fishing automation |
 | ForeverCooking | `cooking` | `/fcook` | Reads Cooking profession skill when its UI exposes data | Ingredient planner, recipe history |
 | ForeverWarrior | `forever-warrior` | `/fw` | Leveling advice, manual dungeon preparation checklist | Tank threat automation, protected combat analysis |
@@ -61,3 +61,7 @@ On-demand tests, example one-command-per-block outputs, user-reported historical
 ## Gold Sprint 1: feedback loop (draft PR #29)
 
 `ForeverGold` 0.2 adds **only a manual, session-only wallet baseline and signed net change**. The current coin balance and its positive/negative movement are not evidence of *income* or *profit*. This pack remains independently installable with Core. See [GOLD_TESTING.md](GOLD_TESTING.md) for every separately submitted command, expected output, and PASS/FAIL. **No live Gold v0.2 behavior has been established yet**; user feedback on build 70338 will guide Sprint 2.
+
+## Professions Sprint 2 (PR #31)
+
+`ForeverProfessions` 0.2, independently installed with Core 0.2+, adds `/fprof snapshot`, `/fprof progress`, and `/fprof clear`. It reads `GetProfessions`/`GetProfessionInfo` **only on request**, stores at most five name/rank pairs for the session and does not equate an absent skill to an untrained one. Secondary Fishing/Cooking skills are reported **only if the client exposes them**. Live API compatibility on build 70338 remains unverified; see [PROFESSIONS_TESTING.md](PROFESSIONS_TESTING.md).
