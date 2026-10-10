@@ -112,3 +112,7 @@ The Journal Core-bridge branch imports the existing v0.4 read-only quest and sta
 The proposed `ForeverPerformance/` standalone pack adds on-demand `/fperf memory`, `details`, `baseline`, `delta` and `clear` commands. Its small Core shortcut `/forever memory` only points to that package when installed and enabled. Measurements are restricted to a bounded set of known loaded Forever packs, not your computer's entire RAM or every WoW addon.
 
 No background polling, garbage collection, CPU tracing, persisted logs or telemetry. See [ForeverPerformance README](addons/ForeverPerformance/README.md) and the [individual-command in-game test guide](docs/PERFORMANCE_TESTING.md). Previous user-reported Dashboard memory is documented as a benchmark observation, **not** a leak-free certification. This new pack has **NOT yet been verified in the game**.
+
+## ForeverGold Sprint 1 (draft PR #29 — manual wallet net change)
+
+The optional `ForeverGold` pack now has a proposed read-only **session baseline and delta**: `/fgold` retains the current wallet view; `/fgold baseline`, `/fgold delta`, and `/fgold clear` help track net wallet movement while questing. **Net wallet movement is NOT earned gold or profit.** No automatic scanning, purchases, telemetry or persistent history. **Not yet verified on WoW Forever 1.60.1 / 70338**; see [Gold Testing](docs/GOLD_TESTING.md), [ForeverGold README](addons/ForeverGold/README.md), and [PR #29](https://github.com/code4Kush/wow-forever-addons/pull/29). Public release remains gated.

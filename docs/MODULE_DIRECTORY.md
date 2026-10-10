@@ -16,7 +16,7 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 | ForeverDashboard | `dashboard` | `/fdash` | Movable module list, on-demand open/close | Full tabbed interactive UI, saved layout |
 | ForeverJournal | `journal` | `/fj` | Active/history/quest objectives, 12-item curated starter list | All Mulgore quests, zone-wide completion, guild sharing |
 | ForeverInventory | `inventory` | `/finv` | Counts current backpack and equipped bags | Bank, equipment rankings, selling, AH pricing |
-| ForeverGold | `gold` | `/fgold` | Formats current player wallet | Session income/expenses, market prices |
+| ForeverGold | `gold` | `/fgold` | Current wallet + manual baseline and signed net delta (v0.2 candidate) | Transaction categories, actual income/profit, AH prices, saved history |
 | ForeverProfessions | `professions` | `/fprof` | Readable skill names/levels when client provides APIs | Recipe list, skill plans |
 | ForeverFishing | `fishing` | `/ffish` | Reads Fishing profession skill when its UI exposes data | Catch history, bait database, fishing automation |
 | ForeverCooking | `cooking` | `/fcook` | Reads Cooking profession skill when its UI exposes data | Ingredient planner, recipe history |
@@ -57,3 +57,7 @@ Feature completeness should be tracked in individual [milestone issues #5–#16]
 `ForeverPerformance` is another independently installable, character-selectable optional pack depending on Core 0.2. It reports **only** the 12 explicitly cataloged Forever addon folders when actually registered with Core; a pack logically disabled by Core remains resident and is still measured. `/forever memory` in Core only directs you to `/fperf` and never causes memory-refresh calls itself.
 
 On-demand tests, example one-command-per-block outputs, user-reported historical Dashboard observations, and missing-API fallbacks are in [PERFORMANCE_TESTING.md](PERFORMANCE_TESTING.md). **This pack's live beta compatibility is not yet established**, and its current module list must be expanded explicitly when future shipped folders are added. `test-addons/` probes and third-party addons are deliberately out of scope.
+
+## Gold Sprint 1: feedback loop (draft PR #29)
+
+`ForeverGold` 0.2 adds **only a manual, session-only wallet baseline and signed net change**. The current coin balance and its positive/negative movement are not evidence of *income* or *profit*. This pack remains independently installable with Core. See [GOLD_TESTING.md](GOLD_TESTING.md) for every separately submitted command, expected output, and PASS/FAIL. **No live Gold v0.2 behavior has been established yet**; user feedback on build 70338 will guide Sprint 2.

@@ -4,6 +4,15 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### ForeverGold 0.2.0 — Sprint 1 manual wallet change (NOT LIVE VERIFIED)
+
+- Keeps the original on-demand `/fgold` wallet display.
+- Adds `/fgold baseline`, `/fgold delta` and `/fgold clear` for **net wallet change only**, never earnings or profit.
+- One Lua-memory value per session; no SavedVariables, polling, event handlers, transactions or automatic actions.
+- Core Gold disable clears the baseline; malformed/unavailable API results fail visibly; mock tests added.
+
+
+
 ### ForeverPerformance 0.1.0 (M12, optional development candidate, NOT YET LIVE TESTED)
 
 - New independent performance diagnostics pack measures *known Core-registered Forever addon* attributed KB on demand.
