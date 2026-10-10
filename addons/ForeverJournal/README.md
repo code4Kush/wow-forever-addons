@@ -55,3 +55,9 @@ Version 0.1.0 and the main quest-reading behavior in 0.2.0 were verified on inte
 - Historical status is queried per quest ID; the addon does **not** enumerate all completed quests.
 - The journal is a 12-ID **curated early Tauren selection**, not all Mulgore quests. Non-Warriors see 11 IDs; non-Tauren characters are not supported by this starter catalog.
 - No graphical window, complete quest database, saved variables, quest-chain data, or zone-wide completion percentages yet.
+
+## Core-integrated 0.5.0 candidate
+
+The v0.5 candidate adds `## Dependencies: ForeverCore` and registers as `journal`. It preserves all v0.4 historical flags, current objective views and the **curated 12-quest Tauren starter** (not all Mulgore quests). This change is deliberately isolated in a separate [draft bridge PR](https://github.com/code4Kush/wow-forever-addons/pulls) because the original Journal 0.4 and Core/Warrior work have different open PR stacks.
+
+With Core 0.2, `/forever pref journal off` disables interactive `/fj` quest reads on the current character (help and version remain available); `/forever pref journal on` re-enables it. No API sends quest progress to guild members, and no historical state is created from active-log disappearance. SavedVariables retention still requires cold-restart testing.

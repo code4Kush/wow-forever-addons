@@ -375,5 +375,29 @@ local function HandleSlashCommand(message)
     PrintHelp()
 end
 
+-- Core profile-aware wrapper: allow help/version diagnostics when
+-- disabled; block all quest and journal views until re-enabled. Keeping the
+-- fallback for standalone Lua mocks does not relax the in-game TOC dependency.
+local function HandleCoreAwareCommand(message)
+    local command = (message or ""):match("^%s*(%S*)") or ""
+
+    if command == "" or command == "help" or command == "version" then
+        HandleSlashCommand(message)
+        return
+    end
+
+    if type(ForeverCore) == "table"
+        and type(ForeverCore.GetModuleStatus) == "function" then
+        local status = ForeverCore.GetModuleStatus("journal")
+        if not status or status.state ~= "active" then
+            addon.Print("Journal module not active: "
+                .. (status and status.state or "not registered") .. ".")
+            return
+        end
+    end
+
+    HandleSlashCommand(message)
+end
+
 SLASH_FOREVERJOURNAL1 = "/fj"
-SlashCmdList.FOREVERJOURNAL = HandleSlashCommand
+SlashCmdList.FOREVERJOURNAL = HandleCoreAwareCommand

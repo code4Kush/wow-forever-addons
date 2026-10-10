@@ -4,6 +4,12 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### Journal 0.5.0 Core integration candidate (MOCK TESTS ONLY)
+- Imported existing 0.4.0 quest log/history/curated Tauren Mulgore data into modular suite development branch.
+- Journal now depends on Core 0.2.0 and follows character-level module enablement for data-reading commands.
+- No gameplay automation, new quest-catalog completion assertions or historical progress persistence added.
+
+
 ### Modular suite candidates (UNVERIFIED IN FOREVER GAME)
 - Core 0.2.0 adds character-scoped experimental profile preferences and cold-restart marker testing.
 - Dashboard, Inventory, Gold, Professions, Fishing, Cooking, Explorer and Guild independently register with Core.

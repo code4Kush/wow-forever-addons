@@ -88,7 +88,7 @@ ExpectOutput("Only 2 journal page(s) available.")
 
 ResetOutput()
 SlashCmdList.FOREVERJOURNAL("version")
-ExpectOutput("Version 0.4.0")
+ExpectOutput("Version 0.5.0")
 
 UnitClass = function() return "Shaman", "SHAMAN" end
 journal = assert(addon.ZoneJournal.GetMulgoreStarterSnapshot())

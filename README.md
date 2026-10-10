@@ -102,3 +102,7 @@ A new stacked development branch provides Core 0.2 experimental per-character pr
 Every pack has its own `_Camelot.toc` and `## Dependencies: ForeverCore`. You may install **only the optional packs you want**. The session-only Guild module does not transmit anything unless the player explicitly opts in and manually announces the minimal version handshake. No quest, inventory or combat information is shared.
 
 See [SUITE_TESTING.md](docs/SUITE_TESTING.md) for separate copyable WoW commands and exact expected output. The API contracts are experimental and do NOT imply a public supported release. Complete licensing, security, full-build client tests and data privacy checks before distribution.
+
+## Journal integration experiment (v0.5)
+
+The Journal Core-bridge branch imports the existing v0.4 read-only quest and starter catalog implementation without changing quest validity semantics. It adds the optional `journal` Core descriptor and respects character preference disabling, while preserving /fj help and version diagnostics. Journal PRs #2/#3/#4 are not automatically merged by this branch; reconcile and retest before shipping.

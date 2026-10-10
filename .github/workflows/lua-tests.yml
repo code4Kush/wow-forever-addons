@@ -24,3 +24,11 @@ jobs:
         run: lua5.1 tests/test_warrior.lua
       - name: Run suite integration tests
         run: lua5.1 tests/test_suite.lua
+      - name: Run Journal quest log tests
+        run: lua5.1 tests/test_questlog.lua
+      - name: Run Journal history tests
+        run: lua5.1 tests/test_history.lua
+      - name: Run Journal catalog tests
+        run: lua5.1 tests/test_journal.lua
+      - name: Run Journal Core bridge tests
+        run: lua5.1 tests/test_journal_bridge.lua
