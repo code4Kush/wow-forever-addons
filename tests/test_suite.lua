@@ -94,6 +94,8 @@ for _, name in ipairs(packs) do
         files = {"Bootstrap.lua","Protocol.lua","Module.lua","Commands.lua"}
     elseif name == "ForeverGold" then
         files = {"Bootstrap.lua","Module.lua","Read.lua","Tracker.lua","Commands.lua"}
+    elseif name == "ForeverFishing" then
+        files = {"Bootstrap.lua","Module.lua","Read.lua","Catches.lua","Commands.lua"}
     elseif name == "ForeverProfessions" then
         files = {"Bootstrap.lua","Module.lua","Read.lua","Tracker.lua","Goals.lua","Commands.lua"}
     end
