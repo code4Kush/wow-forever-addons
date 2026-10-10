@@ -6,12 +6,13 @@
 
 ## Verified observations (via GitHub connector)
 
-- Repository metadata read on 2026-10-10 reported **`visibility: private`**, although the owner reports having changed it to public. This discrepancy must be checked directly in GitHub's repository Settings by the owner; it could be a connection/cache delay. Do not claim public access is verified solely from this report.
-- Branches endpoint showed `main` **`protected: false`**. A direct branch-protection endpoint returned 403 for this GitHub integration, so protection must be configured and verified through the owner's GitHub UI.
+- **Visibility transition verified:** initial GitHub API metadata read on 2026-10-10 returned `private`, but a later authenticated GitHub REST read returned **`private: false`, `visibility: public`**. Owner also reports changing it to public. For release readiness, verify the site and full source from a signed-out browser; no public *player release* is implied.
+- Branches endpoint showed `main` **`protected: false`**. A later rulesets read returned **zero rulesets**. A direct branch-protection endpoint returned 403 for this GitHub integration, so protection must be configured and verified through the owner's GitHub UI. **This is the most urgent remaining repository-level control.**
 - All eight branch **current-tree filename inventories** were reviewed (main, policy, roadmap, contributor docs, Core, quest log, historical flags, Mulgore); no tracked files had obvious credential extensions, `.env`, game `WTF/`/SavedVariables, screenshots, or oversized binary attachments. **This was not an exhaustive content or Git-history secret scan.**
 - Current main GitHub workflow ran on `push` and `pull_request`, checked out with `actions/checkout@v4` and did not explicitly constrain the default GITHUB_TOKEN permissions. No `pull_request_target` was present in the inspected workflow.
 - Source currently has **no root LICENSE**. The owner must choose a compatible license and audit third-party rights before distributing a public addon.
 - Current feature work is **still in open pull requests**, not merged into main; no shipped public release or security certification has been demonstrated.
+- **Current security branch CI evidence:** [GitHub Actions run 38067092007](https://github.com/code4Kush/wow-forever-addons/actions/runs/38067092007) passed the public-source scanner, its synthetic unit tests, and existing Lua 5.1 tests on the initial security commit `1b795d9f2f301b1ebc11db899df90e6ccfd518bc`. This is automated evidence only; subsequent edits require their own CI run.
 
 ## Safeguards in this PR
 
@@ -25,7 +26,7 @@
 
 These are **manual steps**, not changes already applied by this PR.
 
-1. **Confirm visibility:** open **Settings → General**, inspect the repository visibility and test that the public repository is accessible while signed out. Do not post a public addon download until the complete source is accessible.
+1. **Confirm visibility independently:** GitHub REST now reports public; open **Settings → General** to confirm and test that the public repository is accessible while signed out. Do not post a public addon download until the complete source is accessible.
 2. **Protect main:** go to **Settings → Rules → Rulesets → New branch ruleset** (or Branch protection if appropriate). Target `main`, enable **Require a pull request**, **Require status checks** (select the confirmed `Lua 5.1` job), **Block force pushes**, and **Restrict deletion**. If a second trusted reviewer is available, require review approval and dismiss stale approvals. Solo maintainer configurations should avoid a deadlock; do not enable a required approval you cannot obtain. Verify ruleset is **Active**. Consider preventing admins from bypassing except an explicitly documented break-glass recovery.
 3. **Security controls:** under **Settings → Advanced Security** or **Security and analysis** (UI wording varies), enable **Secret scanning**, **Push protection**, **Dependabot alerts**, and **Dependabot security updates** where offered. Review unresolved alerts immediately and rotate any leaked credentials. Enable **Private Vulnerability Reporting** if offered.
 4. **Actions permissions:** under **Settings → Actions → General**, set default `GITHUB_TOKEN` to **read-only**; restrict allowed actions to trusted publishers as feasible. Require PR workflow review for outside contributors where offered. No production repository/API keys in fork PR workflows.
