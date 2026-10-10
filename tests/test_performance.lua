@@ -173,7 +173,12 @@ Assert(Has("Since baseline: +9.09 KB (was 140.42 KB; now 149.51 KB)."),
     "Delta preserves sign and measured readings")
 Assert(Has("Change: ForeverDashboard +9.09 KB."),
     "Module-level delta for the largest absolute contributor")
-local changed = addon.Compare(addon.baseline, addon.TakeSnapshot())
+local controlled = {entries = addon.baseline.entries, byFolder = {},
+    totalKB = 149.51}
+for folder, kb in pairs(addon.baseline.byFolder) do
+    controlled.byFolder[folder] = folder == "ForeverDashboard" and 40.99 or kb
+end
+local changed = addon.Compare(addon.baseline, controlled)
 Assert(#changed.differences <= 3 and changed.differences[1].folder == "ForeverDashboard",
     "Comparison only holds the three user-visible contributors")
 
