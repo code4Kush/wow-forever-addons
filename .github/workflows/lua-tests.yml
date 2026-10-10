@@ -34,3 +34,5 @@ jobs:
         run: lua5.1 tests/test_journal_bridge.lua
       - name: Run Forever Performance memory tests
         run: lua5.1 tests/test_performance.lua
+      - name: Run Forever Gold session wallet tests
+        run: lua5.1 tests/test_gold.lua

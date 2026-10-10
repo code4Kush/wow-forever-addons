@@ -1,33 +1,104 @@
-# ForeverGold — 0.1.0 candidate
+# ForeverGold v0.2.0 — manual wallet tracking
 
-**State:** NEW AND NOT YET TESTED IN THE REAL FOREVER CLIENT. This is a free, independent, unendorsed community WoW addon candidate.
+**State:** Lightweight development candidate in [draft PR #29](https://github.com/code4Kush/wow-forever-addons/pull/29), **NOT YET LIVE TESTED**. It is built for WoW Forever interface `16001`; the player's last confirmed client is **1.60.1, build 70338, Oct 9 2026**, but `GetMoney()` has not yet been verified on that exact client.
 
-## What it does
+## Why use it?
 
-current character money in gold/silver/copper; not profits, expenses, AH pricing or ledger. The code runs only after the player invokes a command, except the small Core-managed event registration lifecycle. It never casts spells, equips items, crafts, sells, plays the game, or transmits data externally.
+While questing, gathering or running dungeons, check your current wallet and optionally compare it with a starting balance. It is a transparent read-only diagnostic, not a gold-making automation feature.
 
-**Depends on:** ForeverCore **0.2.0 or later**. No other optional packs required. Only an installed and active pack responds.
+The number is **NET WALLET CHANGE, NOT PROFIT OR EARNINGS**. Purchases, repair costs, training costs, auctions, trades, mail and guild-bank transfers affect your balance. It cannot tell you which transaction caused a change.
 
-## Install or uninstall
+## Install
 
-Copy the entire `addons/ForeverGold/` folder to WoW Forever's `Interface/AddOns/ForeverGold/` directory while the client is closed, along with the required `addons/ForeverCore/` package. Enable the addon in WoW's AddOns interface, then reload. To uninstall, quit WoW and remove only this addon directory. The Core should remain installed for other packs.
+Install `ForeverCore` 0.2+ first, then copy `addons/ForeverGold/` to WoW's `Interface/AddOns/ForeverGold/` directory. Enable both addons in WoW's AddOns screen. To uninstall, quit WoW and remove only `ForeverGold/`; your other feature packs remain intact. The TOC suffix is `_Camelot.toc`.
 
-The `## Interface: 16001` and `_Camelot.toc` suffix are based on previously observed beta behavior; **full current game-build verification remains pending**.
+## Commands — send one WoW command at a time
 
-## Command (one chat submission)
+**Current wallet**:
 
 ```text
 /fgold
 ```
 
-Expected exact/dynamic output and explicit PASS/FAIL rules are in [SUITE_TESTING.md](../../docs/SUITE_TESTING.md). Enter each WoW command independently.
+Expected format:
 
-To change this pack's per-character preference (example only, replace `<module-id>` with the identifier documented in the Core module list), use `/forever pref <module-id> off` or `on`. **SavedVariables reliability is not established** until testing after a complete game quit and restart.
+```text
+Forever Gold: Wallet: <G>g <S>s <C>c (current character; not earnings).
+```
 
-## Game API and limitations
+**Save starting wallet**:
 
-GetMoney; availability checked; never estimates an amount. Calls are guarded and return an explicit unavailable message if needed. Mock tests do not demonstrate real-client compatibility. See [API_NOTES.md](../../docs/API_NOTES.md).
+```text
+/fgold baseline
+```
 
-## Privacy and licensing
+Expected format:
 
-No third-party SDKs or telemetry included. No separate license has yet been chosen for the public repository, and no packaged player release has been approved. See the project root [README](../../README.md) and security policy PR #20.
+```text
+Forever Gold: Baseline saved: <G>g <S>s <C>c (session only).
+```
+
+**Compare later wallet**:
+
+```text
+/fgold delta
+```
+
+Expected format (sign may be `+` or `-`; amounts depend on your gold changes):
+
+```text
+Forever Gold: Wallet change: <SIGN><G>g <S>s <C>c (was <G>g <S>s <C>c; now <G>g <S>s <C>c; net balance, NOT profit).
+```
+
+Before a baseline exists, expected exact:
+
+```text
+Forever Gold: No baseline. Use /fgold baseline first.
+```
+
+**Clear baseline**:
+
+```text
+/fgold clear
+```
+
+Expected exact:
+
+```text
+Forever Gold: Baseline cleared (session only).
+```
+
+**Version**:
+
+```text
+/fgold version
+```
+
+Expected exact:
+
+```text
+Forever Gold: Version 0.2.0
+```
+
+**Help**:
+
+```text
+/fgold help
+```
+
+Expected exact:
+
+```text
+Forever Gold: Commands: /fgold | baseline | delta | clear | version | help
+Forever Gold: Net wallet change is NOT profit; tracking is session only.
+```
+
+The [full field-test guide](../../docs/GOLD_TESTING.md) separates every command and its exact expected output, including disabled-pack and reload tests.
+
+## Lifecycle, memory and privacy
+
+Only a single baseline copper value is stored in memory. There is **no** SavedVariables file, periodic timer, addon event listener, `OnUpdate`, data sync, background scanning, transaction logging, user-profile collection or external telemetry. A new game session or disabling Gold through Core clears the starting balance. Other packs are independent.
+
+`ReadCopper` validates missing, protected, invalid, negative, non-integer and non-finite client readings. It refuses wallet sampling during combat when `InCombatLockdown` is available. It does not claim to provide account-wide wallets or auction data.
+
+This is an unendorsed community addon. Its root code license, Blizzard policy and public security checks still need owner review before an installable public release is approved.

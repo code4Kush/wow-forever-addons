@@ -1,11 +1,12 @@
 ## Interface: 16001
 ## Title: Forever Gold
-## Notes: Current wallet, not auction-house prices; optional ForeverCore pack
+## Notes: Manual wallet baseline and net change (not income); optional Core pack
 ## Author: code4Kush
-## Version: 0.1.0
+## Version: 0.2.0
 ## Dependencies: ForeverCore
 
 Bootstrap.lua
 Module.lua
 Read.lua
+Tracker.lua
 Commands.lua
