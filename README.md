@@ -126,3 +126,7 @@ No automatic harvesting/crafting, event tracking, persistence or telemetry. **No
 ## Professions Sprint 3 — Manual Fishing/Cooking skill goals (draft PR #33)
 
 `ForeverProfessions` v0.3 adds explicitly user-entered, **session-only skill targets**: `/fprof goal Fishing 75`, `/fprof goal Cooking 75`, `/fprof goals`, `/fprof ungoal Fishing`, and `/fprof goals clear`. These names/caps are **examples**, not assertions that a beta character learned those skills. The pack reads ranks only when the user requests a result, with up to five targets and no SavedVariables/polling. The separate `/fprof snapshot|progress` continues working unchanged. New goals have **NOT YET BEEN TESTED IN GAME**. Full guide: [PROFESSION_GOALS_TESTING.md](docs/PROFESSION_GOALS_TESTING.md). No merge or public release approved.
+
+## Fishing Sprint 4 — manual session catch notes (draft PR #35)
+
+Independent `ForeverFishing` v0.2 can record a **user-entered** catch tally while leveling Fishing/Cooking: `/ffish log 3 Raw Brilliant Smallfish`, `/ffish catches`, `/ffish clear`. The example is **not** proof of an actual catch or item ownership. Maximum 10 species, on-demand only, no loot hooks, persistent data, market prices or automated fishing. New pack version **has not yet been tested in game**; [single-command field test](docs/FISHING_TESTING.md), [module README](addons/ForeverFishing/README.md) and [draft PR #35](https://github.com/code4Kush/wow-forever-addons/pull/35). No public player release approved.
