@@ -135,17 +135,42 @@ local function SafeCall(record, method, ...)
 end
 
 local function Subscribe(record)
+    local registeredForModule = {}
+
     for _, eventName in ipairs(record.definition.events or {}) do
         local group = subscribers[eventName]
 
         if not group then
+            -- Event names vary between game builds. An unsupported name
+            -- must not prevent unrelated modules from continuing to work.
+            local success, errorMessage = pcall(
+                eventFrame.RegisterEvent, eventFrame, eventName
+            )
+
+            if not success then
+                -- Revert any earlier subscriptions made by this module.
+                for _, previousEvent in ipairs(registeredForModule) do
+                    local previousGroup = subscribers[previousEvent]
+                    previousGroup[record.definition.id] = nil
+
+                    if not next(previousGroup) then
+                        subscribers[previousEvent] = nil
+                        eventFrame:UnregisterEvent(previousEvent)
+                    end
+                end
+
+                return false, tostring(errorMessage)
+            end
+
             group = {}
             subscribers[eventName] = group
-            eventFrame:RegisterEvent(eventName)
         end
 
         group[record.definition.id] = true
+        registeredForModule[#registeredForModule + 1] = eventName
     end
+
+    return true
 end
 
 local function Unsubscribe(record)
@@ -235,7 +260,14 @@ local function Start(record)
 
     record.error = nil
     record.active = true
-    Subscribe(record)
+
+    local subscribed, subscriptionError = Subscribe(record)
+
+    if not subscribed then
+        record.active = false
+        SafeCall(record, "Disable")
+        record.error = "Event registration failed: " .. subscriptionError
+    end
 end
 
 --- Called by the event bridge after the client has loaded a character.
