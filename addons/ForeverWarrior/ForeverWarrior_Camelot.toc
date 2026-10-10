@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: Forever Warrior
+## Notes: Optional read-only Warrior leveling and dungeon preparation companion
+## Author: code4Kush
+## Version: 0.1.0
+## Dependencies: ForeverCore
+
+Bootstrap.lua
+Plans.lua
+Module.lua
+Commands.lua

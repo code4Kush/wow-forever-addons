@@ -13,6 +13,14 @@ Reference: https://warcraft.wiki.gg/wiki/World_of_Warcraft_API ; https://warcraf
 
 These APIs and loading conditions are **NOT YET GAME-TESTED in the new Core**. No Core-only session, cross-character or persistence pass has been recorded. Tests are documented in `docs/CORE_TESTING.md`.
 
+## M9 ForeverWarrior starter — new use of character APIs
+
+- `ForeverCore.GetCharacter()` and `ForeverCore.GetModuleStatus()` are the draft M1 integration contract, not built-in Blizzard functions. M1 has partial player-reported live acceptance; M9 integration remains **NOT TESTED IN GAME**.
+- `UnitLevel("player")` is invoked only when the player deliberately requests `/fw plan` to refresh the level after login, with the Core identity snapshot as a fallback. No scanning/recording occurs. Conventional read-only API: https://warcraft.wiki.gg/wiki/API_UnitLevel . Target: Forever beta interface 16001; actual current build has not been captured for M9; evidence type: source/reference only.
+- `SlashCmdList.FOREVERWARRIOR` and `SLASH_FOREVERWARRIOR1` register read-only chat commands; their M9 integration is **NOT TESTED IN GAME**. Reference: https://warcraft.wiki.gg/wiki/Creating_a_slash_command .
+- **Not used:** talent tree/trait APIs, gear/skill/loot APIs, combat-log events, automatic purchases, casting or protected operations. Community reports on beta interface 16001 indicate combat-log access may be unavailable: https://wowforeverguides.com/addons/api-cheatsheet . Treat this as an external beta report, not a blanket permanent guarantee.
+- October 1, 2026 beta reports describe changed Warrior talent positions: https://us.forums.blizzard.com/en/wow/t/bug-warrior-talent-tree-has-been-completely-messed-up-in-oct-1sts-patch/2369273 . Avoid encoding an unverified fixed talent path into player guidance.
+
 ## Recorded beta baseline
 
 - WoW: Forever 1.60.1 beta uses TOC Interface 16001 in community-verified builds.

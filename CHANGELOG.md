@@ -4,6 +4,13 @@ All notable user-facing changes are recorded here.
 
 ## [Unreleased]
 
+### ForeverWarrior 0.1.0 (M9 starter, stacked PR; NOT LIVE TESTED)
+- Added optional Warrior-only level-banded advice for dungeon progression, solo leveling and professions.
+- Added `/fw plan`, `/fw ready`, `/fw professions`, `/fw status` and `/fw version`.
+- All readiness items are explicitly manual; no gameplay automation, character history, equipment scanning or talent inference.
+- Added Lua 5.1 mocked tests and individual in-game acceptance commands with expected outputs.
+
+
 ### ForeverCore 0.1.0 (M1 candidate, NOT YET IN-GAME TESTED)
 - Added separately installable ForeverCore with a versioned feature registry and runtime character context.
 - Added eligibility and minimum-version checks, active capability discovery, session-only toggles and shared event subscriber cleanup.
