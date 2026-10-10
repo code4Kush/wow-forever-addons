@@ -18,8 +18,8 @@ Core 0.2 adds an experimental `## SavedVariablesPerCharacter: ForeverCharacterDB
 | ForeverInventory | `inventory` | `/finv` | Counts current backpack and equipped bags | Bank, equipment rankings, selling, AH pricing |
 | ForeverGold | `gold` | `/fgold` | Current wallet + manual baseline and signed net delta (v0.2 candidate) | Transaction categories, actual income/profit, AH prices, saved history |
 | ForeverProfessions | `professions` | `/fprof` | Read-only current skills, session snapshots/progress and up to 5 manually set goals (v0.3 candidate) | Automatic training/crafting, persistently saved skills, recipes |
-| ForeverFishing | `fishing` | `/ffish` | Fishing skill readout plus manual, session-only player-entered catch notes (v0.2 candidate) | Verified loot detection, auto-fishing, pricing, saved catch history |
-| ForeverCooking | `cooking` | `/fcook` | Reads Cooking profession skill when its UI exposes data | Ingredient planner, recipe history |
+| ForeverFishing | `fishing` | `/ffish` | Independent profession-list or open-UI Fishing rank + manual catch notes (v0.3 candidate; new read mock-only) | Verified loot detection, auto-fishing, pricing, saved catch history |
+| ForeverCooking | `cooking` | `/fcook` | Independent profession-list or open-UI Cooking rank + manual ingredient plan (v0.2 candidate) | Actual bag/recipe scanning, crafting, retained ingredient history |
 | ForeverWarrior | `forever-warrior` | `/fw` | Leveling advice, manual dungeon preparation checklist | Tank threat automation, protected combat analysis |
 | ForeverExplorer | `explorer` | `/fexplore` | Current lowest UI map name/ID | Confirmed map discovery or zone-exploration completion |
 | ForeverGuild | `guild` | `/fguild` | Consent-gated manual version-only guild announcements, bounded local peer list | Automatic guild chat, roster sync, quest sharing, raid planner |
@@ -79,3 +79,7 @@ On-demand tests, example one-command-per-block outputs, user-reported historical
 The complete development branch contains **twelve independently installable addon directories**: Core plus eleven optional packs. Offline `tools/build_dev_bundle.py` validates each pack's `_Camelot.toc`, source files and dependency rules before creating a reproducible ZIP. Profiles `minimal`, `tank`, `professions`, `full` and explicit custom include/exclude prevent players from loading unused features by default. Full **includes** Guild (opt-in transmit only, but its minimal receive event is registered); choose another profile or exclude Guild if unwanted. The script never installs into WoW or creates a public release.
 
 Dashboard v0.2 shows disabled as well as active registered modules through an on-demand, six-row-per-page window; it creates one frame/label lazily and reuses them, and `/fdash status` does not allocate a frame. The design is checked in mocked Lua tests and **awaits integrated in-game acceptance**. [Full suite test guide](FULL_SUITE_TESTING.md) · [Market and performance review](MARKET_AND_PERFORMANCE.md).
+
+## New player-tested follow-up (candidate PR #39)
+
+The player confirmed in live testing that the older Fishing and Cooking skill readouts required open skill windows. Draft PR #39 adds a guarded alternative using the profession-list API already used by the independent ForeverProfessions pack; fallback to open UI remains. Cooking adds a human-entered prep list (not inventory). Standalone pack dependencies remain Core-only. **Closed-window behavior has not been game-tested yet**, and this code must not be installed during the existing PR #37 memory baseline. See [FISHING_COOKING_TESTING.md](FISHING_COOKING_TESTING.md).

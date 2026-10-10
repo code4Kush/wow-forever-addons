@@ -42,6 +42,8 @@ jobs:
         run: lua5.1 tests/test_profession_goals.lua
       - name: Run Forever Fishing manual catch tests
         run: lua5.1 tests/test_fishing.lua
+      - name: Run Cooking read and manual ingredient tests
+        run: lua5.1 tests/test_cooking.lua
       - name: Run lazy Dashboard integration tests
         run: lua5.1 tests/test_dashboard.lua
       - name: Run complete twelve-addon TOC integration tests

@@ -1,11 +1,12 @@
 ## Interface: 16001
 ## Title: Forever Cooking
-## Notes: Read-only cooking skill view; optional ForeverCore pack
+## Notes: On-demand Cooking skill from profession list/UI; manual ingredient plan
 ## Author: code4Kush
-## Version: 0.1.0
+## Version: 0.2.0
 ## Dependencies: ForeverCore
 
 Bootstrap.lua
 Module.lua
 Read.lua
+Ingredients.lua
 Commands.lua

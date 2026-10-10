@@ -104,3 +104,11 @@ These are source-reviewed API candidates, not assertions that a particular WoW b
 - **New commands:** `/ffish log <1-999> <fish name>`, `/ffish catches`, `/ffish clear` operate only on local, **explicitly player-entered notes** and make **zero game API calls**. Counts are not validated catches, inventory, market sales, cooking ingredients or gold income.
 - **Bounds:** maximum 10 species, 9999 per species, 99999 total; 60-byte name bound; reject WoW color/link escape pipe and control characters; preserve first entered display spelling and group case-insensitively. Output is bounded to at most 11 lines per request. No SavedVariables or events; Core disable and interface reload clear all notes.
 - **Evidence:** Lua 5.1 mocks are a separate test layer; new client feature is **NOT YET VERIFIED on Forever 1.60.1 build 70338**. Exact single-command manual acceptance plan at [FISHING_TESTING.md](FISHING_TESTING.md).
+
+## On-demand Fishing/Cooking profession-list trial — PR #39, 2026-10-10
+
+- Observed in prior user-reported game testing: Fishing v0.2 and Cooking v0.1 only displayed their rank when their respective profession windows were open. Last independently captured beta build 1.60.1 / 70338, interface 16001; current installed SHA not captured.
+- Separately live-tested ForeverProfessions used the conventional GetProfessions and GetProfessionInfo API to show Fishing/Cooking ranks. Sources: https://warcraft.wiki.gg/wiki/API_GetProfessions and https://warcraft.wiki.gg/wiki/API_GetProfessionInfo .
+- This NEW candidate lets each independently installed Fishing v0.3 / Cooking v0.2 reader request those APIs directly, on demand, with pcall, combat guard, no holes assumed in up to five slots, strict finite rank bounds and exact English-name matching. Unknown API data falls back to the prior C_TradeSkillUI.GetBaseProfessionInfo for the corresponding open window.
+- The new code is mocked-only so far: window-independent behavior and non-English locale matching are NOT confirmed on the live beta. Missing data is never presented as unlearned/zero.
+- Manual Cooking ingredient planning never inspects the bags, spells, recipes, learned skills, network or gameplay events. No optional-pack dependency introduced.

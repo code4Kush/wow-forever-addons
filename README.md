@@ -153,3 +153,9 @@ python3 tools/build_dev_bundle.py --profile full --output dist/ForeverSuite-full
 Profiles: `minimal` (Core only), `tank`, `professions`, `full` (all twelve directories). Custom selections with `--include ForeverCooking` or `--exclude ForeverGuild`. The builder validates complete Lua TOC ordering/dependencies, excludes probes, enforces safe files and writes a deterministic ZIP with SHA256; **it never touches the game folder**.
 
 One integrated game-testing pass after user installation: [FULL_SUITE_TESTING.md](docs/FULL_SUITE_TESTING.md). For market context, source links and honest performance limitations see [MARKET_AND_PERFORMANCE.md](docs/MARKET_AND_PERFORMANCE.md). No FPS/CPU comparison or complete quest/profession database is claimed. Do not distribute DEV ZIPs as public player releases without license, policy/security review and owner approval.
+
+## New separate Cooking/Fishing test candidate (PR #39)
+
+After the player's integrated game test revealed that Fishing v0.2 and Cooking v0.1 required open profession windows, draft [PR #39](https://github.com/code4Kush/wow-forever-addons/pull/39) adds **standalone, guarded profession-list fallback readers** using the same API family as the live-tested Professions pack. Both addons still need only ForeverCore, not each other or ForeverProfessions. Cooking v0.2 also adds bounded, manual-only ingredient planning with /fcook need, needs, done, clear. Fishing v0.3 retains manual catch notes. This candidate is **NOT verified on the live client yet**, remains separate from the player's active memory benchmark, and is not approved for release.
+
+Test instructions: [Fishing and Cooking windowless candidate](docs/FISHING_COOKING_TESTING.md).

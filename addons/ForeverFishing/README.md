@@ -1,107 +1,97 @@
-# ForeverFishing v0.2 — manually logged catch notes
+# ForeverFishing 0.3 — skill readout and manual catch notes
 
-**Development candidate, not yet game-tested as this version.** [Draft PR #35](https://github.com/code4Kush/wow-forever-addons/pull/35) adds a lightweight, player-entered catch tally for Fishing/Cooking self-sufficiency. It targets WoW Forever beta interface `16001`; last player-observed full client build: **1.60.1 / 70338 / Oct 9 2026**.
+**Draft development candidate** in [PR #39](https://github.com/code4Kush/wow-forever-addons/pull/39). The original v0.2 manual catch ledger has player-reported live PASS, and user confirmed `/ffish` skill read needs the Fishing profession window open on last observed Forever beta 1.60.1 build 70338. **This new profession-list fallback is NOT YET LIVE VERIFIED**.
 
-## What it does
+## What's new (and isn't)
 
-The familiar `/ffish` attempts to read Fishing skill from the open Fishing profession window using `C_TradeSkillUI.GetBaseProfessionInfo`. This conventional WoW API is **not yet independently confirmed for this optional pack on build 70338**. A fallback politely reports the skill as not readable.
+The `/ffish` skill command first attempts `GetProfessions()` and `GetProfessionInfo(slot)`, which the separate Professions module has already used successfully on the same client. This Fishing addon uses those APIs **directly**, without requiring ForeverProfessions. Sparse profession slots, nonfinite ranks, impossible values, missing functions and client errors are all guarded. If Fishing cannot be read from the list, the previous read from an **open Fishing profession window** remains available. Names match English `Fishing` only; unavailable/localized results cannot prove unlearned skills.
 
-New `/ffish log <count> <fish name>` records a **manual note**, `/ffish catches` displays the current session's manually entered fish tallies, and `/ffish clear` clears that session's log. **The addon does not detect actual catches**, read bags, verify the fish name, track sale prices or categorize cooking usefulness. These notes are **not proof of loot, inventory, historical catches or gold earned**.
+The existing `/ffish log <count> <fish name>`, `/ffish catches` and `/ffish clear` remain manual, session-only notes, **not automatic catch detection**. Max 10 fish labels, 9999 manually entered fish per label. No reading bags, recipes, auction data, actual loot, or sales.
 
-## Install independently
+## Independent install
 
-Copy `addons/ForeverFishing/` into your WoW beta's `Interface/AddOns/ForeverFishing/` directory with `ForeverCore` 0.2+ installed. Enable both in the AddOns menu and reload. No other optional pack is required, and removing this folder leaves other packs unaffected.
+Only `ForeverCore` 0.2+ is required. Install `ForeverFishing` as its own optional folder with its `ForeverFishing_Camelot.toc` interface 16001. Nothing here depends on or modifies Cooking, Inventory or other packs.
 
-Full installation and [individual in-game acceptance steps](../../docs/FISHING_TESTING.md) live in `docs/FISHING_TESTING.md`.
+## Commands (ONE entry per WoW chat)
 
-## Commands — exactly one per WoW chat submission
+**Skill:**
+
+~~~text
+/ffish
+~~~
+
+Expected if the independent list read works:
+
+~~~text
+Forever Fishing: Fishing: <RANK>/<MAX> (profession list).
+Forever Fishing: Catches are manually logged only; no auto-fishing.
+~~~
+
+If only the Fishing UI returns a valid skill:
+
+~~~text
+Forever Fishing: Fishing: <RANK>/<MAX> (open profession window).
+Forever Fishing: Catches are manually logged only; no auto-fishing.
+~~~
+
+If neither path works:
+
+~~~text
+Forever Fishing: Fishing skill not readable; open Fishing UI and retry.
+Forever Fishing: Catches are manually logged only; no auto-fishing.
+~~~
+
+**Manually record a test note:**
+
+~~~text
+/ffish log 3 Raw Brilliant Smallfish
+~~~
+
+Expected for an empty tally:
+
+~~~text
+Forever Fishing: Logged manually: Raw Brilliant Smallfish +3 (session total: 3).
+~~~
+
+**Show manual notes:**
+
+~~~text
+/ffish catches
+~~~
+
+Expected for one label above:
+
+~~~text
+Forever Fishing: Manual catches: 3 fish across 1 species (session only; not verified).
+Forever Fishing: Raw Brilliant Smallfish: 3 manually entered.
+~~~
+
+**Clear manual notes:**
+
+~~~text
+/ffish clear
+~~~
+
+Expected exact:
+
+~~~text
+Forever Fishing: Manual catch log cleared (session only).
+~~~
 
 **Version:**
 
-```text
+~~~text
 /ffish version
-```
+~~~
 
 Expected exact:
 
-```text
-Forever Fishing: Version 0.2.0
-```
+~~~text
+Forever Fishing: Version 0.3.0
+~~~
 
-**Fishing skill:**
+Full v0.3 test steps in [FISHING_COOKING_TESTING.md](../../docs/FISHING_COOKING_TESTING.md). Existing v0.2 detailed manual catch checks in [FISHING_TESTING.md](../../docs/FISHING_TESTING.md) apply to the unchanged tally; note that version expectations differ.
 
-```text
-/ffish
-```
+## Restrictions
 
-Expected when the actual Fishing UI exposes a valid profession:
-
-```text
-Forever Fishing: Fishing: <RANK>/<MAX> (open profession window).
-Forever Fishing: Catches are manually logged only; no auto-fishing.
-```
-
-Without readable client API data:
-
-```text
-Forever Fishing: Fishing skill not readable; open Fishing UI and retry.
-Forever Fishing: Catches are manually logged only; no auto-fishing.
-```
-
-**Log a user-entered example note:**
-
-```text
-/ffish log 3 Raw Brilliant Smallfish
-```
-
-Expected exact for an empty log:
-
-```text
-Forever Fishing: Logged manually: Raw Brilliant Smallfish +3 (session total: 3).
-```
-
-**View notes:**
-
-```text
-/ffish catches
-```
-
-Expected with only the preceding note:
-
-```text
-Forever Fishing: Manual catches: 3 fish across 1 species (session only; not verified).
-Forever Fishing: Raw Brilliant Smallfish: 3 manually entered.
-```
-
-**Clear notes:**
-
-```text
-/ffish clear
-```
-
-Expected exact:
-
-```text
-Forever Fishing: Manual catch log cleared (session only).
-```
-
-**Help:**
-
-```text
-/ffish help
-```
-
-Expected exact:
-
-```text
-Forever Fishing: Commands: /ffish | version | help | log <count> <fish name> | catches | clear
-Forever Fishing: Catch counts are manual notes, NOT verified loot or inventory.
-```
-
-## Bounds and privacy
-
-Manual amounts must be positive whole numbers from 1 to 999 per command. Store no more than 10 labels, 9999 fish per label and 99999 overall. Names are limited to 60 bytes and reject control characters and WoW color/link control pipes. Matching ignores letter case within the session.
-
-No timers, OnUpdate, SavedVariables, periodic APIs, loot events, external services or addon network messages. Core logical disable or interface reload drops every manual note. Manual `log`, `catches` and `clear` never inspect actual game data.
-
-The repository is public source but does **not** yet provide an owner-approved player release, chosen code license, verified branch protections or final public security/policy review.
+Purely local, read-only skills and human-entered counts. No background processing, WoW loot events, automatic fishing, combat scanning, SavedVariables, network messaging or timer. Disable via Core to clear manual notes; /reload also clears them. No code license or owner-approved public release yet.
