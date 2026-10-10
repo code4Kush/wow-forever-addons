@@ -197,6 +197,13 @@ accepted, errorMessage = core.RegisterModule(
 Expect(not accepted and errorMessage:find("major.minor.patch"),
     "Non-numeric semantic versions must be rejected")
 
+accepted, errorMessage = core.RegisterModule(FakeDescriptor("reserved", {
+    events = { "PLAYER_LOGIN" },
+    OnEvent = function() end,
+}))
+Expect(not accepted and errorMessage:find("reserved"),
+    "Module must not subscribe to Core's own PLAYER_LOGIN lifecycle event")
+
 accepted = core.RegisterModule(FakeDescriptor("too-new", {
     minCoreVersion = "2.0.0",
 }))
@@ -213,6 +220,20 @@ accepted = core.RegisterModule(FakeDescriptor("mage-only", {
 Expect(accepted, "Ineligible pack can register")
 Expect(core.GetModuleStatus("mage-only").state == "ineligible",
     "Class eligibility must be checked using runtime class token")
+
+-- Changes to the caller's metadata arrays must not silently change
+-- subscriptions after the module has registered.
+local callerEvents = { "PLAYER_LEVEL_UP" }
+local snapshotDescriptor = FakeDescriptor("snapshot", {
+    events = callerEvents,
+    OnEvent = function() end,
+})
+accepted = core.RegisterModule(snapshotDescriptor)
+Expect(accepted, "Snapshot test module registers")
+callerEvents[1] = "SOME_OTHER_EVENT"
+core.SetModuleEnabled("snapshot", false)
+Expect(core.GetSubscriberCount("SOME_OTHER_EVENT") == 0,
+    "Registry must not use externally mutated event arrays")
 
 local spy = { handled = 0, disabled = 0 }
 accepted = core.RegisterModule(FakeDescriptor("spy", {
