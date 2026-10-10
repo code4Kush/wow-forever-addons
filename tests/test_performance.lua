@@ -115,6 +115,16 @@ SlashCmdList.FOREVERPERFORMANCE("delta")
 Assert(Has("No baseline. Use /fperf baseline first."), "No implicit baseline")
 Assert(refreshCalls == 0, "Missing baseline must not sample")
 
+-- Deliberately avoid any profiling work during combat.
+InCombatLockdown = function() return true end
+Reset()
+SlashCmdList.FOREVERPERFORMANCE("memory")
+Assert(Has("Memory sampling unavailable during combat."),
+    "No memory refresh or protected reads while in combat")
+Assert(refreshCalls == 0 and readCalls == 0,
+    "Combat must not trigger a single memory API call")
+InCombatLockdown = function() return false end
+
 Reset()
 SlashCmdList.FOREVERPERFORMANCE("memory")
 Assert(Has("Memory: 5 known loaded pack(s), 140.42 KB total"),

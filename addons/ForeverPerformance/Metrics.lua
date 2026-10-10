@@ -40,6 +40,15 @@ end
 --- @return table|nil snapshot List of bounded rows and combined KB.
 --- @return string|nil reason Error if an API or reading is unavailable.
 function addon.TakeSnapshot()
+    -- Memory attribution refresh may be costly or return protected data.
+    -- Defer diagnostics until out of combat; no pending timer is scheduled.
+    if type(InCombatLockdown) == "function" then
+        local ok, inCombat = pcall(InCombatLockdown)
+        if not ok or inCombat then
+            return nil, "Memory sampling unavailable during combat."
+        end
+    end
+
     if type(UpdateAddOnMemoryUsage) ~= "function"
         or type(GetAddOnMemoryUsage) ~= "function" then
         return nil, "WoW addon memory API unavailable on this build."

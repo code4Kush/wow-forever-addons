@@ -98,7 +98,7 @@ Expected with an active module: `Forever Core: Memory diagnostics: use /fperf me
 
 ## Memory cost and safety
 
-- **No periodic work:** no event subscriptions, no `OnUpdate`, no timers and no implicit profiling at login, startup or idle.
+- **No periodic work:** no event subscriptions, no `OnUpdate`, no timers and no implicit profiling at login, startup or idle. Sampling is refused during combat when `InCombatLockdown` is available.
 - **No automatic garbage collection:** avoid causing in-game pauses. You can separately choose to collect garbage in a controlled experiment, but that is not required for normal use.
 - **Bounded transient memory:** only one optional baseline with up to 12 package readings, sorted temporary arrays, and short chat messages. No per-frame accumulation and no persistent saved history.
 - **Accurate unknowns:** if `UpdateAddOnMemoryUsage` or `GetAddOnMemoryUsage` is absent or fails, memory commands show an unavailable message. No guessed zeros.

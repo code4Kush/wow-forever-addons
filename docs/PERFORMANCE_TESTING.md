@@ -199,6 +199,10 @@ Expected exact:
 Forever Performance: Baseline cleared (session only).
 ```
 
+## Optional combat guard
+
+If safely in combat during a separate player-controlled test, `/fperf memory` should respond with the exact local error `Forever Performance: Memory sampling unavailable during combat.` and no subsequent memory totals. **Do not deliberately enter danger merely to test this**. The guard uses `InCombatLockdown` when available and starts no delayed timer.
+
 ## C. Disable behavior and restart
 
 **C1 — One command:**
