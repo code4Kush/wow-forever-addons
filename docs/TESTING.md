@@ -14,11 +14,12 @@ From repository root:
 lua5.1 tests/test_progress.lua
 lua5.1 tests/test_questlog.lua
 lua5.1 tests/test_history.lua
+lua5.1 tests/test_journal.lua
 ~~~
 
 The second script mocks the WoW C_QuestLog and C_Map namespaces and exercises filtering, objective access, area fallback, pagination, command validation and error handling.
 
-GitHub Actions runs all three tests on pull requests. These mock tests cannot validate live game API compatibility.
+GitHub Actions runs all four tests on pull requests. These mock tests cannot validate live game API compatibility.
 
 ## 0.2.0 in-game checklist — partial manual pass (2026-10-10)
 
@@ -107,6 +108,50 @@ Forever Journal: Quest 752: flagged completed for this character.
 10. Cold-restart game and verify the same quest flags. No saved variables are involved in this candidate.
 
 Record the actual game build and screenshots. Successful unit tests alone do not satisfy this checklist.
+
+## 0.4.0 candidate: Mulgore starter journal (NOT TESTED IN GAME)
+
+The output below assumes **only quests 747 and 752** from the 12-item curated catalog are flagged complete. Uddergrief may have completed additional quests; if so, both count and status change legitimately.
+
+**Command:**
+
+~~~text
+/fj version
+~~~
+
+**Expected exact text:** `Forever Journal: Version 0.4.0`. PASS if correct and no Lua errors; FAIL otherwise.
+
+**Command:**
+
+~~~text
+/fj journal
+~~~
+
+**Expected example:**
+
+~~~text
+Forever Journal: Mulgore starter catalog: 2/12 flagged complete, <N> active.
+Forever Journal: Page 1/2 - curated sample, NOT all Mulgore quests.
+Forever Journal: [done] The Hunt Begins (ID 747)
+Forever Journal: [done] A Humble Task (part 1) (ID 752)
+Forever Journal: [<status>] Simple Note (Warrior) (ID 3091)
+Forever Journal: [<status>] The Hunt Continues (ID 750)
+Forever Journal: [<status>] A Humble Task (part 2) (ID 753)
+Forever Journal: [<status>] Rites of the Earthmother (early) (ID 755)
+Forever Journal: Not flagged does not mean available; use /fj journal <page>.
+~~~
+
+Expected `<N>` varies according to the live log. Each `<status>` is exactly one of `done`, `ready`, `active`, or `not flagged`. If Uddergrief has completed more than 747/752, the numerator rises above 2. PASS if 747 and 752 display `done`, all statuses agree with the game, and no Lua errors appear. FAIL if they revert to not flagged, if this is presented as all Mulgore quests, or if code errors occur.
+
+**Command:** `/fj journal 2`
+
+**Expected header:** `Forever Journal: Page 2/2 - curated sample, NOT all Mulgore quests.`. The last entry should be `A Task Unfinished (ID 1656)`. PASS if six additional catalog quests display; FAIL if missing/incorrect pagination.
+
+**Command:** `/fj journal 0`
+
+**Expected exact text:** `Forever Journal: Usage: /fj journal [page number]`. PASS if friendly usage text appears; FAIL if a Lua error occurs.
+
+Report mismatches with a screenshot or copied chat output. Test after `/reload` and again after a cold restart. A small catalog cannot verify all Mulgore quests.
 
 ## Release policy
 

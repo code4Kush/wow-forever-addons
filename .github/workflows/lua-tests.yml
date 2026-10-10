@@ -22,3 +22,5 @@ jobs:
         run: lua5.1 tests/test_questlog.lua
       - name: Run historical flag and identity tests
         run: lua5.1 tests/test_history.lua
+      - name: Run curated starter journal tests
+        run: lua5.1 tests/test_journal.lua

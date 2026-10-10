@@ -2,7 +2,15 @@
 
 All notable user-facing changes are recorded here.
 
-## [Unreleased] — 0.3.0 candidate
+## [Unreleased] — 0.4.0 candidate
+
+- Added `/fj journal [page]`: read-only starter catalog for Tauren characters, with Warrior-specific Simple Note.
+- Shows current historical-completion and active/ready status for each curated quest ID.
+- Uses a sourced 12-quest catalog and explicitly disclaims zone-wide completion.
+- Includes mock tests, provenance records and exact expected player test output.
+- NOT YET TESTED IN GAME.
+
+## [0.3.0] — primary commands user-verified, release pending
 
 - Added `/fj status <questID>` to query historical completion flags and distinguish active quest log status.
 - Added `/fj character` to display the current character's identity without hardcoding it.

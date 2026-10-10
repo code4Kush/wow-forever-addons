@@ -2,7 +2,7 @@
 
 A readable, documented collection of World of Warcraft: Forever addons.
 
-**Status:** Early development. Forever Journal **0.3.0 candidate** adds read-only per-quest historical completion flag queries and player identity. It is **not yet tested in-game**. Core 0.2.0 quest and zone features were user-verified on interface 16001.
+**Status:** Early development. Forever Journal **0.4.0 candidate** adds a small curated Mulgore starter checklist for Tauren characters. It is **not yet tested in-game**. Core 0.2.0 and 0.3.0 features were user-verified on interface 16001.
 
 ## Guiding principles
 
@@ -31,6 +31,7 @@ tests/
   test_progress.lua
   test_questlog.lua
   test_history.lua
+  test_journal.lua
 .github/workflows/
   lua-tests.yml
 AGENTS.md
@@ -49,15 +50,16 @@ CHANGELOG.md
 - `/fj quest <ID>` — show quest objectives and readiness to turn in
 - `/fj status <ID>` — query a historical completion flag, then active status if needed
 - `/fj character` — identify the current player in-game
+- `/fj journal [page]` — curated Mulgore starter checklist, NOT zone completion
 
-This is **not** a comprehensive zone completion tracker. It reads the active log and checks historical completion for a specific quest ID on demand; it does not provide a full database of known quests. See `addons/ForeverJournal/README.md`.
+This is **not** a comprehensive zone completion tracker. It reads live quest statuses for a small, explicitly curated set of early Mulgore quest IDs. See `docs/QUEST_CATALOG.md` for provenance and limitations. See `addons/ForeverJournal/README.md`.
 
 ## Get started
 
 1. Read `docs/DEVELOPMENT.md` and `docs/API_NOTES.md`.
 2. Copy **all files** under `addons/ForeverJournal` to the beta client's `Interface/AddOns/ForeverJournal` directory.
 3. Log into the game, verify the addon is enabled, and type `/fj version`.
-4. Run all tests locally: `lua5.1 tests/test_progress.lua`, `lua5.1 tests/test_questlog.lua`, and `lua5.1 tests/test_history.lua`.
+4. Run all tests locally: `lua5.1 tests/test_progress.lua`, `lua5.1 tests/test_questlog.lua`, and `lua5.1 tests/test_history.lua`, and `lua5.1 tests/test_journal.lua`.
 
 The recorded beta interface number is 16001; verify client API behavior after updates. Avoid assuming that the current API matches Classic Era simply because the setting is vanilla-inspired.
 
